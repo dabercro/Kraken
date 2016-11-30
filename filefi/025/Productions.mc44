@@ -1,0 +1,28 @@
+#---------------------------------------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 025
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation
+#---------------------------------------------------------------------------------------------------------------------------------
+# Important summer samples (with Mit_025a tag)
+#---------------------------------------------------------------------------------------------------------------------------------
+
+# Chamonix Samples - signal
+/GluGluToHToGG_M-145_7TeV-powheg-pythia6/Fall11-PU_Chamonix12_START44_V10-v2/AODSIM           f11-h145gg-gf-44v10          1  new  -
+/GluGluToHToTauTau_M-125_7TeV-powheg-pythia6/Fall11-PU_Chamonix12_START44_V10-v1/AODSIM       f11-h125tt-gf-44v10          1  new  -
+/VBF_HToTauTau_M-125_7TeV-powheg-pythia6-tauola/Fall11-PU_Chamonix12_START44_V10-v1/AODSIM    f11-h125tt-vbf-44v10         1  new  -
+/GluGluToHToWWTo2L2Nu_M-120_7TeV-powheg-pythia6/Fall11-PU_Chamonix12_START44_V10-v1/AODSIM    f11-h120ww2l-gf-44v10        1  new  -
+
+# Chamonix Samples - backgrounds
+/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_Chamonix12_START44_V10-v2/AODSIM                f11-ttj-44v10                1  new  -
+/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall11-PU_Chamonix12_START44_V10-v1/AODSIM       f11-zjets-44v10              1  new  -
+/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_Chamonix12_START44_V10-v2/AODSIM            f11-wjets-44v10              1  new  -
+/WW_TuneZ2_7TeV_pythia6_tauola/Fall11-PU_Chamonix12_START44_V10-v2/AODSIM                     f11-wz-44v10                 1  new  -
+/WZ_TuneZ2_7TeV_pythia6_tauola/Fall11-PU_Chamonix12_START44_V10-v2/AODSIM                     f11-wz-44v10                 1  new  -

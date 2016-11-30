@@ -1,0 +1,126 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 025
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#
+# example for no DBS sample:
+#  /Photon/Run2011B-30Nov2011-v1/AOD                 r11b-pho-n30-v1  1 new - none cern.ch
+#---------------------------------------------------------------------------------------------------
+# New Jan 16 re-reco
+/DoubleMu/Run2011B-16Jan2012-v1/AOD                  r11b-dmu-j16-v1  1 new -
+/DoubleElectron/Run2011B-16Jan2012-v1/AOD            r11b-del-j16-v1  1 new -
+/Photon/Run2011B-16Jan2012-v1/AOD                    r11b-pho-j16-v1  1 new -
+
+/DoubleMu/Run2011A-16Jan2012-v1/AOD                  r11a-dmu-j16-v1  1 new -
+/DoubleElectron/Run2011A-16Jan2012-v1/AOD            r11a-del-j16-v1  1 new -
+/Photon/Run2011A-16Jan2012-v1/AOD                    r11a-pho-j16-v1  1 new -
+
+# New Nov 30 re-reco
+/DoubleMu/Run2011B-30Nov2011-v1/AOD                  r11b-dmu-n30-v1  1 new -
+/DoubleElectron/Run2011B-30Nov2011-v1/AOD            r11b-del-n30-v1  1 new -
+/Photon/Run2011B-30Nov2011-v1/AOD                    r11b-pho-n30-v1  1 new -
+
+/DoubleMu/Run2011A-30Nov2011-v1/AOD                  r11a-dmu-n30-v1  1 new -
+/DoubleElectron/Run2011A-30Nov2011-v1/AOD            r11a-del-n30-v1  1 new -
+/Photon/Run2011A-30Nov2011-v1/AOD                    r11a-pho-n30-v1  1 new -
+
+# Private re-reco from Marat
+/DoubleElectron/marat-ZElectron_datalasertag_oct10_pi0phisym-771cbf84b008f4ca2cb5e60ad14e1920/USER  \
+                                                     r11b-del-marpsym-v1 1 new - ph_analysis_02
+/DoubleElectron/marat-ZElectron_datalasertag_oct10_pi0onlyric-9c657cc2bd4058f4da9f7a419f949cd7/USER \
+                                                     r11b-del-marpori-v1 1 new - ph_analysis_02
+
+# Marco's high PU and 25ns
+#/L1EGHPF/Run2011B-PromptReco-v1/AOD                  r11b-l1eghf-pr-v1   1 new -
+#/L1MuHPF/Run2011B-PromptReco-v1/AOD                  r11b-l1muhf-pr-v1   1 new -
+#/L1JetHPF/Run2011B-PromptReco-v1/AOD                 r11b-l1jthf-pr-v1   1 new -
+#/ZeroBiasHPF0/Run2011B-PromptReco-v1/AOD             r11b-zbhf-pr-v1     1 new -
+#/L1EG/Run2011B-14Oct2011-v1/AOD                      r11b-l1eg-o14-v1    1 new -
+
+# SiXie's HCAL 2 time slice re-reco
+/DoubleElectron/Run2011B-18Oct2011-HCAL2TS-v1/RECO   r11b-del-o18-2ts-v1 1 new -
+
+# 2011 A - 013/fb fiv Nov 02, v1
+/DoubleMu/Run2011A-02Nov2010-v1/RECO                 r11a-dmu-n02-v1  1 new -
+/DoubleElectron/Run2011A-02Nov2010-v1/RECO           r11a-del-n02-v1  1 new -
+/MuEG/Run2011A-02Nov2010-v1/RECO                     r11a-mueg-n02-v1 1 new -
+/SingleMu/Run2011A-02Nov2010-v1/RECO                 r11a-smu-n02-v1  1 new -
+/SingleElectron/Run2011A-02Nov2010-v1/RECO           r11a-sel-n02-v1  1 new -
+/Photon/Run2011A-02Nov2010-v1/RECO                   r11a-pho-n02-v1  1 new -
+/TauPlusX/Run2011A-02Nov2010-v1/RECO                 r11a-tpx-n02-v1  1 new -
+
+# 2011 B - 013/fb fiv Nov 02, v1
+/DoubleMu/Run2011B-02Nov2010-v1/RECO                 r11b-dmu-n02-v1  1 new -
+/DoubleElectron/Run2011B-02Nov2010-v1/RECO           r11b-del-n02-v1  1 new -
+/MuEG/Run2011B-02Nov2010-v1/RECO                     r11b-mueg-n02-v1 1 new -
+/SingleMu/Run2011B-02Nov2010-v1/RECO                 r11b-smu-n02-v1  1 new -
+/SingleElectron/Run2011B-02Nov2010-v1/RECO           r11b-sel-n02-v1  1 new -
+/Photon/Run2011B-02Nov2010-v1/RECO                   r11b-pho-n02-v1  1 new -
+/TauPlusX/Run2011B-02Nov2010-v1/RECO                 r11b-tpx-n02-v1  1 new -
+
+# 2011 B - prompt v1
+/DoubleMu/Run2011B-PromptReco-v1/AOD                 r11b-dmu-pr-v1   1 new -
+/DoubleElectron/Run2011B-PromptReco-v1/AOD           r11b-del-pr-v1   1 new -
+/MuEG/Run2011B-PromptReco-v1/AOD                     r11b-mueg-pr-v1  1 new -
+/SingleMu/Run2011B-PromptReco-v1/AOD                 r11b-smu-pr-v1   1 new -
+/SingleElectron/Run2011B-PromptReco-v1/AOD           r11b-sel-pr-v1   1 new -
+/Photon/Run2011B-PromptReco-v1/AOD                   r11b-pho-pr-v1   1 new -
+/TauPlusX/Run2011B-PromptReco-v1/AOD                 r11b-tpx-pr-v1   1 new -
+/Jet/Run2011B-PromptReco-v1/AOD                      r11b-jet-pr-v1   1 new -
+/MET/Run2011B-PromptReco-v1/AOD                      r11b-met-pr-v1   1 new -
+
+#  2011 A - rereco for photons (post LP sample, replaces v6)
+/DoubleMu/Run2011A-03Oct2011-v1/AOD                  r11a-dmu-o03-v1  1 new -
+/DoubleElectron/Run2011A-03Oct2011-v1/AOD            r11a-del-o03-v1  1 new -
+/MuEG/Run2011A-03Oct2011-v1/AOD                      r11a-mueg-o03-v1 1 new -
+/SingleMu/Run2011A-03Oct2011-v1/AOD                  r11a-smu-o03-v1  1 new -
+/SingleElectron/Run2011A-03Oct2011-v1/AOD            r11a-sel-o03-v1  1 new -
+/Photon/Run2011A-03Oct2011-v1/AOD                    r11a-pho-o03-v1  1 new -
+/TauPlusX/Run2011A-03Oct2011-v1/AOD                  r11a-tpx-o03-v1  1 new -
+
+# 2011 A - Aug 05
+/DoubleMu/Run2011A-05Aug2011-v1/AOD                  r11a-dmu-a05-v1  1 new -
+/DoubleElectron/Run2011A-05Aug2011-v1/AOD            r11a-del-a05-v1  1 new -
+/MuEG/Run2011A-05Aug2011-v1/AOD                      r11a-mueg-a05-v1 1 new -
+/SingleMu/Run2011A-05Aug2011-v1/AOD                  r11a-smu-a05-v1  1 new -
+/SingleElectron/Run2011A-05Aug2011-v1/AOD            r11a-sel-a05-v1  1 new -
+/Photon/Run2011A-05Aug2011-v1/AOD                    r11a-pho-a05-v1  1 new -
+/TauPlusX/Run2011A-05Aug2011-v1/AOD                  r11a-tpx-a05-v1  1 new -
+/Jet/Run2011A-05Aug2011-v1/AOD                       r11a-jet-a05-v1  1 new -
+/MET/Run2011A-05Aug2011-v1/AOD                       r11a-met-a05-v1  1 new -
+
+# 2011 A - July 05 rereco for photons (EPS sample, replaces v4 for Hgg)
+/Photon/Run2011A-05Jul2011ReReco-ECAL-v1/AOD         r11a-pho-j05-v1  1 new -
+/DoubleElectron/Run2011A-05Jul2011ReReco-ECAL-v1/AOD r11a-del-j05-v1  1 new -
+/SingleElectron/Run2011A-05Jul2011ReReco-ECAL-v1/AOD r11a-sel-j05-v1  1 new -
+/DoubleMu/Run2011A-05Jul2011ReReco-ECAL-v1/AOD       r11a-dmu-j05-v1  1 new -
+
+# 2011 A - prompt v4
+/DoubleMu/Run2011A-PromptReco-v4/AOD                 r11a-dmu-pr-v4   1 new -
+/DoubleElectron/Run2011A-PromptReco-v4/AOD           r11a-del-pr-v4   1 new -
+/MuEG/Run2011A-PromptReco-v4/AOD                     r11a-mueg-pr-v4  1 new -
+/SingleMu/Run2011A-PromptReco-v4/AOD                 r11a-smu-pr-v4   1 new -
+/SingleElectron/Run2011A-PromptReco-v4/AOD           r11a-sel-pr-v4   1 new -
+/Photon/Run2011A-PromptReco-v4/AOD                   r11a-pho-pr-v4   1 new -
+/TauPlusX/Run2011A-PromptReco-v4/AOD                 r11a-tpx-pr-v4   1 new -
+/Jet/Run2011A-PromptReco-v4/AOD                      r11a-jet-pr-v4   1 new -
+/MET/Run2011A-PromptReco-v4/AOD                      r11a-met-pr-v4   1 new -
+
+# 2011 A - May 10
+/DoubleMu/Run2011A-May10ReReco-v1/AOD                r11a-dmu-m10-v1  1 new -
+/DoubleElectron/Run2011A-May10ReReco-v1/AOD          r11a-del-m10-v1  1 new -
+/MuEG/Run2011A-May10ReReco-v1/AOD                    r11a-mueg-m10-v1 1 new -
+/SingleMu/Run2011A-May10ReReco-v1/AOD                r11a-smu-m10-v1  1 new -
+/SingleElectron/Run2011A-May10ReReco-v1/AOD          r11a-sel-m10-v1  1 new -
+/Photon/Run2011A-May10ReReco-v1/AOD                  r11a-pho-m10-v1  1 new -
+/TauPlusX/Run2011A-May10ReReco-v1/AOD                r11a-tpx-m10-v1  1 new -
+/Jet/Run2011A-May10ReReco-v1/AOD                     r11a-jet-m10-v1  1 new -
+/MET/Run2011A-May10ReReco-v1/AOD                     r11a-met-m10-v1  1 new -

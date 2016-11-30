@@ -1,0 +1,35 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 016
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#---------------------------------------------------------------------------------------------------
+# november 4th re-reco
+/Mu/Run2010A-Nov4ReReco_v1/RECO                                  r10a-mu-n04      40000 new -
+/EG/Run2010A-Nov4ReReco_v1/RECO                                  r10a-eg-n04      40000 new -
+/Mu/Run2010A-DiLeptonMu-Nov4Skim_v1/RECO                         r10a-mu-2l-n04   40000 new -
+/EG/Run2010A-DiLeptonEle-Nov4Skim_v1/RECO                        r10a-eg-2l-n04   40000 new -
+/MuOnia/Run2010A-Nov4ReReco_v1/RECO                              r10a-muo-n04     40000 new -
+
+/Mu/Run2010B-Nov4ReReco_v1/RECO                                  r10b-mu-n04	  40000 new -
+/Electron/Run2010B-Nov4ReReco_v1/RECO				 r10b-el-n04	  40000 new -
+/Mu/Run2010B-DiLeptonMu-Nov4Skim_v1/RECO                         r10b-mu-2l-n04   40000 new -
+/Electron/Run2010B-DiLeptonEle-Nov4Skim_v1/RECO                  r10b-eg-2l-n04   40000 new -
+/Photon/Run2010B-Nov4ReReco_v1/RECO                              r10b-pho-n04	  40000 new -
+/MuOnia/Run2010B-Nov4ReReco_v1/RECO                              r10b-muo-n04     40000 new -
+
+/JetMET/Run2010A-Nov4ReReco_v1/RECO                              r10a-jm-n04      40000 new -
+/JetMETTau/Run2010A-Nov4ReReco_v1/RECO                           r10a-jmt-n04     40000 new -
+/EGMonitor/Run2010A-Nov4ReReco_v1/RECO                           r10a-egmo-n04    40000 new -
+
+/Jet/Run2010B-Nov4ReReco_v1/RECO                                 r10b-jet-n04     40000 new -                
+/EGMonitor/Run2010B-Nov4ReReco_v2/RECO                           r10b-egmo-n04    40000 new -
+
+

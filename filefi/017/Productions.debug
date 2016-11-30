@@ -1,0 +1,23 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filler
+# XX-MITVERSION-XX = 014
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation
+#---------------------------------------------------------------------------------------------------
+
+# pre-production of 384
+/WToENu_TuneZ2_7TeV-pythia6/Fall10-START38_V12_preproduction-v1/GEN-SIM-RECODEBUG         f10pp-we-z2-v12  25000 new -
+/WToMuNu_TuneZ2_7TeV-pythia6/Fall10-START38_V12_preproduction-v1/GEN-SIM-RECODEBUG        f10pp-wm-z2-v12  25000 new -
+/DYToEE_M-20_TuneZ2_7TeV-pythia6/Fall10-START38_V12_preproduction-v1/GEN-SIM-RECODEBUG    f10pp-zee-z2-v12 25000 new -
+/DYToMuMu_M-20_TuneZ2_7TeV-pythia6/Fall10-START38_V12_preproduction-v1/GEN-SIM-RECODEBUG  f10pp-zmm-z2-v12 25000 new -
+
+
+/MinBias_TuneD6T_7TeV-pythia6/Summer10-START36_V10_SP10-v1/GEN-SIM-RECODEBUG p10-minb-d6t-v10 25000 new /hadoop/cmsprod
+

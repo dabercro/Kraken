@@ -1,0 +1,112 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 023
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#---------------------------------------------------------------------------------------------------
+# 2011 B - prompt v1
+/DoubleMu/Run2011B-PromptReco-v1/AOD          r11b-dmu-pr-v1   1 new -
+/DoubleElectron/Run2011B-PromptReco-v1/AOD    r11b-del-pr-v1   1 new -
+/MuEG/Run2011B-PromptReco-v1/AOD              r11b-mueg-pr-v1  1 new -
+/SingleMu/Run2011B-PromptReco-v1/AOD          r11b-smu-pr-v1   1 new -
+/SingleElectron/Run2011B-PromptReco-v1/AOD    r11b-sel-pr-v1   1 new -
+/Photon/Run2011B-PromptReco-v1/AOD            r11b-pho-pr-v1   1 new -
+/TauPlusX/Run2011B-PromptReco-v1/AOD          r11b-tpx-pr-v1   1 new -
+/MET/Run2011B-PromptReco-v1/AOD               r11b-met-pr-v1   1 new -
+
+# - skims
+#/DoubleElectron/Run2011B-HWW-PromptSkim-v1/AOD
+#/DoubleElectron/Run2011B-HZZ-PromptSkim-v1/AOD
+#/DoubleMu/Run2011B-HWW-PromptSkim-v1/AOD
+#/DoubleMu/Run2011B-HZZ-PromptSkim-v1/AOD
+#/MuEG/Run2011B-HWW-PromptSkim-v1/AOD
+#/MuEG/Run2011B-HZZ-PromptSkim-v1/AOD
+#/Photon/Run2011B-DoublePhoton-PromptSkim-v1/AOD
+#/SingleElectron/Run2011B-HWW-PromptSkim-v1/AOD
+#/SingleElectron/Run2011B-HZZ-PromptSkim-v1/AOD
+#/SingleMu/Run2011B-HWW-PromptSkim-v1/AOD
+#/SingleMu/Run2011B-HZZ-PromptSkim-v1/AOD
+
+#  2011 A - rereco for photons (post LP sample, replaces v6)
+/DoubleMu/Run2011A-03Oct2011-v1/AOD             r11a-dmu-o03-v1  1 new -
+/DoubleElectron/Run2011A-03Oct2011-v1/AOD       r11a-del-o03-v1  1 new -
+/MuEG/Run2011A-03Oct2011-v1/AOD                 r11a-mueg-o03-v1 1 new -
+/SingleMu/Run2011A-03Oct2011-v1/AOD             r11a-smu-o03-v1  1 new -
+/SingleElectron/Run2011A-03Oct2011-v1/AOD       r11a-sel-o03-v1  1 new -
+/Photon/Run2011A-03Oct2011-v1/AOD               r11a-pho-o03-v1  1 new -
+/TauPlusX/Run2011A-03Oct2011-v1/AOD             r11a-tpx-o03-v1  1 new -
+
+# 2011 A - prompt v6
+/DoubleMu/Run2011A-PromptReco-v6/AOD            r11a-dmu-pr-v6   1 new -
+/DoubleElectron/Run2011A-PromptReco-v6/AOD      r11a-del-pr-v6   1 new -
+/MuEG/Run2011A-PromptReco-v6/AOD                r11a-mueg-pr-v6  1 new -
+/SingleMu/Run2011A-PromptReco-v6/AOD            r11a-smu-pr-v6   1 new -
+/SingleElectron/Run2011A-PromptReco-v6/AOD      r11a-sel-pr-v6   1 new -
+/Photon/Run2011A-PromptReco-v6/AOD              r11a-pho-pr-v6   1 new -
+/TauPlusX/Run2011A-PromptReco-v6/AOD            r11a-tpx-pr-v6   1 new -
+/MET/Run2011A-PromptReco-v6/AOD                 r11a-met-pr-v6   1 new -
+#/MuOnia/Run2011A-PromptReco-v6/AOD              r11a-muo-pr-v6   1 new -
+
+#  2011 A - rereco for photons (LP sample, replaces v5)
+/DoubleMu/Run2011A-05Aug2011-v1/AOD             r11a-dmu-a05-v1  1 new -
+/DoubleElectron/Run2011A-05Aug2011-v1/AOD       r11a-del-a05-v1  1 new -
+/MuEG/Run2011A-05Aug2011-v1/AOD                 r11a-mueg-a05-v1 1 new -
+/SingleMu/Run2011A-05Aug2011-v1/AOD             r11a-smu-a05-v1  1 new -
+/SingleElectron/Run2011A-05Aug2011-v1/AOD       r11a-sel-a05-v1  1 new -
+/Photon/Run2011A-05Aug2011-v1/AOD               r11a-pho-a05-v1  1 new -
+/TauPlusX/Run2011A-05Aug2011-v1/AOD             r11a-tpx-a05-v1  1 new -
+/Jet/Run2011A-05Aug2011-v1/AOD                  r11a-jet-a05-v1  1 new -
+/MET/Run2011A-05Aug2011-v1/AOD                  r11a-met-a05-v1  1 new -
+
+# 2011 A - July 05 rereco for photons (EPS sample, replaces v4)
+/Photon/Run2011A-DiPhoton-05Jul2011ReReco-ECAL-v1/RAW-RECO \
+                                                r11a-dph-j05-v1  1 new -
+/Photon/Run2011A-05Jul2011ReReco-ECAL-v1/AOD    r11a-pho-j05-v1  1 new -
+/DoubleElectron/Run2011A-05Jul2011ReReco-ECAL-v1/AOD \
+                                                r11a-del-j05-v1  1 new -
+/SingleElectron/Run2011A-05Jul2011ReReco-ECAL-v1/AOD \
+                                                r11a-sel-j05-v1  1 new -
+/DoubleMu/Run2011A-05Jul2011ReReco-ECAL-v1/AOD  r11a-dmu-j05-v1  1 new -
+
+# 2011 A - prompt v4
+/DoubleMu/Run2011A-PromptReco-v4/AOD            r11a-dmu-pr-v4   1 new -
+/DoubleElectron/Run2011A-PromptReco-v4/AOD      r11a-del-pr-v4   1 new -
+/MuEG/Run2011A-PromptReco-v4/AOD                r11a-mueg-pr-v4  1 new -
+/SingleMu/Run2011A-PromptReco-v4/AOD            r11a-smu-pr-v4   1 new -
+/SingleElectron/Run2011A-PromptReco-v4/AOD      r11a-sel-pr-v4   1 new -
+/Photon/Run2011A-PromptReco-v4/AOD              r11a-pho-pr-v4   1 new -
+/TauPlusX/Run2011A-PromptReco-v4/AOD            r11a-tpx-pr-v4   1 new -
+/MET/Run2011A-PromptReco-v4/AOD                 r11a-met-pr-v4   1 new -
+/METBTag/Run2011A-PromptReco-v4/AOD             r11a-mbt-pr-v4   1 new -
+#/MuOnia/Run2011A-PromptReco-v4/AOD             r11a-muo-pr-v4   1 new -
+
+# 2011 A - May 10 (replaces 2011A v1,v2,v3)
+/DoubleMu/Run2011A-May10ReReco-v1/AOD           r11a-dmu-m10-v1  1 new -
+/DoubleElectron/Run2011A-May10ReReco-v1/AOD     r11a-del-m10-v1  1 new -
+/MuEG/Run2011A-May10ReReco-v1/AOD               r11a-mueg-m10-v1 1 new -
+/SingleMu/Run2011A-May10ReReco-v1/AOD           r11a-smu-m10-v1  1 new -
+/SingleElectron/Run2011A-May10ReReco-v1/AOD     r11a-sel-m10-v1  1 new -
+/Photon/Run2011A-May10ReReco-v1/AOD             r11a-pho-m10-v1  1 new -
+/TauPlusX/Run2011A-May10ReReco-v1/AOD           r11a-tpx-m10-v1  1 new -
+/METBTag/Run2011A-May10ReReco-v1/AOD            r11a-mbt-m10-v1  1 new -
+#/MuOnia/Run2011A-May10ReReco-v1/AOD             r11a-muo-m10-v1  1 new -
+
+# 2010 B - April 21
+#/Mu/Run2010B-Apr21ReReco-v1/AOD                  r10b-mu-a21-v1   1 new -
+#/Electron/Run2010B-Apr21ReReco-v1/AOD            r10b-el-a21-v1   1 new -
+#/Photon/Run2010B-Apr21ReReco-v1/AOD              r10b-pho-a21-v1  1 new -
+#/MuOnia/Run2010B-Apr21ReReco-v1/AOD              r10b-muo-a21-v1  1 new -
+#/MinimumBias/Run2010B-Apr21ReReco-v1/AOD
+
+# 2010 A - April 21
+#/Mu/Run2010A-Apr21ReReco-v1/AOD                  r10a-mu-a21-v1   1 new -
+#/EG/Run2010A-Apr21ReReco-v1/AOD                  r10a-eg-a21-v1   1 new -
+#/MuOnia/Run2010A-Apr21ReReco-v1/AOD              r10a-muo-a21-v1  1 new -
+#/MinimumBias/Run2010A-Apr21ReReco-v1/AOD

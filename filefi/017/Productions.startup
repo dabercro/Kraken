@@ -1,0 +1,215 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 017
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation
+#---------------------------------------------------------------------------------------------------
+
+/MinBias_TuneZ2_7TeV-pythia6/Winter10-START39_V8-v1/AODSIM                                                           w10-minb-v8               1 new -
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+/WprimeToENue_M-600_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                         w10-wp600e-v8-pu          1 new -
+/WprimeToENue_M-700_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                         w10-wp700e-v8-pu          1 new -
+/WprimeToENue_M-800_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                         w10-wp800e-v8-pu          1 new -
+/WprimeToENue_M-900_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                         w10-wp900e-v8-pu          1 new -
+/WprimeToENue_M-1000_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1000e-v8-pu         1 new -
+/WprimeToENue_M-1100_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1100e-v8-pu         1 new -
+/WprimeToENue_M-1200_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1200e-v8-pu         1 new -
+/WprimeToENue_M-1300_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1300e-v8-pu         1 new -
+/WprimeToENue_M-1400_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1400e-v8-pu         1 new -
+/WprimeToENue_M-1500_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp1500e-v8-pu         1 new -
+/WprimeToENue_M-2000_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-wp2000e-v8-pu         1 new -
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/VBF_HToGG_M-90_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2011Flat_BX156_START39_V8-v1/AODSIM                      w10-h90gg-vbf-v8-puf      1 new -
+/VBF_HToGG_M-115_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2011Flat_BX156_START39_V8-v1/AODSIM                     w10-h115gg-vbf-v8-puf     1 new -
+
+/VBF_HToGG_M-90_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                      w10-h90gg-vbf-v8-pu       1 new -
+/VBF_HToGG_M-95_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                      w10-h95gg-vbf-v8-pu       1 new -
+/VBF_HToGG_M-100_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h100gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-105_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h105gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-110_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h110gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-115_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h115gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-120_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h120gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h130gg-vbf-v8-pu      1 new -
+/VBF_HToGG_M-140_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-h140gg-vbf-v8-pu      1 new -
+
+/GluGluToHToGG_M-120_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2011Flat_BX156_START39_V8-v1/AODSIM                 w10-h120gg-gf-v8-puf      1 new -
+/GluGluToHToGG_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2011Flat_BX156_START39_V8-v1/AODSIM                 w10-h130gg-gf-v8-puf      1 new -
+/GluGluToHToGG_M-140_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2011Flat_BX156_START39_V8-v1/AODSIM                 w10-h140gg-gf-v8-puf      1 new -
+
+/GluGluToHToGG_M-90_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                 w10-h90gg-gf-v8-pu         1 new -
+/GluGluToHToGG_M-95_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                 w10-h95gg-gf-v8-pu         1 new -
+/GluGluToHToGG_M-100_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h100gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-105_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h105gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-110_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h110gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-115_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h115gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-120_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h120gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h130gg-gf-v8-pu        1 new -
+/GluGluToHToGG_M-140_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-h140gg-gf-v8-pu        1 new -
+
+/QCD_Pt-20_doubleEMenriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM          w10-qcd2em20-v8-pu        1 new -
+/QCD_Pt-40_doubleEMEnriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM          w10-qcd2em40-v8-pu        1 new -
+/GJet_Pt-20_doubleEMEnriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM         w10-pj2em20-v8-pu         1 new -
+
+/GluGluToHToWWTo2L2Nu_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/GEN-SIM-RECO    w10-h130wwl2-gf-v8-pu     1 new -
+/GluGluToHToWWTo2L2Nu_M-160_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/GEN-SIM-RECO    w10-h160ww2l-gf-v8-pu     1 new -
+/GluGluToHToWWTo2L2Nu_M-200_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/GEN-SIM-RECO    w10-h200ww2l-gf-v8-pu     1 new -
+/GluGluToHToWWToLNuTauNu_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM       w10-h130wwlt-gf-v8-pu     1 new -
+/GluGluToHToWWToLNuTauNu_M-160_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM       w10-h160wwlt-gf-v8-pu     1 new -
+/GluGluToHToWWToLNuTauNu_M-200_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM       w10-h200wwlt-gf-v8-pu     1 new -
+/GluGluToHToWWTo2Tau2Nu_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-h130ww2t-gf-v8-pu     1 new -
+/GluGluToHToWWTo2Tau2Nu_M-160_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-h160ww2t-gf-v8-pu     1 new -
+/GluGluToHToWWTo2Tau2Nu_M-200_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-h200ww2t-gf-v8-pu     1 new -
+
+/DiPhotonBorn_Pt10to25_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM   w10-2pibo10_25-v8-pu       1 new -
+/DiPhotonBorn_Pt25to250_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM  w10-2pibo25_250-v8-pu      1 new -
+/DiPhotonBorn_Pt250toinf_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM w10-2pibo250_inf-v8-pu     1 new -
+/DiPhotonBox_Pt10to25_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM    w10-2pibx10_25-v8-pu       1 new -
+/DiPhotonBox_Pt25to250_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM   w10-2pibx25_250-v8-pu      1 new -
+/DiPhotonBox_Pt250toinf_TrackingParticles_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM  w10-2pibx250_inf-v8-pu     1 new -
+
+/PhotonVJets_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                              w10-vg-mg-z2-v8-pu         1 new - 
+/VVJetsTo4L_TuneD6T_7TeV-madgraph-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-vv-mg-v8-pu            1 new - 
+
+/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM          w10-qcdmu15-z2-v8-pu       1 new -
+
+/TT_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                          w10-tt-z2-v8-pu            1 new -
+/TTJets_TuneZ2_7TeV-madgraph-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                     w10-ttj-z2-v8-pu           1 new -
+
+/VVJetsTo4L_TuneD6T_7TeV-madgraph-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-vvj-d6t-4l-v8-pu       1 new -
+/PhotonVJets_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                              w10-pvj-v8-pu              1 new -
+
+/DYToMuMu_M-10To20_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                  w10-zmmm10_20-z2-v8-pu     1 new -
+/DYToEE_M-10To20_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                    w10-zeem10_20-z2-v8-pu     1 new -
+
+/DYToMuMu_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM       w10-zmmm10_20-ct10-v8-pu   1 new -
+/DYToEE_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM         w10-zeem10_20-ct10-v8-pu   1 new -
+
+/DYToEE_M-20_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                        w10-zeem20-z2-v8-pu        1 new -
+/DYToMuMu_M-20_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                      w10-zmmm20-z2-v8-pu        1 new -
+/DYToTauTau_M-20_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM             w10-zttm20-z2-v8-pu        1 new -
+
+/WGtoLNuG_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                    w10-wgl-z2-v8-pu           1 new -
+/WToENu_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                             w10-wm-z2-v8-pu            1 new -
+/WToMuNu_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                            w10-we-z2-v8-pu            1 new -
+/WToTauNu_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                    w10-wt-z2-v8-pu            1 new -
+/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-ww-z2-v8-pu            1 new -
+/WZtoAnything_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-wz-z2-v8-pu            1 new -
+/ZZtoAnything_TuneZ2_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM                w10-zz-z2-v8-pu            1 new -
+
+/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Winter10-START39_V8-v1/AODSIM                                               w10-wjetsl-z2-v8           1 new -
+
+/ZbbToLL_M-40_PtB1-15_TuneZ2_7TeV-madgraph-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                               f10-zbbllm20-z2-v12        1 new -
+/ZccToLL_M-40_PtC1-15_TuneZ2_7TeV-madgraph-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                               f10-zccllm20-z2-v12        1 new - 
+
+/SUSYBBHToTauTau_M-90_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM               w10-bbhtt90-v8-pu          1 new -
+/SUSYBBHToTauTau_M-100_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt100-v8-pu         1 new -
+/SUSYBBHToTauTau_M-120_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt120-v8-pu         1 new -
+/SUSYBBHToTauTau_M-130_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt130-v8-pu         1 new -
+/SUSYBBHToTauTau_M-140_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt140-v8-pu         1 new -
+/SUSYBBHToTauTau_M-160_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt160-v8-pu         1 new -
+/SUSYBBHToTauTau_M-180_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt180-v8-pu         1 new -
+/SUSYBBHToTauTau_M-200_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt200-v8-pu         1 new -
+/SUSYBBHToTauTau_M-250_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt250-v8-pu         1 new -
+/SUSYBBHToTauTau_M-300_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt300-v8-pu         1 new -
+/SUSYBBHToTauTau_M-350_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-bbhtt350-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-90_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM         w10-gghtt90-v8-pu          1 new -
+/SUSYGluGluToHToTauTau_M-100_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt100-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-120_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt120-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-130_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt130-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-140_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt140-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-160_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt160-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-180_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt180-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-200_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt200-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-250_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt250-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-300_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt300-v8-pu         1 new -
+/SUSYGluGluToHToTauTau_M-350_7TeV-pythia6-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM        w10-gghtt350-v8-pu         1 new -
+
+/GluGluHToTauTau_M-90_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM               w10-gghtt90-ph-v8-pu       1 new -
+/GluGluHToTauTau_M-95_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM               w10-gghtt95-ph-v8-pu       1 new -
+/GluGluHToTauTau_M-100_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt100-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-105_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt105-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-110_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt110-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-115_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt115-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-120_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt120-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-130_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt130-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-140_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt140-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-160_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt160-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-180_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt180-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-200_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt200-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-250_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt250-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-300_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt300-ph-v8-pu      1 new -
+/GluGluHToTauTau_M-350_7TeV-powheg-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-gghtt350-ph-v8-pu      1 new -
+
+/WMinusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM             w10-wem-powheg-c10-v8-pu   1 new -
+/WMinusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM            w10-wmm-powheg-c10-v8-pu   1 new -
+/WMinusToTauNu_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM    w10-wtm-powheg-c10-v8-pu   1 new -
+/WPlusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM              w10-wep-powheg-c10-v8-pu   1 new -
+/WPlusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM             w10-wmp-powheg-c10-v8-pu   1 new -
+/WPlusToTauNu_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM     w10-wtp-powheg-c10-v8-pu   1 new -
+/DYToEE_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM             w10-zee-powheg-c10-v8-pu   1 new -
+/DYToMuMu_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM           w10-zmm-powheg-c10-v8-pu   1 new -
+/DYToTauTau_M-20_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM  w10-ztt-powheg-c10-v8-pu   1 new -
+
+## 
+## alternate potentially interesting samples
+## 
+## qcd em-enriched:
+## /QCD_Pt-20to30_EMEnriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /QCD_Pt-30to80_EMEnriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /QCD_Pt-80to170_EMEnriched_TuneZ2_7TeV-pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## 
+## pythia gamma+jets:
+## /G_Pt_80to120_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_800to1400_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_50to80_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_470to800_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_30to50_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_300to470_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_1800_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_170to300_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_15to30_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_15to3000_TuneZ2_Flat_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_1400to1800_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_120to170_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G_Pt_0to15_TuneZ2_7TeV_pythia6/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## 
+## madgraph gamma+jets:
+## /GJets_TuneD6T_HT-40To100_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /GJets_TuneD6T_HT-20To40_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /GJets_TuneD6T_HT-200_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /GJets_TuneD6T_HT-100To200_7TeV-madgraph/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## 
+## alpgen gamma+jets:
+## /G4Jets_Pt-60to120_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G4Jets_Pt-300to5000_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G4Jets_Pt-240to300_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G4Jets_Pt-20to60_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G4Jets_Pt-180to240_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G4Jets_Pt-120to180_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-60to120_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-300to5000_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-240to300_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-20to60_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-180to240_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G3Jets_Pt-120to180_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-60to120_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-300to5000_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-240to300_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-20to60_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-180to240_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G2Jets_Pt-120to180_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-60to120_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-300to5000_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-240to300_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-20to60_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-180to240_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM
+## /G1Jet_Pt-120to180_TuneZ2_7TeV-alpgen/Winter10-E7TeV_ProbDist_2010Data_BX156_START39_V8-v1/AODSIM

@@ -1,0 +1,71 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 020
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#---------------------------------------------------------------------------------------------------
+# some selected 2010 data d22
+/EG/Run2010A-Dec22ReReco_v1/AOD                 r10a-eg-d22     1 new /mnt/hadoop/cmsprod
+/Photon/Run2010B-Dec22ReReco_v1/AOD             r10b-pho-d22    1 new -
+/Electron/Run2010B-Dec22ReReco_v1/AOD           r10b-el-d22     1 new -
+# private 2011 re-reco
+/Photon/StoreResults-rereco414p3_laserV5_DiPhotonSD_Run2011A_v1-c8f23c7e0bbfe6771c7ce08f804ff4db-DiPhoton/USER \
+                                                r11a-dpho-sd-v1 1 new -
+/Photon/StoreResults-rereco414p3_laserV5_DiPhotonSD_Run2011A_v2-c8f23c7e0bbfe6771c7ce08f804ff4db-DiPhoton/USER \
+                                                r11a-dpho-sd-v2 1 new -
+/Photon/StoreResults-rereco414p3_laserV5_DiPhotonSD_Run2011A_v1_ESFixed-af05ab8fcc6e4c27eb4bfa8e09170a5e-DiPhoton/USER \
+                                                r11a-dpho-fx-v1 1 new -
+# official May07 rereco 
+/DoubleElectron/Run2011A-May7ReReco-v1/AOD      r11a-del-m07-v2 1 new -
+/Photon/Run2011A-May7ReReco-v1/AOD              r11a-pho-m07-v2 1 new -
+# official April 22 rereco 
+/Photon/Run2011A-Apr22ReReco-v2/AOD             r11a-pho-a22-v2 1 new -
+/DoubleElectron/Run2011A-Apr22ReReco-v2/AOD     r11a-del-a22-v2 1 new -
+/SingleElectron/Run2011A-Apr22ReReco-v3/AOD     r11a-sel-a22-v3 1 new -
+# 2011 data v1
+/DoubleMu/Run2011A-PromptReco-v1/AOD		r11a-dmu-pr-v1  1 new -
+/DoubleElectron/Run2011A-PromptReco-v1/AOD      r11a-del-pr-v1  1 new -
+/MuEG/Run2011A-PromptReco-v1/AOD		r11a-mueg-pr-v1 1 new -
+/SingleMu/Run2011A-PromptReco-v1/AOD		r11a-smu-pr-v1  1 new -
+/SingleElectron/Run2011A-PromptReco-v1/AOD	r11a-sel-pr-v1  1 new -
+/Photon/Run2011A-PromptReco-v1/AOD		r11a-pho-pr-v1  1 new -
+/Tau/Run2011A-PromptReco-v1/AOD                 r11a-t-pr-v1    1 new -
+/MuHad/Run2011A-PromptReco-v1/AOD		r11a-muh-pr-v1  1 new -
+/ElectronHad/Run2011A-PromptReco-v1/AOD		r11a-elh-pr-v1  1 new -
+/PhotonHad/Run2011A-PromptReco-v1/AOD		r11a-phoh-pr-v1 1 new -
+/TauPlusX/Run2011A-PromptReco-v1/AOD            r11a-tpx-pr-v1  1 new -
+#/MultiJet/Run2011A-PromptReco-v1/AOD		r11a-mjet-pr-v1 1 new -
+/MuOnia/Run2011A-PromptReco-v1/AOD		r11a-muo-pr-v1  1 new -
+#/MinimumBias/Run2011A-PromptReco-v1/AOD        r11a-minb-pr-v1 1 new -
+#/METBTag/Run2011A-PromptReco-v1/AOD		r11a-mbt-pr-v1  1 new -
+/Jet/Run2011A-PromptReco-v1/AOD			r11a-jet-pr-v1  1 new -
+#/HT/Run2011A-PromptReco-v1/AOD			r11a-ht-pr-v1   1 new -
+#/ForwardTriggers/Run2011A-PromptReco-v1/AOD	r11a-ft-pr-v1   1 new -
+# 2011 data v2
+/DoubleMu/Run2011A-PromptReco-v2/AOD            r11a-dmu-pr-v2  1 new -
+/DoubleElectron/Run2011A-PromptReco-v2/AOD	r11a-del-pr-v2  1 new -
+/MuEG/Run2011A-PromptReco-v2/AOD		r11a-mueg-pr-v2 1 new -
+/SingleMu/Run2011A-PromptReco-v2/AOD		r11a-smu-pr-v2  1 new -
+/SingleElectron/Run2011A-PromptReco-v2/AOD	r11a-sel-pr-v2  1 new -
+/Photon/Run2011A-PromptReco-v2/AOD		r11a-pho-pr-v2  1 new -
+/Tau/Run2011A-PromptReco-v2/AOD			r11a-t-pr-v2    1 new -
+/MuHad/Run2011A-PromptReco-v2/AOD		r11a-muh-pr-v2  1 new -
+/ElectronHad/Run2011A-PromptReco-v2/AOD		r11a-elh-pr-v2  1 new -
+/PhotonHad/Run2011A-PromptReco-v2/AOD		r11a-phoh-pr-v2 1 new -
+/TauPlusX/Run2011A-PromptReco-v2/AOD		r11a-tpx-pr-v2  1 new -
+#/MultiJet/Run2011A-PromptReco-v2/AOD		r11a-mjet-pr-v2 1 new -
+/MuOnia/Run2011A-PromptReco-v2/AOD		r11a-muo-pr-v2  1 new -
+/MinimumBias/Run2011A-PromptReco-v2/AOD		r11a-minb-pr-v2 1 new -
+#/METBTag/Run2011A-PromptReco-v2/AOD		r11a-mbt-pr-v2  1 new -
+/Jet/Run2011A-PromptReco-v2/AOD			r11a-jet-pr-v2  1 new -
+#/Interfill/Run2011A-PromptReco-v2/AOD		r11a-if-pr-v2   1 new -
+#/HT/Run2011A-PromptReco-v2/AOD			r11a-ht-pr-v2   1 new -
+#/ForwardTriggers/Run2011A-PromptReco-v2/AOD    r11a-ft-pr-v2   1 new -
+#/AllPhysics2760/Run2011A-PromptReco-v2/AOD     r11a-ap-pr-v2   1 new -

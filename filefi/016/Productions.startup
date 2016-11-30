@@ -1,0 +1,300 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 016
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation
+#---------------------------------------------------------------------------------------------------
+
+# 38x Samples
+#---------------------------------------------------------------------------------------------------
+##/DYToEE_M-10To20_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-zee1020-z2-v12  25000 new -
+##/DYToMuMu_M-10To20_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                          f10-zmm1020-z2-v12  25000 new -
+##/DYToTauTau_M-10To20_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                 f10-ztt1020-z2-v12  25000 new -
+
+##/DYToEE_M-20_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                f10-zee-z2-v12  25000 new -
+##/DYToMuMu_M-20_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                              f10-zmm-z2-v12  25000 new -
+##/DYToTauTau_M-20_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                     f10-ztt-z2-v12  25000 new -
+
+##/DYToEE_M-20_TuneD6T_7TeV-pythia6/Fall10-START38_V9_preproduction-v1/GEN-SIM-RECODEBUG             f10-zee-d6t-v12  25000 new -
+##/DYToMuMu_M-20_TuneD6T_7TeV-pythia6/Fall10-START38_V9_preproduction-v1/GEN-SIM-RECODEBUG           f10-zmm-d6t-v12  25000 new -
+##/DYToTauTau_M-20_TuneD6T_7TeV-pythia6-tauola/Fall10-START38_V9_preproduction-v1/GEN-SIM-RECODEBUG  f10-ztt-d6t-v12  25000 new -
+
+##/DYToEE_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                 f10-zee1020-powheg-c10-v12  25000 new -
+##/DYToEE_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                     f10-zee-powheg-c10-v12  25000 new -
+##/DYToMuMu_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO               f10-zmm1020-powheg-c10-v12  25000 new -
+##/DYToMuMu_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                   f10-zmm-powheg-c10-v12  25000 new -
+##/DYToTauTau_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO      f10-ztt1020-powheg-c10-v12  25000 new -
+##/DYToTauTau_M-20_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO          f10-ztt-powheg-c10-v12  25000 new -
+
+##/WWTo2L2Nu_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                  f10-ww2l-z2-v12  25000 new -
+##/WZTo3LNu_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                   f10-wz3l-z2-v12  25000 new -
+##/WToENu_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                     f10-we-z2-v12  25000 new -
+##/WToMuNu_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                    f10-wm-z2-v12  25000 new -
+##/WToTauNu_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-wt-z2-v12  25000 new -
+##/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                        f10-ww-z2-v12  25000 new -
+##/WZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                        f10-wz-z2-v12  25000 new -
+##/WGtoLNuG_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-wg-z2-v12  25000 new -
+##/ZGtoLLG_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                             f10-zg-z2-v12  25000 new -
+##/ZZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                        f10-zz-z2-v12  25000 new -
+
+##/WMinusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                     f10-wem-powheg-c10-v12  25000 new -
+##/WMinusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                    f10-wmm-powheg-c10-v12  25000 new -
+##/WMinusToTauNu_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO 	     f10-wtm-powheg-c10-v12  25000 new -
+##/WPlusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                      f10-wep-powheg-c10-v12  25000 new -
+##/WPlusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-START38_V12-v1/GEN-SIM-RECO                     f10-wmp-powheg-c10-v12  25000 new -
+##/WPlusToTauNu_CT10_TuneZ2_7TeV-powheg-pythia-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO             f10-wtp-powheg-c10-v12  25000 new -
+
+##/QCD_Pt-20to30_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO       f10-2l-qcdem2030-z2-v12  25000 new -
+##/QCD_Pt-30to80_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO       f10-2l-qcdem3080-z2-v12  25000 new -
+##/QCD_Pt-80to170_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO      f10-2l-qcdem80170-z2-v12  25000 new -
+##/QCD_Pt-20to30_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO            f10-2l-qcdbc2030-z2-v12  25000 new -
+##/QCD_Pt-30to80_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO            f10-2l-qcdbc3080-z2-v12  25000 new -
+##/QCD_Pt-80to170_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO           f10-2l-qcdbc80170-z2-v12  25000 new -
+##/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Fall10-START38_V12_multilepton-v1/GEN-SIM-RECO      f10-2l-qcdmu15-z2-v12  25000 new -
+
+##/QCD_Pt-20to30_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                   f10-qcdem2030-z2-v12   25000 new -
+##/QCD_Pt-30to80_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO    		     f10-qcdem3080-z2-v12   25000 new -
+##/QCD_Pt-80to170_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO   		     f10-qcdem80170-z2-v12  25000 new -
+##/QCD_Pt-20to30_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO	    		     f10-qcdbc2030-z2-v12   25000 new -
+##/QCD_Pt-30to80_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO	    		     f10-qcdbc3080-z2-v12   25000 new -
+##/QCD_Pt-80to170_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO	    		     f10-qcdbc80170-z2-v12  25000 new -
+##/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO   		     f10-qcdmu15-z2-v12	  25000 new -
+
+##/TTTo2L2Nu2B_7TeV-powheg-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                                f10-tt2l-powheg-z2-v12 25000 new -
+##/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/GEN-SIM-RECO                              f10-tt-mg-d6t-v12      25000 new -
+##/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall10-START38_V12-v2/GEN-SIM-RECO                               f10-tt-mg-z2-v12       25000 new -
+##/TToBLNu_TuneZ2_s-channel_7TeV-madgraph/Fall10-START38_V12-v1/GEN-SIM-RECO                           f10-stop-mg-z2-v12     25000 new -
+##/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10-START38_V12-v2/GEN-SIM-RECO                           f10-ttop-mg-z2-v12     25000 new -
+##/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/GEN-SIM-RECO                          f10-wtop-mg-z2-v12     25000 new -
+
+##/VVJetsTo4L_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                          f10-vv-mg-z2-v12       25000 new -
+
+##/QCD_Pt_15to30_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                              f10-qcd15_30-z2-v12    25000 new - 	    
+##/QCD_Pt_30to50_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                              f10-qcd30_50-z2-v12    25000 new -       
+##/QCD_Pt_50to80_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                              f10-qcd50_80-z2-v12    25000 new - 
+##/QCD_Pt_80to120_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                             f10-qcd80_120-z2-v12   25000 new - 
+##/QCD_Pt_120to170_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-qcd120_170-z2-v12  25000 new - 
+##/QCD_Pt_170to300_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-qcd170_300-z2-v12  25000 new - 
+##/QCD_Pt_300to470_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-qcd300_470-z2-v12  25000 new - 
+##/QCD_Pt_470to600_TuneZ2_7TeV_pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO                            f10-qcd470_600-z2-v12  25000 new - 
+
+##/SUSYGluGluToHToTauTau_M-120_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                f10-gghtt120-v12	    25000 new - 
+/SUSYGluGluToHToTauTau_M-160_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                  f10-gghtt160-v12	    25000 new - 
+##/SUSYGluGluToHToTauTau_M-200_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                f10-gghtt200-v12	    25000 new - 
+##/SUSYBBHToTauTau_M-120_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                      f10-bbhtt120-v12	    25000 new -
+##/SUSYBBHToTauTau_M-160_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                      f10-bbhtt160-v12	    25000 new -
+##/SUSYBBHToTauTau_M-200_7TeV-pythia6-tauola/Fall10-START38_V12-v1/GEN-SIM-RECO                      f10-bbhtt200-v12	    25000 new -
+
+#---------------------------------------------------------------------------------------------------
+# 38x pile-up Samples
+#---------------------------------------------------------------------------------------------------
+##/WWTo2L2Nu_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO                     f10-ww2l-z2-v12-pu  25000 new - 
+##/ZZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO           f10-zz-z2-v12-pu    25000 new - 
+##/WZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO           f10-wz-z2-v12-pu    25000 new -		
+
+##/TTTo2L2Nu2B_7TeV-powheg-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO                   f10-tt2l-powheg-z2-v12-pu 25000 new -
+
+##/DYToLL_Filtered_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO                      f10-zll-filter-z2-v12-pu    25000 new - 
+
+##/DYToMuMu_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO  f10-zmm1020-powheg-c10-v12-pu  25000 new -
+##/DYToMuMu_M-10To20_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO 	      f10-zmm1020-z2-v12-pu          25000 new -
+##/DYToMuMu_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO      f10-zmm-powheg-c10-v12-pu      25000 new -
+##/DYToMuMu_M-20_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO		      f10-zmm-z2-v12-pu              25000 new -
+
+##/DYToEE_M-10To20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO    f10-zee1020-powheg-c10-v12-pu  25000 new -
+##/DYToEE_M-10To20_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO               f10-zee1020-z2-v12-pu	     25000 new -
+##/DYToEE_M-20_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO        f10-zee-powheg-c10-v12-pu	     25000 new -
+##/DYToEE_M-20_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO                   f10-zee-z2-v12-pu              25000 new -
+
+##/DYToTauTau_M-10To20_TuneZ2_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO    f10-ztt1020-z2-v12-pu	   25000 new -
+##/DYToTauTau_M-20_TuneZ2_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO        f10-ztt-z2-v12-pu    	   25000 new -
+
+##/WMinusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO        f10-wem-powheg-c10-v12-pu  25000 new -
+##/WMinusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO       f10-wmm-powheg-c10-v12-pu  25000 new -
+##/WPlusToENu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO	      f10-wep-powheg-c10-v12-pu  25000 new -
+##/WPlusToMuNu_CT10_TuneZ2_7TeV-powheg-pythia/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO        f10-wmp-powheg-c10-v12-pu  25000 new -
+/WToENu_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO			      f10-we-z2-v12-pu  	 25000 new - 
+/WToMuNu_TuneZ2_7TeV-pythia6/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO			      f10-wm-z2-v12-pu  	 25000 new - 
+/WToTauNu_TuneZ2_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO		      f10-wt-z2-v12-pu  	 25000 new - 
+
+/SUSYGluGluToHToTauTau_M-120_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO	   f10-gghtt120-v12-pu       25000 new - 
+/SUSYGluGluToHToTauTau_M-160_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO	   f10-gghtt160-v12-pu       25000 new - 
+/SUSYGluGluToHToTauTau_M-200_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO	   f10-gghtt200-v12-pu       25000 new - 
+/SUSYBBHToTauTau_M-120_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO		   f10-bbhtt120-v12-pu       25000 new -
+##/SUSYBBHToTauTau_M-160_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO		   f10-bbhtt160-v12-pu       25000 new -
+/SUSYBBHToTauTau_M-200_7TeV-pythia6-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/GEN-SIM-RECO		   f10-bbhtt200-v12-pu       25000 new -
+
+#---------------------------------------------------------------------------------------------------
+# Beamspot Study Samples
+#---------------------------------------------------------------------------------------------------
+#/MinBias_7TeV-pythia8/Summer10-DESIGN_36_V8-LiMAX-v1/GEN-SIM-RECO            s10-minb-d36v8   25000 new -
+#/MinBias_7TeV-pythia8/Summer10-DESIGN_36_V10_MAG_S09-v1/GEN-SIM-RECO         s10-minb-d36m    25000 new -
+#/MinBias_7TeV-pythia8/Summer10-DESIGN_36_V10_S09-v1/GEN-SIM-RECO             s10-minb-d36     25000 new -
+
+# PileUp Samples
+#---------------------------------------------------------------------------------------------------
+#/Zee/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO       p10-zee-pu-v26   25000 new /mnt/hadoop/cmsprod
+#/Zmumu/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO     p10-zmm-pu-v26   25000 new -
+#/Ztautau/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO   p10-ztt-pu-v26   25000 new -
+
+#/TTbar/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO     p10-ttbar-pu-v26 25000 new -
+
+#/Wenu/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO      p10-we-pu-v26    25000 new /mnt/hadoop/cmsprod
+#/Wmunu/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO     p10-wm-pu-v26    25000 new -
+#/Wtaunu/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO    p10-wt-pu-v26    25000 new -
+
+#/QCD_Pt15/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v2/GEN-SIM-RECO  p10-qcd15-pu-v26 25000 new -
+#/QCD_Pt30/Spring10-START3X_V26_S09_PileUp_E7TeV_AVE_1_BX156-v2/GEN-SIM-RECO  p10-qcd30-pu-v26 25000 new -
+
+# No PileUp Samples
+#---------------------------------------------------------------------------------------------------
+# summer 10 production
+###/Wenu/Summer10-START36_V9_S09-v1/GEN-SIM-RECO                             s10-we-v36             25000 new -
+###/Wmunu/Summer10-START36_V9_S09-v2/GEN-SIM-RECO                            s10-wm-v36             25000 new -
+###/Wtaunu/Summer10-START36_V9_S09-v1/GEN-SIM-RECO                           s10-wt-v36             25000 new -
+
+###/Zee_M20_CTEQ66-powheg/Summer10-START36_V9_S09-v1/GEN-SIM-RECO            s10-zeem20-c66-v36     25000 new -
+###/Zmumu_M20_CTEQ66-powheg/Summer10-START36_V9_S09-v2/GEN-SIM-RECO          s10-zmmm20-c66-v36     25000 new -
+###/Ztautau_M20_CTEQ66-powheg/Summer10-START36_V9_S09-v1/GEN-SIM-RECO        s10-zttm20-c66-v36     25000 new -
+
+###/QCD_Pt15/Summer10-START36_V9_S09-v1/GEN-SIM-RECODEBUG                    s10-qcd15-v36          25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt30/Summer10-MC_36Y_V9_S09-v1/GEN-SIM-RECO                          s10-qcd30-v36          25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt80/Summer10-START36_V9_S09-v1/GEN-SIM-RECODEBUG                    s10-qcd80-v36          25000 new /mnt/hadoop/cmsprod
+
+###/PhotonJet_Pt15/Summer10-START36_V9_S09-v1/GEN-SIM-RECODEBUG              s10-pj15-v36           25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt30/Summer10-START36_V9_S09-v1/GEN-SIM-RECODEBUG              s10-pj30-v36           25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt80/Summer10-START36_V9_S09-v1/GEN-SIM-RECODEBUG              s10-pj80-v36           25000 new /mnt/hadoop/cmsprod
+
+# all samples needed for Higgs -> Gamma Gamma
+###/Hgg_gluonfusion_M90/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO             p10-h90gg-gf-v26       25000 new /mnt/hadoop/cmsprod
+###/Hgg_gluonfusion_M110/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO            p10-h110gg-gf-v26      25000 new /mnt/hadoop/cmsprod
+###/Hgg_gluonfusion_M120/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO            p10-h120gg-gf-v26      25000 new /mnt/hadoop/cmsprod
+###/Hgg_gluonfusion_M150/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO            p10-h150gg-gf-v26      25000 new /mnt/hadoop/cmsprod
+
+###/Hgg_wbf_M90/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                     p10-h90gg-wbf-v26      25000 new /mnt/hadoop/cmsprod
+###/Hgg_wbf_M110/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-h110gg-wbf-v26     25000 new /mnt/hadoop/cmsprod
+###/Hgg_wbf_M120/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-h120gg-wbf-v26     25000 new /mnt/hadoop/cmsprod
+###/Hgg_wbf_M150/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-h150gg-wbf-v26     25000 new /mnt/hadoop/cmsprod
+
+###/Hgg_wh_zh_tth_M90/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO               p10-h90gg-wh-v26       25000 new /mnt/hadoop/cmsprod
+###/Hgg_wh_zh_tth_M110/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-h110gg-wh-v26      25000 new /mnt/hadoop/cmsprod
+###/Hgg_wh_zh_tth_M120/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-h120gg-wh-v26      25000 new /mnt/hadoop/cmsprod
+###/Hgg_wh_zh_tth_M150/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-h150gg-wh-v26      25000 new /mnt/hadoop/cmsprod
+
+###/PhotonJets_Pt40to100-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-pj40_100-mg-v26    25000 new /mnt/hadoop/cmsprod
+###/PhotonJets_Pt100to200-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO  p10-pj100_200-mg-v26   25000 new /mnt/hadoop/cmsprod
+###/PhotonJets_Pt200toInf-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO  p10-pj200_inf-mg-v26   25000 new /mnt/hadoop/cmsprod
+
+###/QCD_Pt100to250-madgraph/Spring10-START3X_V26_S09-v2/GEN-SIM-RECO         p10-qcd100_250-mg-v26  25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt250to500-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO         p10-qcd250_500-mg-v26  25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt500to1000-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO        p10-qcd500_1000-mg-v26 25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt1000toInf-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO        p10-qcd1000_inf-mg-v26 25000 new /mnt/hadoop/cmsprod
+
+###/Zgamma_2l_enriched/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-zg-2le-v26         25000 new /mnt/hadoop/cmsprod
+###/Zgamma/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                          p10-zg-v26             25000 new /mnt/hadoop/cmsprod
+###/Wgamma/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                          p10-wg-v26             25000 new /mnt/hadoop/cmsprod
+###/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                  p10-wjets-mg-v26       25000 new /mnt/hadoop/cmsprod
+
+###/DiPhotonBorn_Pt10to25/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-2pibo10_25-v26     25000 new /mnt/hadoop/cmsprod
+###/DiPhotonBorn_Pt25to250/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-2pibo25_250-v26    25000 new /mnt/hadoop/cmsprod
+###/DiPhotonBorn_Pt250toInf/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO         p10-2pibo10_inf-v26    25000 new /mnt/hadoop/cmsprod
+###/DiPhotonBox_Pt10to25/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO            p10-2pibx10_25-v26     25000 new /mnt/hadoop/cmsprod
+###/DiPhotonBox_Pt25to250/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-2pibx25_250-v26    25000 new /mnt/hadoop/cmsprod
+###/DiPhotonBox_Pt250toInf/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-2pibx10_inf-v26    25000 new /mnt/hadoop/cmsprod
+
+###/H140_2W_2lnu_gluonfusion_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-h140ww2l-gf-v26    25000 sub /mnt/hadoop/cmsprod
+###/H150_2W_2lnu_gluonfusion_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-h150ww2l-gf-v26    25000 sub /mnt/hadoop/cmsprod
+###/H160_2W_2lnu_gluonfusion_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-h160ww2l-gf-v26    25000 sub /mnt/hadoop/cmsprod
+###/H170_2W_2lnu_gluonfusion_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-h170ww2l-gf-v26    25000 sub /mnt/hadoop/cmsprod
+###/H200_2W_2lnu_gluonfusion_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO   p10-h200ww2l-gf-v26    25000 sub /mnt/hadoop/cmsprod
+
+###/H130_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h130ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+###/H140_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h140ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+###/H150_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h150ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+###/H160_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h160ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+###/H170_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h170ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+###/H200_2W_2lnu_wbf_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO           p10-h200ww2l-wbf-v26   25000 new /mnt/hadoop/cmsprod
+
+###/Zee_M20_CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO               p10-zeem20-c66-v26     25000 new /mnt/hadoop/cmsprod
+###/Zmumu_M20_CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO             p10-zmmm20-c66-v26     25000 new -
+###/Ztautau_M20_CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO           p10-zttm20-c66-v26     25000 new -
+###/WminusToENu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO           p10-weminus-c66-v26    25000 new /mnt/hadoop/cmsprod
+###/WplusToENu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO            p10-weplus-c66-v26     25000 new /mnt/hadoop/cmsprod
+###/WminusToMuNu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO          p10-wmminus-c66-v26    25000 new -
+###/WplusToMuNu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO           p10-wmplus-c66-v26     25000 new -
+###/WminusToTauNu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO         p10-wtminus-c66-v26    25000 new -
+###/WplusToTauNu-CTEQ66-powheg/Spring10-START3X_V26-v2/GEN-SIM-RECO          p10-wtplus-c66-v26     25000 new -
+
+###/JPsiToMuMu_2MuPEtaFilter_7TeV-pythia6-evtgen/Spring10-START3X_V26-v1/GEN-SIM-RECO  p10-jpsimm-2mpef-v26   25000 new - 
+###/W1Jets_Pt0to100-alpgen/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-w1jets-ag-v26      25000 new -
+###/W2Jets_Pt0to100-alpgen/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-w2jets-ag-v26      25000 new -
+###/W3Jets_Pt0to100-alpgen/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-w3jets-ag-v26      25000 new -
+###/W4Jets_Pt0to100-alpgen/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-w4jets-ag-v26      25000 new -
+###/WJets-sherpa/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-wjets-sp-v26       25000 new -
+####/WJets-madgraph/Spring10-START3X_V26_S09_E7TeV_L69E30_BX156-v1/GEN-SIM-RECO
+
+###/TTbar_2l/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                        p10-ttbar2l-v26        25000 new -
+###/WW/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                              p10-ww-v26             25000 new -
+###/WW_2l_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                      p10-ww2l-v26           25000 new -
+###/WZ_3l_7TeV/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                      p10-wz3l-v26           25000 new -
+###/ZZ/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                              p10-zz-v26             25000 new -
+
+###/QCD_EMDoubleEnriched_Pt6to20/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO    p10-qcdemde6_20-v26    25000 new -
+###/QCD_EMDoubleEnriched_Pt20/Spring10-START3X_V26_S09-v2/GEN-SIM-RECO       p10-qcdemde20-v26      25000 new -
+###/InclusiveMu15/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                   p10-incmu15-v26        25000 new -
+###/bbAtautau_M90/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                   p10-bbatt90-v26        25000 new -
+###/bbAtautau_M120/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                  p10-bbatt120-v26       25000 new -
+###/bbAtautau_M130/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                  p10-bbatt130-v26       25000 new -
+###/bbAtautau_M200/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                  p10-bbatt200-v26       25000 new -
+
+# Quarkonia specific samples
+#---------------------------------------------------------------------------------------------------
+###/Upsilon1SToMuMu_2MuEtaFilter_7TeV-pythia6-evtgen/Spring10-START3X_V26-v1/GEN-SIM-RECO  p10-u1s-2mf-v26      25000 new -
+###/Upsilon2SToMuMu_2MuEtaFilter_7TeV-pythia6-evtgen/Spring10-START3X_V26-v1/GEN-SIM-RECO  p10-u2s-2mf-v26      25000 new -
+###/Upsilon3SToMuMu_2MuEtaFilter_7TeV-pythia6/Spring10-START3X_V26-v1/GEN-SIM-RECO         p10-u3s-2mf-v26      25000 new -
+
+###/QCD_2MuPEtaFilter_7TeV-pythia6/Spring10-START3X_V26-v1/GEN-SIM-RECO  p10-qcd-2mf-v26      25000 new -
+
+###/DYee_M10to20/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                p10-dyee10_20-rr357  25000 new -
+
+###/TTbar/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                       p10-ttbar-v26        25000 new -
+###/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-ttbarjets-v26    25000 new -
+
+###/ZJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-zjets-v26        25000 new -
+
+###/WZ/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                          p10-wz-v26           25000 new -
+###/VVJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO             p10-vvjets-v26       25000 new -
+
+###/Wenu/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                        p10-we-v26           25000 new /mnt/hadoop/cmsprod
+###/Wmunu/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                       p10-wm-v26           25000 new -
+###/Wtaunu/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                      p10-wt-v26           25000 new -
+
+###/Zee/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                         p10-zee-v26          25000 new /mnt/hadoop/cmsprod
+###/Zmumu/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                       p10-zmm-v26          25000 new -
+###/Ztautau/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                     p10-ztt-v26          25000 new -
+
+###/QCD_Pt30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-qcd30-v26        25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                    p10-qcd80-v26        25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                   p10-qcd170-v26       25000 new /mnt/hadoop/cmsprod
+###/QCD_Pt300/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO                   p10-qcd300-v26       25000 new /mnt/hadoop/cmsprod
+
+###/PhotonJet_Pt15/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-pj15-v26         25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-pj30-v26         25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO              p10-pj80-v26         25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO             p10-pj170-v26        25000 new /mnt/hadoop/cmsprod
+###/PhotonJet_Pt300/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO             p10-pj300-v26        25000 new /mnt/hadoop/cmsprod
+
+###/QCD_EMEnriched_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO     p10-qcdem20_30-v26   25000 new -
+###/QCD_EMEnriched_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO     p10-qcdem30_80-v26   25000 new -
+###/QCD_EMEnriched_Pt80to170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO    p10-qcdem80_170-v26  25000 new -
+
+###/QCD_BCtoE_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-qcdbce20_30-v26  25000 new /mnt/hadoop/cmsprod
+###/QCD_BCtoE_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO          p10-qcdbce30_80-v26  25000 new /mnt/hadoop/cmsprod
+###/QCD_BCtoE_Pt80to170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO         p10-qcdbce80_170-v26 25000 new /mnt/hadoop/cmsprod

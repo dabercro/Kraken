@@ -1,0 +1,88 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 021
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#---------------------------------------------------------------------------------------------------
+# 2011 A - prompt v4
+/DoubleMu/Run2011A-PromptReco-v4/AOD            r11a-dmu-pr-v4   1 new - 
+/DoubleElectron/Run2011A-PromptReco-v4/AOD      r11a-del-pr-v4   1 new - 
+/MuEG/Run2011A-PromptReco-v4/AOD		r11a-mueg-pr-v4  1 new - 
+/SingleMu/Run2011A-PromptReco-v4/AOD		r11a-smu-pr-v4   1 new - 
+/SingleElectron/Run2011A-PromptReco-v4/AOD	r11a-sel-pr-v4   1 new - 
+/Photon/Run2011A-PromptReco-v4/AOD		r11a-pho-pr-v4   1 new - 
+/Tau/Run2011A-PromptReco-v4/AOD			r11a-t-pr-v4     1 new - 
+/TauPlusX/Run2011A-PromptReco-v4/AOD		r11a-tpx-pr-v4   1 new - 
+#/MuOnia/Run2011A-PromptReco-v4/AOD		r11a-muo-pr-v4   1 new - 
+#/MuHad/Run2011A-PromptReco-v4/AOD		 r11a-muh-pr-v4   1 new -
+#/ElectronHad/Run2011A-PromptReco-v4/AOD	 r11a-elh-pr-v4   1 new -
+/PhotonHad/Run2011A-PromptReco-v4/AOD		r11a-phoh-pr-v4  1 new - 
+#/MultiJet/Run2011A-PromptReco-v4/AOD		 r11a-mbt-pr-v4   1 new -
+#/MET/Run2011A-PromptReco-v4/AOD											 
+#/BTag/Run2011A-PromptReco-v4/AOD		 r11a-mjet-pr-v4  1 new -
+#/Jet/Run2011A-PromptReco-v4/AOD		 r11a-jet-pr-v4   1 new -
+#/Interfill/Run2011A-PromptReco-v4/AOD		 r11a-if-pr-v4    1 new -
+#/HT/Run2011A-PromptReco-v4/AOD			 r11a-ht-pr-v4    1 new -
+#/ForwardTriggers/Run2011A-PromptReco-v4/AOD	 r11a-ft-pr-v4    1 new -
+#/MinimumBias/Run2011A-PromptReco-v4/AOD	 r11a-co-pr-v4    1 new -
+
+# 2011 A - May 10
+/DoubleMu/Run2011A-May10ReReco-v1/AOD           r11a-dmu-m10-v1  1 new -
+/DoubleElectron/Run2011A-May10ReReco-v1/AOD     r11a-del-m10-v1  1 new -
+/MuEG/Run2011A-May10ReReco-v1/AOD               r11a-mueg-m10-v1 1 new -
+/SingleMu/Run2011A-May10ReReco-v1/AOD           r11a-smu-m10-v1  1 new -
+/SingleElectron/Run2011A-May10ReReco-v1/AOD     r11a-sel-m10-v1  1 new -
+/Photon/Run2011A-May10ReReco-v1/AOD             r11a-pho-m10-v1  1 new -
+/Tau/Run2011A-May10ReReco-v1/AOD                r11a-t-m10-v1    1 new -
+/TauPlusX/Run2011A-May10ReReco-v1/AOD           r11a-tpx-m10-v1  1 new -
+#/MuOnia/Run2011A-May10ReReco-v1/AOD             r11a-muo-m10-v1  1 new -
+#/MuHad/Run2011A-May10ReReco-v1/AOD              r11a-muh-m10-v1  1 new -
+#/ElectronHad/Run2011A-May10ReReco-v1/AOD        r11a-elh-m10-v1  1 new -
+/PhotonHad/Run2011A-May10ReReco-v1/AOD          r11a-phoh-m10-v1 1 new -
+#/METBTag/Run2011A-May10ReReco-v1/AOD            r11a-mbt-m10-v1  1 new -
+#
+#/MultiJet/Run2011A-May10ReReco-v1/AOD           r11a-mjet-m10-v1 1 new -
+#/Jet/Run2011A-May10ReReco-v1/AOD                r11a-jet-m10-v1  1 new -
+#/Interfill/Run2011A-May10ReReco-v2/AOD          r11a-if-m10-v1   1 new -
+#/HT/Run2011A-May10ReReco-v1/AOD                 r11a-ht-m10-v1   1 new -
+#/ForwardTriggers/Run2011A-May10ReReco-v2/AOD    r11a-ft-m10-v1   1 new -
+#/Commissioning/Run2011A-May10ReReco-v2/AOD      r11a-co-m10-v1   1 new -
+
+# 2010 B - April 21
+#/Mu/Run2010B-Apr21ReReco-v1/AOD                  r10b-mu-a21-v1   1 new -
+#/Electron/Run2010B-Apr21ReReco-v1/AOD            r10b-el-a21-v1   1 new -
+#/Photon/Run2010B-Apr21ReReco-v1/AOD              r10b-pho-a21-v1  1 new -
+#/MuOnia/Run2010B-Apr21ReReco-v1/AOD              r10b-muo-a21-v1  1 new -
+#/MuMonitor/Run2010B-Apr21ReReco-v1/AOD
+#/EGMonitor/Run2010A-Apr21ReReco-v1/AOD
+#/MultiJet/Run2010B-Apr21ReReco-v1/AOD
+#/ZeroBias/Run2010B-Apr21ReReco-v1/AOD
+#/BTau/Run2010B-Apr21ReReco-v1/AOD
+#/Commissioning/Run2010B-Apr21ReReco-v1/AOD
+#/ForwardTriggers/Run2010B-Apr21ReReco-v1/AOD
+#/Jet/Run2010B-Apr21ReReco-v1/AOD
+#/JetMETTauMonitor/Run2010B-Apr21ReReco-v1/AOD
+#/METFwd/Run2010B-Apr21ReReco-v1/AOD
+#/MinimumBias/Run2010B-Apr21ReReco-v1/AOD
+
+# 2010 A - April 21
+#/Mu/Run2010A-Apr21ReReco-v1/AOD                  r10a-mu-a21-v1   1 new -
+#/EG/Run2010A-Apr21ReReco-v1/AOD	          r10a-eg-a21-v1   1 new -
+#/MuOnia/Run2010A-Apr21ReReco-v1/AOD              r10a-muo-a21-v1  1 new -
+#/MuMonitor/Run2010A-Apr21ReReco-v1/AOD
+#/EGMonitor/Run2010A-Apr21ReReco-v1/AOD
+#/BTau/Run2010A-Apr21ReReco-v1/AOD
+#/Commissioning/Run2010A-Apr21ReReco-v1/AOD
+#/ForwardTriggers/Run2010A-Apr21ReReco-v1/AOD
+#/JetMET/Run2010A-Apr21ReReco-v1/AOD
+#/JetMETTau/Run2010A-Apr21ReReco-v1/AOD
+#/JetMETTauMonitor/Run2010A-Apr21ReReco-v1/AOD
+#/MinimumBias/Run2010A-Apr21ReReco-v1/AOD
+#/ZeroBias/Run2010A-Apr21ReReco-v1/AOD

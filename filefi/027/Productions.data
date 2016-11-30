@@ -1,0 +1,25 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 027
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#
+# example for no DBS sample:
+#  /Photon/Run2011B-30Nov2011-v1/AOD                 r11b-pho-n30-v1  1 new - none cern.ch
+#---------------------------------------------------------------------------------------------------
+# pr-reco run2012A
+/DoubleMu/Run2012A-PromptReco-v1/AOD               r12a-dmu-pr-v1  1 new -
+/SingleMu/Run2012A-PromptReco-v1/AOD               r12a-smu-pr-v1  1 new -
+/DoubleElectron/Run2012A-PromptReco-v1/AOD         r12a-del-pr-v1  1 new -
+/SingleElectron/Run2012A-PromptReco-v1/AOD         r12a-sel-pr-v1  1 new -
+/MuEG/Run2012A-PromptReco-v1/AOD                   r12a-mueg-pr-v1 1 new -
+/Photon/Run2012A-PromptReco-v1/AOD                 r12a-pho-pr-v1  1 new -
+/TauPlusX/Run2012A-PromptReco-v1/AOD               r12a-tpx-pr-v1  1 new -
+/Tau/Run2012A-PromptReco-v1/AOD                    r12a-tau-pr-v1  1 new -

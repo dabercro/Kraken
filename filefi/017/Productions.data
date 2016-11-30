@@ -1,0 +1,39 @@
+#---------------------------------------------------------------------------------------------------
+# Configuration for the productions with this configuration
+#
+# XX-MITCFG-XX     = filefi
+# XX-MITVERSION-XX = 017
+#
+# crontab          = 1
+#---------------------------------------------------------------------------------------------------
+# Production Parameters
+# Ex:
+# CDF_Dataset_name \
+#  MIT_Dataset_name  nEvtsPreJob  ProductionStatus  StorageLocation  LocalLocation [ DbsInstance ]
+#---------------------------------------------------------------------------------------------------
+# December 22 re-reco
+/EG/Run2010A-Dec22ReReco_v1/AOD                                    r10a-eg-d22      1 new -
+/Electron/Run2010B-Dec22ReReco_v1/AOD                              r10b-el-d22      1 new -
+/Photon/Run2010B-Dec22ReReco_v1/AOD                                r10b-pho-d22     1 new -
+
+/Mu/Run2010A-Dec22ReReco_v1/AOD                                    r10a-mu-d22      1 new -
+/Mu/Run2010B-Dec22ReReco_v1/AOD                                    r10b-mu-d22      1 new -
+
+/MuOnia/Run2010A-Dec22ReReco_v1/AOD                                r10a-muo-d22     1 new -
+/MuOnia/Run2010B-Dec22ReReco_v1/AOD                                r10b-muo-d22     1 new -
+
+## # December 04 re-reco
+## /EG/Run2010A-Dec4ReReco_v1/AOD                                     r10a-eg-d04      1 new -
+## /Mu/Run2010A-Dec4ReReco_v1/AOD                                     r10a-mu-d04      1 new -
+## /MuOnia/Run2010A-Dec4ReReco_v1/AOD                                 r10a-muo-d04     1 new -
+## 
+## /EGMonitor/Run2010A-Dec4ReReco_v1/AOD                              r10a-egmo-d04    1 new -
+## /JetMET/Run2010A-Dec4ReReco_v1/AOD                                 r10a-jet-d04     1 new -
+## ##/JetMETTau/Run2010A-Dec4ReReco_v1/AOD                              r10a-jmt-d04     1 new -
+## 
+## /Electron/Run2010B-Dec4ReReco_v1/AOD                               r10b-el-d04      1 new -
+## /Mu/Run2010B-Dec4ReReco_v1/AOD                                     r10b-mu-d04      1 new -
+## /Photon/Run2010B-Dec4ReReco_v1/AOD                                 r10b-pho-d04     1 new -
+## /MuOnia/Run2010B-Dec4ReReco_v1/AOD                                 r10b-muo-d04      1 new -
+## 
+## ##/EGMonitor/Run2010B-Dec4ReReco_v1/AOD                              r10b-egmo-d04    1 new -
