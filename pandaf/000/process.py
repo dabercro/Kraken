@@ -38,7 +38,7 @@ process.source = cms.Source(
 # ---- define the output file -------------------------------------------
 process.TFileService = cms.Service("TFileService",
                                    closeFileFast = cms.untracked.bool(True),
-                                   fileName = cms.string("bambu-output-file-tmp_000.root"),
+                                   fileName = cms.string("kraken-output-file-tmp_000.root"),
         )
 
 ##----------------GLOBAL TAG ---------------------------

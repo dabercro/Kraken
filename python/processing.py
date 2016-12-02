@@ -23,7 +23,7 @@ class Request:
     #-----------------------------------------------------------------------------------------------
     def __init__(self,scheduler=None,sample=None,config='filefi',version='046',py='data'):
         
-        self.base = "/cms/store/user/paus"
+        self.base = os.getenv('KRAKEN_SE_BASE')
 
         self.scheduler = scheduler
         self.sample = sample
@@ -69,8 +69,7 @@ class Request:
         # initialize from scratch
         self.sample.resetQueuedLfns()
 
-        path = self.base + '/' + self.config + '/' + self.version + '/' \
-            + self.sample.dataset
+        path = self.base + '/' + self.config + '/' + self.version + '/' + self.sample.dataset
         pattern = "%s %s %s %s"%(self.config,self.version,self.py,self.sample.dataset)
         cmd = 'condor_q ' + self.scheduler.user \
             + ' -constraint JobStatus!=5 -format \'%s\n\' Args 2> /dev/null|grep \'' + pattern + '\''
@@ -288,7 +287,7 @@ class Sample:
     #-----------------------------------------------------------------------------------------------
     def makeLfnFile(self):
 
-        lfnFile  = './lfns/' + self.dataset + '.lfns'
+        lfnFile  = os.getenv('KRAKEN_WORK') + '/lfns/' + self.dataset + '.lfns'
     
         # give notice that file already exists
         if os.path.exists(lfnFile):
@@ -321,7 +320,7 @@ class Sample:
     #-----------------------------------------------------------------------------------------------
     def makeSiteFile(self):
 
-        siteFile  = './sites/' + self.dataset + '.sites'
+        siteFile  = os.getenv('KRAKEN_WORK') + '/sites/' + self.dataset + '.sites'
 
         if os.path.exists(siteFile):
             print " INFO -- Site file found: %s. Someone already worked on this dataset." % siteFile
@@ -564,8 +563,8 @@ class Task:
             + self.request.version + '/' + self.sample.dataset
         self.outputData = self.scheduler.base + '/cms/data/' + self.request.config + '/' \
             + self.request.version + '/' + self.sample.dataset
-        self.executable = self.logs + '/makeBambu.sh'
-        self.tarBall = self.logs + '/bambu_' + self.cmsswVersion + '.tgz'
+        self.executable = self.logs + '/' + os.getenv('KRAKEN_SCRIPT')
+        self.tarBall = self.logs + '/kraken_' + self.cmsswVersion + '.tgz'
 
         # show what we got
         print ''
@@ -626,7 +625,7 @@ class Task:
             cmd = 'ssh -x ' + self.scheduler.user + '@' + self.scheduler.host + ' ' + cmd
         os.system(cmd)
 
-        # remote directories for bambu output
+        # remote directories for kraken output
         print " INFO - make remote directories "
         os.system("makedir --p " + self.request.base + "/" + self.request.config + '/' \
                       + self.request.version + '/' + self.sample.dataset)
@@ -639,9 +638,9 @@ class Task:
     #-----------------------------------------------------------------------------------------------
     def findCmsswVersion(self):
         myRex = rex.Rex()
-        (rc,out,err) = myRex.executeLocalAction("ls -rt %s/cms/cmssw/%s/"%
-                                                (os.getenv('HOME'),self.request.version))
-        #print " CMD: ls -1rt %s/cms/cmssw/%s/"%(os.getenv('HOME'),self.request.version)
+        (rc,out,err) = myRex.executeLocalAction("ls -rt %s/%s/"%
+                                                (os.getenv('KRAKEN_CMSSW'),self.request.version))
+        #print " CMD: ls -1rt %s/%s/"%(os.getenv('KRAKEN_CMSSW'),self.request.version)
         cmsswVersion = ""
         for line in out.split("/n"):
             if 'CMSSW_' in line:
@@ -655,41 +654,42 @@ class Task:
     #-----------------------------------------------------------------------------------------------
     def makeTarBall(self):
 
-        cmsswBase = "%s/cms/cmssw/%s/CMSSW_%s"%\
-            (os.getenv('HOME'),self.request.version,self.cmsswVersion)
+        cmsswBase = "%s/%s/CMSSW_%s"%\
+            (os.getenv('KRAKEN_CMSSW'),self.request.version,self.cmsswVersion)
 
         # check if the tar ball exists locally
-        if os.path.exists(cmsswBase + "/bambu_" + self.cmsswVersion + ".tgz"):
+        if os.path.exists(cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"):
             print " INFO - tar ball exists: " \
-                + cmsswBase+ "/bambu_" + self.cmsswVersion + ".tgz"
+                + cmsswBase+ "/kraken_" + self.cmsswVersion + ".tgz"
         else:
-            print ' Make bambu tar ball: ' \
-                + cmsswBase+ "/bambu_" + self.cmsswVersion + ".tgz"
+            print ' Make kraken tar ball: ' \
+                + cmsswBase+ "/kraken_" + self.cmsswVersion + ".tgz"
             cmd = "cd " + cmsswBase \
-                + "; tar fch bambu_" + self.cmsswVersion + ".tar lib/ src/"
+                + "; tar fch kraken_" + self.cmsswVersion + ".tar lib/ src/"
             os.system(cmd)
             cmd = "cd " + cmsswBase \
-                + "; tar fr bambu_" + self.cmsswVersion + ".tar python/"
+                + "; tar fr kraken_" + self.cmsswVersion + ".tar python/"
             os.system(cmd)
             cmd = "cd " + cmsswBase \
-                + "; gzip bambu_" + self.cmsswVersion + ".tar; mv  bambu_" \
-                + self.cmsswVersion + ".tar.gz  bambu_"  + self.cmsswVersion + ".tgz"
+                + "; gzip kraken_" + self.cmsswVersion + ".tar; mv  kraken_" \
+                + self.cmsswVersion + ".tar.gz  kraken_"  + self.cmsswVersion + ".tgz"
             os.system(cmd)
 
         # see whether the tar ball needs to be copied locally or to remote scheduler
         if self.scheduler.isLocal():
-            cmd = "cp " + cmsswBase+ "/bambu_" + self.cmsswVersion + ".tgz " \
+            cmd = "cp " + cmsswBase+ "/kraken_" + self.cmsswVersion + ".tgz " \
                 + self.logs
             os.system(cmd)
             # also copy the script over
-            cmd = "cp " + os.getenv('KRAKEN_BASE') + "/bin/makeBambu.sh " + self.logs
+            cmd = "cp " + os.getenv('KRAKEN_BASE') + "/bin/" + os.getenv('KRAKEN_SCRIPT') + " " \
+                + self.logs
             os.system(cmd)
         else:
-            cmd = "scp -q " + cmsswBase + "/bambu_" + self.cmsswVersion + ".tgz " \
+            cmd = "scp -q " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz " \
                 + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
-            cmd = "scp -q " + os.getenv('KRAKEN_BASE') + "/bin/makeBambu.sh "  \
-                + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
+            cmd = "scp -q " + os.getenv('KRAKEN_BASE') + "/bin/" + os.getenv('KRAKEN_SCRIPT') \
+                + " " + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
 
     #-----------------------------------------------------------------------------------------------
