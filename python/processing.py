@@ -157,7 +157,8 @@ class Scheduler:
     #-----------------------------------------------------------------------------------------------
     def findHome(self,host,user):
 
-        cmd = 'ssh -x ' + user + '@' + host + ' pwd'
+        cmd = 'ssh ' + user + '@' + host + ' pwd'
+        #print 'CMD: ' + cmd
         home = ''
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]
@@ -170,7 +171,8 @@ class Scheduler:
     #-----------------------------------------------------------------------------------------------
     def findRemoteUid(self,host,user):
 
-        cmd = 'ssh -x ' + user + '@' + host + ' id -u'
+        cmd = 'ssh ' + user + '@' + host + ' id -u'
+        #print 'CMD: ' + cmd
         ruid = ''
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]

@@ -3,6 +3,7 @@
 # Simple interface to command line DBS to prepare my crabTask input files.
 #---------------------------------------------------------------------------------------------------
 import os,sys,types,string,re,getopt
+import MySQLdb
 
 # adding the certificate
 cert = "--cert ~/.globus/usercert.pem --key ~/.globus/userkey.pem "
@@ -128,6 +129,49 @@ def generateContentFromDas(option):
 
     return content
     
+def generateContent(option):
+    # use officical dbs commands to generate the content
+
+    f = dataset.split("/")
+    process = f[1]
+    setup = f[2]
+    tier = f[3]
+
+    # Open database connection
+    db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
+    # Prepare a cursor object using cursor() method
+    cursor = db.cursor()
+    
+    sql = "select Blocks.BlockName, Lfns.PathName, Lfns.FileName, Lfns.NEvents"\
+        + " from Lfns inner join Blocks on " \
+        + " Lfns.BlockId = Blocks.BlockId inner join Datasets on " \
+        + " Datasets.DatasetId = Blocks.DatasetId where " \
+        + " DatasetProcess = '%s' and DatasetSetup='%s' and DatasetTier='%s'"\
+        %(process,setup,tier)
+    #print " SQL: " + sql
+
+    try:
+        # Execute the SQL command
+        cursor.execute(sql)
+        results = cursor.fetchall()
+    except:
+        print " ERROR (%s): unable to fetch data."%(sql)
+        sys.exit(0)
+
+    iJob = 1
+    content = []
+    content.append(printHeader(option))
+    for row in results:
+        nEvents = int(row[3])
+        bName = dataset+'#'+row[0]
+        fName = row[1]+'/'+row[2]+'.root'
+        if nEvents>0:
+            content.append(printLine(option,nEvents,bName,fName,iJob))
+            iJob += 1
+    content.append(printFooter(option))
+
+    return content
+    
 # --------------------------------------------------------------------------------------------------
 # M A I N
 # --------------------------------------------------------------------------------------------------
@@ -188,8 +232,10 @@ elif private:
     # option two: this is a private dataset
     content = generateContentFromDisk(option)
 elif not db:
+    ## option two: use DBS (official database)
+    #content = generateContentFromDas(option)
     # option two: use DBS (official database)
-    content = generateContentFromDas(option)
+    content = generateContent(option)
 else:
     print ' ERROR -- no option selected'
 
