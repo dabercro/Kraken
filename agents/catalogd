@@ -1,0 +1,100 @@
+#!/bin/bash
+# --------------------------------------------------------------------------------------------------
+# Process to keep cataloging alive and well.
+#
+# v1.0                                                                         C.Paus (Apr 27, 2015)
+# --------------------------------------------------------------------------------------------------
+# initialize environment variables
+source $KRAKEN_AGENTS_BASE/setupAgents.sh
+
+# daemon
+daemon=`basename $0`
+
+# go to work area
+cd $KRAKEN_AGENTS_WORK
+echo ""
+echo " Work area: "`pwd`
+echo ""
+
+# infinite loop
+while [ 1 ]
+do
+
+  # make sure the log directory exists
+  mkdir -p $KRAKEN_AGENTS_LOG/${daemon}
+  if [ -e "$KRAKEN_AGENTS_LOG/${daemon}" ]
+  then
+    #echo " Request review log area exists. Let's start!"
+    sleep 1
+  else
+    echo ""
+    echo " Request review area could not be found ($KRAKEN_AGENTS_LOG). EXIT!"
+    echo ""
+    exit 1
+  fi
+
+  # generate specific log file
+  tag=`date "+%s"`
+  logFile=$KRAKEN_AGENTS_LOG/${daemon}/${daemon}.log
+  rm -f $logFile
+  touch $logFile
+  echo ""                                                                          >> $logFile
+  echo " = = = =  I N I T I A L  M I T _ P R O D   E N V I R O N M E N T  = = = =" >> $logFile
+  echo ""                                                                          >> $logFile
+  env  | grep ^KRAKEN                                                              >> $logFile
+  echo ""                                                                          >> $logFile
+  echo " = = = =  I N I T I A L  C A T A L O G  E N V I R O N M E N T  = = = ="    >> $logFile
+  echo ""                                                                          >> $logFile
+  env  | grep ^KRAKEN_CATALOG                                                      >> $logFile
+  echo ""                                                                          >> $logFile
+  echo "[ PYTHON PATH: $PYTHONPATH ]"                                              >> $logFile
+  echo ""                                                                          >> $logFile
+
+  # ten loops over the process with one logfile (keep it small)
+  for index in `echo 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19`
+  do
+    # period nSeconds
+    let wait=$KRAKEN_CATALOG_CYCLE_SECONDS
+
+    echo " "                                                                       >> $logFile
+    echo " catalog loop $index started -- $tag (cycle wait $wait sec)"             >> $logFile
+    echo " "                                                                       >> $logFile
+    echo "   --> "`date`                                                           >> $logFile
+    echo " "                                                                       >> $logFile
+
+    # find out how many files are still in the list
+    nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
+    echo " Number of files left to catalog: $nFilesLeft"                            >> $logFile
+    if [ "$nFilesLeft" == "0" ]
+    then
+      # the work list is empty, go and make a new list from scratch
+      echo " Remake the list for cataloging."                                       >> $logFile
+      list /cms/store/user/paus/filefi/04?/*/crab_*/*.root| cut -d ' ' -f 2 >  tmp.list
+      list /cms/store/user/paus/pandaf/0??/*/crab_*/*.root| cut -d ' ' -f 2 >> tmp.list
+      mv tmp.list $FIBS_WORK/checkFile.list
+      nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
+      echo " Remade the list for cataloging: $nFilesLeft files"                     >> $logFile
+    fi
+
+    # extracting all RawFiles and making the catalogs
+    generateCatalogs.py filefi/$MIT_VERS ''                                         >> $logFile
+    generateCatalogs.py pandaf/000 ''                                               >> $logFile
+    
+    echo " "                                                                        >> $logFile
+    echo " completed review cycle."                                                 >> $logFile
+    echo " FINISH by updating log files on web."                                    >> $logFile
+
+    # insure that the log information is updated
+    mkdir -p $KRAKEN_AGENTS_WWW 
+    # sync the daemon log file area
+    rsync -Cavz --delete $KRAKEN_AGENTS_LOG/${daemon} $KRAKEN_AGENTS_WWW            >> $logFile 2>&1
+
+    sleep $wait
+  done
+
+  # move log file to a dated version
+  mv $logFile $KRAKEN_AGENTS_LOG/${daemon}/${daemon}-${tag}.log
+
+done
+
+exit 0;

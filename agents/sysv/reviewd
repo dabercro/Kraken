@@ -1,0 +1,82 @@
+#!/bin/bash
+# --------------------------------------------------------------------------------------------------
+# reviewd      Startup script for the review server
+#
+# chkconfig: - 70 15
+# description: Review is a process that will go to our production database and review all production\
+#              requests and submit all remainders needed to complete thje request.
+#
+# processname: reviewd
+# config:      /etc/reviewd.conf
+# pidfile:     /var/run/reviewd.pid
+# --------------------------------------------------------------------------------------------------
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+# Path to the running script, server binary, and short-form for messages.
+#reviewd=/usr/sbin/reviewd
+reviewd=/usr/local/Kraken/agents/reviewd
+prog=reviewd
+pidfile=${PIDFILE-/var/run/reviewd.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/reviewd}
+
+RETVAL=0
+STOP_TIMEOUT=${STOP_TIMEOUT-10}
+
+# Start review daemon (reviewd)
+start() {
+    echo -n $"Starting $prog:"
+    daemon --user=$KRAKEN_USER --pidfile=${pidfile} $reviewd \&
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && touch ${lockfile}
+
+    # this seems like a hack, but I do not know how to do it differently
+    pid=`ps auxw | grep "/bin/bash $reviewd" |tr -s ' '|cut -d' ' -f2`
+    echo $pid > $pidfile
+
+    return $RETVAL
+}
+
+# Stop review daemon (reviewd)
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc -p ${pidfile} -d ${STOP_TIMEOUT} $reviewd
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status -p ${pidfile} $reviewd
+    RETVAL=$?
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  condrestart|try-restart)
+    if status -p ${pidfile} $reviewd >&/dev/null
+    then
+      stop
+      start
+    fi
+    ;;
+  *)
+    echo $"Usage: $prog {start|stop|restart|status|help}"
+    RETVAL=2
+esac
+
+exit $RETVAL

@@ -1,0 +1,82 @@
+#!/bin/bash
+# --------------------------------------------------------------------------------------------------
+# catalogd     Startup script for the catalog server
+#
+# chkconfig: - 70 15
+# description: Catalog is a process that will go to our directory of ongoing productiond and\
+#              catalog the files that have arrived but have not yet been checked.
+#
+# processname: catalogd
+# config:      /etc/catalogd.conf
+# pidfile:     /var/run/catalogd.pid
+# --------------------------------------------------------------------------------------------------
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+# Path to the running script, server binary, and short-form for messages.
+#catalogd=/usr/sbin/catalogd
+catalogd=/usr/local/Kraken/agents/catalogd
+prog=catalogd
+pidfile=${PIDFILE-/var/run/catalogd.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/catalogd}
+
+RETVAL=0
+STOP_TIMEOUT=${STOP_TIMEOUT-10}
+
+# Start catalog daemon (catalogd)
+start() {
+    echo -n $"Starting $prog:"
+    daemon --user=cmsprod --pidfile=${pidfile} $catalogd \&
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && touch ${lockfile}
+
+    # this seems like a hack, but I do not know how to do it differently
+    pid=`ps auxw | grep "/bin/bash $catalogd" |tr -s ' '|cut -d' ' -f2`
+    echo $pid > $pidfile
+
+    return $RETVAL
+}
+
+# Stop catalog daemon (catalogd)
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc -p ${pidfile} -d ${STOP_TIMEOUT} $catalogd
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status -p ${pidfile} $catalogd
+    RETVAL=$?
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  condrestart|try-restart)
+    if status -p ${pidfile} $catalogd >&/dev/null
+    then
+      stop
+      start
+    fi
+    ;;
+  *)
+    echo $"Usage: $prog {start|stop|restart|status|help}"
+    RETVAL=2
+esac
+
+exit $RETVAL
