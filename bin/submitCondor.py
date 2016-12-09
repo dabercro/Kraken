@@ -89,16 +89,6 @@ for opt, arg in opts:
 if dataset == None:
     cmd = "--dataset  required parameter not provided."
     raise RuntimeError, cmd
-#seFile = os.environ['KRAKEN_BASE'] + '/' + config + '/'+ version + '/seTable'
-#if not os.path.exists(seFile):
-#    cmd = "Storage element table not found: %s" % seFile
-#    raise RuntimeError, cmd
-#cmsswFile = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + py + '.py'
-#if not os.path.exists(cmsswFile):
-#    cmd = "Cmssw file not found: %s" % cmsswFile
-#    cmd = " XXXX ERROR no valid configuration found XXXX"
-#    raise RuntimeError, cmd
-
 cmsswPy  = py + '_' + condorId + '.py'
 
 # Read all information about the sample

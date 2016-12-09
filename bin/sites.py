@@ -3,7 +3,7 @@
 # Simple interface to command line DBS to prepare my crabTask input files.
 #---------------------------------------------------------------------------------------------------
 import os,sys,subprocess,getopt
-import json,pprint
+import json
 import rex
 
 # Define string to explain usage of the script
@@ -70,7 +70,6 @@ proxy = getProxy()
 cmd = 'curl -s --cert %s -k -H "Accept: application/json"'%proxy \
     + ' "https://cmsweb.cern.ch/phedex/datasvc/json/prod/'  \
     + 'blockreplicas?dataset=%s"'%(dataset)
-#print ' CMD: ' + cmd
 myRx = rex.Rex()
 (rc,out,err) = myRx.executeLocalAction(cmd)
 
