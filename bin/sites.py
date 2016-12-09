@@ -2,22 +2,9 @@
 #---------------------------------------------------------------------------------------------------
 # Simple interface to command line DBS to prepare my crabTask input files.
 #---------------------------------------------------------------------------------------------------
-import os,sys,types,string,getopt
-
-def cleanupSite(site):
-    # Remove the tape entries and convert the Disk entries to the generic site name
-
-    newSite = site
-    if '_MSS' in site:
-        newSite = ''
-    elif '_Disk' in site:
-        newSite = site.replace('_Disk','') 
-
-    return newSite
-
-# adding the certificate
-#cert = "--cert ~/.globus/usercert.pem --key ~/.globus/userkey.pem "
-cert = ""
+import os,sys,subprocess,getopt
+import json,pprint
+import rex
 
 # Define string to explain usage of the script
 usage =  "Usage: sitesList.py --dataset=<name>\n"
@@ -32,6 +19,13 @@ except getopt.GetoptError, ex:
     print usage
     print str(ex)
     sys.exit(1)
+
+def getProxy():
+    cmd = 'voms-proxy-info -path'
+    for line in subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE).stdout.readlines():
+        proxy = line[:-1]
+    
+    return proxy
 
 # --------------------------------------------------------------------------------------------------
 # Get all parameters for the production
@@ -71,26 +65,32 @@ if len(f) > 1 and f[1] == "mc":
 if private:
     print dataset + '#00000000-0000-0000-0000-000000000000 : ' + 'T2_US_MIT'
     sys.exit()
+    
+proxy = getProxy()
+cmd = 'curl -s --cert %s -k -H "Accept: application/json"'%proxy \
+    + ' "https://cmsweb.cern.ch/phedex/datasvc/json/prod/'  \
+    + 'blockreplicas?dataset=%s"'%(dataset)
+#print ' CMD: ' + cmd
+myRx = rex.Rex()
+(rc,out,err) = myRx.executeLocalAction(cmd)
 
-cmd = 'das_client ' + cert + ' --format=plain --limit=0 --query="block dataset=' + dataset \
-    + ' instance=' + dbs + ' | grep block.name block.replica.site" | grep %s'%(dataset)
+if rc != 0:
+    print ' ERROR ocurred in %s'%(url)
+    sys.exit(1)
 
-sites = {}
-for line in os.popen(cmd).readlines():
-    line = line[:-1]
-    line = line.translate(None, '"[]\',')
-    f    = line.split(' ');
-    block = f[0]
-    siteString = ''
-    for site in f[2:]:
-        site = cleanupSite(site)
-        if site != '':
-            if siteString == '':
-                siteString = site
-            else:
-                siteString = site + "," + siteString
-    sites[block] = siteString
+data = json.loads(out)
 
-# print each block and the sites that hold it in a comma seperate list 
-for block,sites in sites.iteritems():
-    print block + ' : ' + sites
+if "phedex" in data:
+    phedex = data["phedex"]
+    if "block" in phedex:
+        blocks = phedex["block"]
+        for block in blocks:
+            blockName = block["name"]
+            replicas = block["replica"]
+            replicaString = ""
+            for replica in replicas:
+                if replicaString == "":
+                    replicaString += '%s'%(replica["node"])
+                else:
+                    replicaString += ',%s'%(replica["node"])
+            print "%s : %s"%(blockName,replicaString)
