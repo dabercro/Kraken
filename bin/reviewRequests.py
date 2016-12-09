@@ -75,7 +75,7 @@ def findNumberOfFilesDone(mitCfg,version,dataset,debug=0):
 
     return nFilesDone
 
-def testEnvironment(mitCfg,version,cmssw,cmsswCfg):
+def testEnvironment(mitCfg,version,cmssw):
     # Basic checks will be implemented here to remove the clutter from the main
 
     # Does the local environment exist?
@@ -84,22 +84,11 @@ def testEnvironment(mitCfg,version,cmssw,cmsswCfg):
         cmd = "\n Local work directory does not exist: %s\n" % dir
         raise RuntimeError, cmd
  
-    # Read parameters needed
-    crabFile = os.environ['MIT_PROD_DIR'] + '/' + mitCfg + '/' + version + '/' + 'crab.cfg'
-    if not os.path.exists(crabFile):
-        cmd = "Crab file not found: %s" % crabFile
-        raise RuntimeError, cmd
-
     # Look for the standard CMSSW python configuration file (empty file is fine)
-    cmsswFile = os.environ['MIT_PROD_DIR'] + '/' + mitCfg + '/' + version + '/' + cmsswCfg
+    cmsswFile = os.environ['KRAKEN_BASE'] + '/' + mitCfg + '/' + version + '/' + cmssw + '.py'
     if not os.path.exists(cmsswFile):
         cmd = "Cmssw file not found: %s" % cmsswFile
-        cmsswCfg = 'cmssw.py'
-        cmsswFile = os.environ['MIT_PROD_DIR'] + '/' + mitCfg + '/' + version + '/' + cmsswCfg
-        if not os.path.exists(cmsswFile):
-            cmd  = " Cmssw file not found: %s\n" % cmsswFile
-            cmd += " XXXX ERROR no valid configuration found XXXX"
-            raise RuntimeError, cmd
+        raise RuntimeError, cmd
 
 def findPath(mitCfg,version):
     # Find the path to where we store our samples
@@ -112,7 +101,7 @@ def findPath(mitCfg,version):
     elif re.search('cern.ch',domain):
         storageTag = 'T0_CH_CERN'
     # make connection with our storage information
-    seTable = os.environ['MIT_PROD_DIR'] + '/' + mitCfg + '/' + version + '/' + 'seTable'
+    seTable = os.environ['KRAKEN_BASE'] + '/' + mitCfg + '/' + version + '/' + 'seTable'
     if not os.path.exists(seTable):
         cmd = "seTable file not found: %s" % seTable
         raise RuntimeError, cmd
@@ -154,10 +143,9 @@ except getopt.GetoptError, ex:
 # -------------------------------------
 # Set defaults for each option
 mitCfg = 'filefi'
-version = os.environ['MIT_VERS']
-cmssw = ''
+version = '000'
+cmssw = 'data'
 pattern = ''
-cmsswCfg = 'cmssw.cfg'
 displayOnly = False
 exe = False
 useExistingLfns = False
@@ -290,7 +278,7 @@ if displayOnly:
     sys.exit(0)
 
 # Basic tests first
-testEnvironment(mitCfg,version,cmssw,cmsswCfg)
+testEnvironment(mitCfg,version,cmssw)
 if testTier2Disk(0) < 0:
     print '\n ERROR -- Tier-2 disks seem unavailable, please check! EXIT review process.\n'
     sys.exit(0)
