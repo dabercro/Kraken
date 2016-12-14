@@ -12,7 +12,8 @@ cert = "--cert ~/.globus/usercert.pem --key ~/.globus/userkey.pem "
 usage =  "Usage: input.py --dataset=<name>\n"
 usage += "                --option=[ lfn, xml ]\n"
 usage += "                [ --dbs= ]\n"
-usage += "                --help\n"
+usage += "                [ --debug ]\n"
+usage += "                [ --help ]\n"
 
 # --------------------------------------------------------------------------------------------------
 # H E L P E R S 
@@ -38,10 +39,14 @@ def printLine(option,nEvents,block,lfn,iJob):
     return line
 
 
-def generateContentFromCache(option):
+def generateContentFromCache(option,debug):
     # use our local cache to generate the content
 
     cmd = 'cat ' + db
+
+    if debug:
+        print " CMD: " + cmd
+
     iJob = 1
     content = []
     content.append(printHeader(option))
@@ -62,12 +67,15 @@ def generateContentFromCache(option):
 
     return content
 
-def generateContentFromDisk(option):
+def generateContentFromDisk(option,debug):
     # use our Tier-2 disk to generate the content
 
     lfn = '/store/user/paus' + dataset
     dir = '/cms/store/user/paus' + dataset
     cmd = 'list ' + dir
+
+    if debug:
+        print " CMD: " + cmd
 
     content = []
     content.append(printHeader(option))
@@ -99,11 +107,15 @@ def generateContentFromDisk(option):
 
     return content
 
-def generateContentFromDas(option):
+def generateContentFromDas(option,debug):
     # use officical dbs commands to generate the content
 
     cmd = 'das_client --format=plain --limit=0 --query="file dataset=' + \
           dataset + ' instance=' + dbs + ' | grep file.block.name file.name file.nevents" | sort'
+
+    if debug:
+        print " CMD: " + cmd
+
     iJob = 1
     content = []
     content.append(printHeader(option))
@@ -119,7 +131,8 @@ def generateContentFromDas(option):
             g       = lfn.split("/")
             file    = g[-1]
         except:
-            #print " ERROR in line: %s (cmd: %s)"%(line,cmd)
+            if debug:
+                print " ERROR in line: %s (cmd: %s)"%(line,cmd)
             continue
 
         if nEvents != 0:
@@ -129,7 +142,7 @@ def generateContentFromDas(option):
 
     return content
     
-def generateContent(option):
+def generateContent(option,debug):
     # use officical dbs commands to generate the content
 
     f = dataset.split("/")
@@ -148,7 +161,9 @@ def generateContent(option):
         + " Datasets.DatasetId = Blocks.DatasetId where " \
         + " DatasetProcess = '%s' and DatasetSetup='%s' and DatasetTier='%s'"\
         %(process,setup,tier)
-    #print " SQL: " + sql
+
+    if debug:
+        print " SQL: " + sql
 
     try:
         # Execute the SQL command
@@ -176,7 +191,7 @@ def generateContent(option):
 # M A I N
 # --------------------------------------------------------------------------------------------------
 # Define the valid options which can be specified and check out the command line
-valid = ['db=','dbs=','dataset=','option=','help']
+valid = ['db=','dbs=','dataset=','option=','debug','help']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
 except getopt.GetoptError, ex: 
@@ -193,6 +208,7 @@ dbs     = 'prod/global'
 dataset = None
 option  = 'lfn'
 private = False
+debug = False
 
 # Read new values from the command line
 for opt, arg in opts:
@@ -209,6 +225,8 @@ for opt, arg in opts:
             dataset = '/' + dataset.replace('+','/')
     if opt == "--option":
         option  = arg
+    if opt == "--debug":
+        debug = True
 
 # Deal with obvious problems
 if dataset == None:
@@ -227,15 +245,15 @@ content = []
 # generate the content according to the given options
 if db:
     # option one: we are using a privatly produced dataset
-    content = generateContentFromCache(option)
+    content = generateContentFromCache(option,debug)
 elif private:
     # option two: this is a private dataset
-    content = generateContentFromDisk(option)
+    content = generateContentFromDisk(option,debug)
 elif not db:
     ## option two: use DBS (official database)
-    #content = generateContentFromDas(option)
+    #content = generateContentFromDas(option,debug)
     # option two: use DBS (official database)
-    content = generateContent(option)
+    content = generateContent(option,debug)
 else:
     print ' ERROR -- no option selected'
 
