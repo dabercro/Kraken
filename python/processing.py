@@ -701,8 +701,7 @@ class Task:
                 + " " + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
 
-        sys.exit(1)
-
+        return
 
     #-----------------------------------------------------------------------------------------------
     # present the current condor task
