@@ -315,7 +315,7 @@ ls -lhrt
 # define base output location
 REMOTE_SERVER="se01.cmsaf.mit.edu"
 REMOTE_BASE="srm/v2/server?SFN=/mnt/hadoop/cms/store"
-REMOTE_USER_DIR="/user/paus/filefi/$VERSION"
+REMOTE_USER_DIR="/user/paus/$CONFIG/$VERSION"
 
 sample=`echo $GPACK | sed 's/\(.*\)_nev.*/\1/'`
 

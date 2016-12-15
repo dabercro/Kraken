@@ -79,10 +79,11 @@ do
       for reqset in $KRAKEN_REVIEW_CYCLE
       do
  
-        echo " ==list file== Request Set: $reqset"                                  >> $logFile
+        echo " ==list file== Request Set: $reqset"                                >> $logFile
   
         cfg=`echo $reqset | cut -d: -f1`
         vrs=`echo $reqset | cut -d: -f2`
+        echo "list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root"                >> $logFile 
         list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root| cut -d ' ' -f 2 >>  tmp.list
 
       done
