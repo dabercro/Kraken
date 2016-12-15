@@ -67,20 +67,46 @@ do
     echo " Number of files left to catalog: $nFilesLeft"                            >> $logFile
     if [ "$nFilesLeft" == "0" ]
     then
-      # the work list is empty, go and make a new list from scratch
-      echo " Remake the list for cataloging."                                       >> $logFile
-      list /cms/store/user/paus/filefi/04?/*/crab_*/*.root| cut -d ' ' -f 2 >  tmp.list
-      list /cms/store/user/paus/pandaf/0??/*/crab_*/*.root| cut -d ' ' -f 2 >> tmp.list
+
+      # load updated config
+      source $KRAKEN_BASE/agents/cycle.cfg
+  
+      echo " Remake the list for cataloging."                                     >> $logFile
+      rm -f tmp.list
+      touch tmp.list
+
+      # loop over all requested configurations
+      for reqset in $KRAKEN_REVIEW_CYCLE
+      do
+ 
+        echo " ==list file== Request Set: $reqset"                                  >> $logFile
+  
+        cfg=`echo $reqset | cut -d: -f1`
+        vrs=`echo $reqset | cut -d: -f2`
+        list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root| cut -d ' ' -f 2 >>  tmp.list
+
+      done
+ 
+      # list is complete, let's move it safely where it belongs
       fibsLock.py --configFile=$FIBS_BASE/config/checkFile.cfg \
                   --cmd="mv tmp.list $FIBS_WORK/checkFile.list"                     >> $logFile
+
       nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
       echo " Remade the list for cataloging: $nFilesLeft files"                     >> $logFile
     fi
 
-    # extracting all RawFiles and making the catalogs
-    generateCatalogs.py filefi/$MIT_VERS ''                                         >> $logFile
-    generateCatalogs.py pandaf/000 ''                                               >> $logFile
-    
+    # loop over all requested configurations
+    for reqset in $KRAKEN_REVIEW_CYCLE
+    do
+ 
+      echo " ==generate catalogs== Request Set: $reqset"                            >> $logFile
+  
+      cfg=`echo $reqset | cut -d: -f1`
+      vrs=`echo $reqset | cut -d: -f2`
+      generateCatalogs.py $cfg/$vrs ''                                              >> $logFile
+
+    done
+
     echo " "                                                                        >> $logFile
     echo " completed review cycle."                                                 >> $logFile
     echo " FINISH by updating log files on web."                                    >> $logFile
