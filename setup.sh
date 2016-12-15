@@ -1,7 +1,8 @@
-export KRAKEN_BASE=$HOME/Tools/Kraken
-export KRAKEN_WORK=$HOME/cms/jobs
+myRoot=/home/cmsprod
+export KRAKEN_BASE=$myRoot/Tools/Kraken
+export KRAKEN_WORK=$myRoot/cms/jobs
 export KRAKEN_SCRIPT=releaseKraken.sh
-export KRAKEN_CMSSW=$HOME/cms/cmssw
+export KRAKEN_CMSSW=$myRoot/cms/cmssw
 
 export KRAKEN_SE_BASE=/cms/store/user/paus
 

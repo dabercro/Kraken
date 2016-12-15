@@ -336,17 +336,6 @@ def testLocalSetup(dataset,debug=0):
         print '\n ERROR in dataset format. Please check dataset name.\n'
         print usage
         sys.exit(1)
-	
-    # check das_client.py tool
-    cmd = 'which das_client'
-    for line in subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE).stdout.readlines():
-        line    = line[:-1]
-    if line != "":
-        if debug > 0:
-            print ' Using das_client from: ' + line
-    else:
-        print ' Error - das_client in your path, please find it and add it to PATH. EXIT!'
-        sys.exit(1)
 
     return dataset
 
