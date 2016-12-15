@@ -64,6 +64,15 @@ fileInput  = open(input,'r')
 fileOutput = open(htmlFile,'w')
 line = ' '
 
+trunc = ''
+f = input.split("/")
+f.pop()
+version = f.pop()
+config = f.pop()
+
+#if version != "" and config != "":
+#    trunc = config + "/" + version + "/"
+
 # insert header
 fileOutput.write(getHeader())
 
@@ -72,15 +81,13 @@ with open(input,"r") as fileInput:
     for line in fileInput:
         # cleanup CR
         line = line[:-1]
-        ## cleanup duplicate blanks
-        #line = re.sub(' +',' ',line)
 
         # remove commented lines
         if '+' in line:
             f = line.split(' ')
             dataset = f.pop()
             line = ' '.join(f) \
-                 + ' <a href="filefi/' + version + '/' + dataset + '">' + dataset + '</a>'
+                 + ' <a href="' + trunc + dataset + '">' + dataset + '</a>'
         else:
             f = line.split(' ')
             if len(f) > 1:

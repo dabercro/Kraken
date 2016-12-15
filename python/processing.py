@@ -296,9 +296,6 @@ class Sample:
         # remove what we need to to start clean
         cmd = 'rm -f ' +  lfnFile + '-TMP'
         os.system(cmd)
-        if not self.useExistingLfns:
-            cmd = 'rm -f ' + lfnFile
-            os.system(cmd)
         
         # recreate if requested or not existing
         if not self.useExistingLfns or not os.path.exists(lfnFile):
@@ -322,16 +319,25 @@ class Sample:
 
         siteFile  = os.getenv('KRAKEN_WORK') + '/sites/' + self.dataset + '.sites'
 
+        # check whether file exists already
         if os.path.exists(siteFile):
             print " INFO -- Site file found: %s. Someone already worked on this dataset." % siteFile
-            if not self.useExistingSites:
-                cmd = 'rm ' + siteFile
-                os.system(cmd)
+
+        # remove what we need to to start clean
+        cmd = 'rm -f ' +  siteFile + '-TMP'
+        os.system(cmd)
         
         # recreate if requested or not existing
         if not self.useExistingSites or not os.path.exists(siteFile):
-            cmd = 'sites.py --dbs=' + self.dbs + ' --dataset=' + self.dataset + ' > ' + siteFile
-            print ' Sites: ' + cmd + '\n'
+            cmd = 'sites.py --dbs=' + self.dbs + ' --dataset=' + self.dataset + ' > ' \
+                + siteFile + '-TMP'
+            print ' Sites: ' + cmd
+            os.system(cmd)
+
+        # move the new file into the proper location
+        if os.path.exists(siteFile + '-TMP'):
+            cmd = 'mv ' + siteFile + '-TMP ' + siteFile
+            print ' Move: ' + cmd
             os.system(cmd)
     
         return siteFile
@@ -369,12 +375,13 @@ class Sample:
     #-----------------------------------------------------------------------------------------------
     def loadAllLfns(self, lfnFile):
         
+        print ' LFN file: %s\n'%(lfnFile)
+
         # initialize from scratch
         self.allLfns = {}
         self.nEvtTotal = 0
         # use the complete lfn file list
         cmd = 'cat ' + lfnFile
-        print ' LFN file: %s'%(lfnFile)
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]
             # get ride of empty or commented lines
@@ -405,11 +412,12 @@ class Sample:
     #-----------------------------------------------------------------------------------------------
     def loadSites(self, siteFile):
 
+        print ' SITES file: %s\n'%(siteFile)
+
         # initialize from scratch
         self.Sites = []
         # use the complete site file list
         cmd = 'cat ' + siteFile
-        print ' SITES file: %s'%(siteFile)
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]
             # get ride of empty or commented lines

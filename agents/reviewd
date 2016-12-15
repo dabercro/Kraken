@@ -39,7 +39,7 @@ do
   # generate specific log file (to be used once logfile detaches)
   tag=`date "+%s"`
   logFile=$KRAKEN_AGENTS_LOG/${daemon}/${daemon}.log
-  rm -r $logFile
+  rm -f $logFile
   touch $logFile
   echo ""                                                                          >> $logFile
   echo " = = = =  I N I T I A L  M I T _ P R O D   E N V I R O N M E N T  = = = =" >> $logFile

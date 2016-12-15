@@ -321,7 +321,7 @@ sample=`echo $GPACK | sed 's/\(.*\)_nev.*/\1/'`
 
 # this is somewhat overkill but works very reliably, I suppose
 #setupCmssw 7_6_3 # should work with new releases... right?
-tar fzx $MIT_PROD_DIR/tgz/copy.tgz
+tar fzx $CMSSW_BASE/tgz/copy.tgz
 pwd=`pwd`
 for file in `echo ${GPACK}*`
 do
