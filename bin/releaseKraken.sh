@@ -38,7 +38,7 @@ function configureSite {
   echo "---- Configure Site ----"
   echo " Link       = $link"
   echo " CMSSW_BASE = $CMSSW_BASE"
-  ls -lh $CMSSW_BASE/src/MitProd/Processing/tgz/siteconf.tgz
+  ls -lh $CMSSW_BASE/tgz/siteconf.tgz
 
   if [ -d "`readlink $link`" ]
   then
@@ -46,7 +46,7 @@ function configureSite {
   else
     echo " WARNING -- Link points nowhere! ($link)"
     echo "  -- unpacking private local config to recover"
-    executeCmd tar fzx $CMSSW_BASE/src/MitProd/Processing/tgz/siteconf.tgz
+    executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
     cd SITECONF
     rm -f local
     ln -s ./T3_US_OSG ./local
@@ -160,7 +160,7 @@ function setupCmssw {
   then
     cd ..
     tar fzx $BASEDIR/kraken_$THIS_CMSSW_VERSION.tgz
-    source ./src/MitProd/Processing/bin/processing.sh
+    #source ./src/MitProd/Processing/bin/processing.sh
   fi
   cd $PWD
   echo "============================================================"

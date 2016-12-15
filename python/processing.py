@@ -676,7 +676,7 @@ class Task:
                 + "; tar fr kraken_" + self.cmsswVersion + ".tar  python/"
             os.system(cmd)
             cmd = "cd " + os.getenv('KRAKEN_BASE') \
-                + "; tar fr " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tar " \
+                + "; tar fr " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tar tgz/ " \
                 + self.request.config + "/" + self.request.version
             os.system(cmd)
             cmd = "cd " + cmsswBase \

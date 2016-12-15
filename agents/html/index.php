@@ -19,8 +19,6 @@ body.ex{margin-top: 0px; margin-bottom:25px; margin-right: 25px; margin-left: 25
 <ul>
   <li> <a href="reviewd">reviewd</a> -- reviews request database and submits missing pieces
   <li> <a href="catalogd">catalogd</a> -- catalogs all files from ongoing productions
-  <li> <a href="cleanupd">cleanupd</a> -- cleans up ongoing production and removes once complete
-  <li> <a href="uploadd">uploadd</a> -- uploads samples into dropbox
 </ul>
 <?php
 $output = shell_exec('ls -t reviewd/status*');
@@ -42,7 +40,7 @@ if (sizeof($f) > 1) {
 <hr>
 <p style="font-family: arial;font-size: 10px;font-weight: bold;color:#900000;">
 <!-- hhmts start -->
-Modified: Thu Oct  8 12:55:46 EDT 2015
+Modified: Thu Dec 15 13:29:53 EST 2016
 <a href="http://web.mit.edu/physics/people/faculty/paus_christoph.html">Christoph Paus</a>
 <!-- hhmts end -->
 </p>

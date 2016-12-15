@@ -8,26 +8,48 @@
 #---------------------------------------------------------------------------------------------------
 OPTION="$1"
 source $KRAKEN_BASE/agents/setupAgents.sh
+source $KRAKEN_BASE/agents/cycle.cfg
 
 # Message at the begining
 echo " "
 echo " $0 -> installing the web pages"
 echo " "
 
-# images
-echo " Copy images from $KRAKEN_BASE"
-cp $KRAKEN_BASE/agents/html/agent*jpg $KRAKEN_AGENTS_WWW
+# loop over all requested configurations
+for reqset in $KRAKEN_REVIEW_CYCLE
+do
 
-# index files to log area
-echo " Generate index files"
-cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG
+  echo " ReqSet: $reqset"
 
-cat $KRAKEN_BASE/agents/html/index.php-Template \
-   | sed 's/XX-NAME-XX/reviewd/g' | sed 's/XX-AKA-XX/Smith/' \
-   > $KRAKEN_AGENTS_LOG/reviewd/index.php
-cat $KRAKEN_BASE/agents/html/index.php-Template \
-   | sed 's/XX-NAME-XX/catalogd/g' | sed 's/XX-AKA-XX/Johnson/' \
-   > $KRAKEN_AGENTS_LOG/catalogd/index.php
+  cfg=`echo $reqset | cut -d: -f1`
+  vrs=`echo $reqset | cut -d: -f2`
+  pys=`echo $reqset | cut -d: -f3`
+
+
+  # images
+  echo " Copy images from $KRAKEN_BASE"
+  cp $KRAKEN_BASE/agents/html/agent*jpg $KRAKEN_AGENTS_WWW/$cfg/$vrs
+  
+  # index files to log area
+  echo " Generate index files"
+  cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG/$cfg/$vrs
+  
+  cat $KRAKEN_BASE/agents/html/index.php-Template \
+     | sed 's/XX-NAME-XX/reviewd/g' | sed 's/XX-AKA-XX/Smith/' \
+     > $KRAKEN_AGENTS_LOG/reviewd/index.php
+  cat $KRAKEN_BASE/agents/html/index.php-Template \
+     | sed 's/XX-NAME-XX/catalogd/g' | sed 's/XX-AKA-XX/Johnson/' \
+     > $KRAKEN_AGENTS_LOG/catalogd/index.php
+
+
+  for py in `echo $pys | tr ',' ' '`
+  do
+    echo " -adding->  %py"
+  done
+
+done
+
+
 
 # update web pages from log area
 echo " Sync files to the web area - no deletions"
