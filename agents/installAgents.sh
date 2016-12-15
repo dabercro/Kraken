@@ -80,6 +80,6 @@ install catalogd
 # install web pages
 #==================
 
-$KRAKEN_AGENTS_BASE/html/install.sh
+su - ${KRAKEN_USER} -c $KRAKEN_AGENTS_BASE/html/install.sh
 
 exit 0

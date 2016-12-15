@@ -627,11 +627,16 @@ class Task:
 
         # remote directories for kraken output
         print " INFO - make remote directories "
-        os.system("makedir --p " + self.request.base + "/" + self.request.config + '/' \
-                      + self.request.version + '/' + self.sample.dataset)
-        os.system("changemod --options=a+rwx " + self.request.base + "/" \
+        cmd = "makedir --p " + self.request.base + "/" + self.request.config + '/' \
+                      + self.request.version + '/' + self.sample.dataset + '/' + self.tag
+        #print " MKDIR: " + cmd
+        os.system(cmd)
+        cmd = "changemod --options=a+rwx " + self.request.base + "/" \
                       + self.request.config + '/' + self.request.version + '/' \
-                      + self.sample.dataset)
+                      + self.sample.dataset + '/' + self.tag
+        #print " CHMOD: " + cmd
+        os.system(cmd)
+
 
     #-----------------------------------------------------------------------------------------------
     # find the present CMSSW version
@@ -660,15 +665,19 @@ class Task:
         # check if the tar ball exists locally
         if os.path.exists(cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"):
             print " INFO - tar ball exists: " \
-                + cmsswBase+ "/kraken_" + self.cmsswVersion + ".tgz"
+                + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"
         else:
             print ' Make kraken tar ball: ' \
-                + cmsswBase+ "/kraken_" + self.cmsswVersion + ".tgz"
+                + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"
             cmd = "cd " + cmsswBase \
                 + "; tar fch kraken_" + self.cmsswVersion + ".tar lib/ src/"
             os.system(cmd)
             cmd = "cd " + cmsswBase \
-                + "; tar fr kraken_" + self.cmsswVersion + ".tar python/"
+                + "; tar fr kraken_" + self.cmsswVersion + ".tar  python/"
+            os.system(cmd)
+            cmd = "cd " + os.getenv('KRAKEN_BASE') \
+                + "; tar fr " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tar " \
+                + self.request.config + "/" + self.request.version
             os.system(cmd)
             cmd = "cd " + cmsswBase \
                 + "; gzip kraken_" + self.cmsswVersion + ".tar; mv  kraken_" \
@@ -691,6 +700,9 @@ class Task:
             cmd = "scp -q " + os.getenv('KRAKEN_BASE') + "/bin/" + os.getenv('KRAKEN_SCRIPT') \
                 + " " + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
+
+        sys.exit(1)
+
 
     #-----------------------------------------------------------------------------------------------
     # present the current condor task
@@ -774,9 +786,9 @@ class TaskCleaner:
         self.task = task
         self.localUser = os.getenv('USER')
 
-        self.logRemoveScript = '' # '#!/bin/bash\n'
-        self.webRemoveScript = '' # '#!/bin/bash\n'
-        self.logSaveScript = '' # '#!/bin/bash\n'
+        self.logRemoveScript = ''  # '#!/bin/bash\n'
+        self.webRemoveScript = ''  # '#!/bin/bash\n'
+        self.logSaveScript = ''    # '#!/bin/bash\n'
 
         self.rex = rex.Rex(self.task.scheduler.host,self.task.scheduler.user)
 

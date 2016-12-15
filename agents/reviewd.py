@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/usr/bin/python
 # --------------------------------------------------------------------------------------------------
 # Process to keep request review alive and well.
 #
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # initialize environment variables
+
 source $KRAKEN_AGENTS_BASE/setupAgents.sh
 
 # daemon

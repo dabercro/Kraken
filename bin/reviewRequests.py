@@ -27,11 +27,11 @@ def testTier2Disk(debug=0):
 
     return nFiles
 
-def productionStatus(mitCfg,version,dataset,debug=0):
+def productionStatus(config,version,dataset,debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
 
     cmd = "cat /home/cmsprod/catalog/t2mit/%s/%s/%s/Files 2> /dev/null | wc -l"\
-        %(mitCfg,version,dataset)
+        %(config,version,dataset)
     if debug > 0:
         print " CMD: %s"%(cmd)
 
@@ -55,14 +55,14 @@ def productionStatus(mitCfg,version,dataset,debug=0):
     
     return(nDone,nTotal)
 
-def findNumberOfFilesDone(mitCfg,version,dataset,debug=0):
+def findNumberOfFilesDone(config,version,dataset,debug=0):
     # Find out how many files have been completed for this dataset so far
 
     if debug > 0:
         print " Find completed files for dataset: %s"%(dataset)
 
     cmd = "list /cms/store/user/paus/%s/%s/%s 2> /dev/null | grep .root | wc -l"\
-        %(mitCfg,version,dataset)
+        %(config,version,dataset)
     if debug > 0:
         print " CMD: %s"%(cmd)
 
@@ -75,22 +75,22 @@ def findNumberOfFilesDone(mitCfg,version,dataset,debug=0):
 
     return nFilesDone
 
-def testEnvironment(mitCfg,version,cmssw):
+def testEnvironment(config,version,cmssw):
     # Basic checks will be implemented here to remove the clutter from the main
 
     # Does the local environment exist?
-    dir = './' + mitCfg + '/' + version
+    dir = './' + config + '/' + version
     if not os.path.exists(dir):
         cmd = "\n Local work directory does not exist: %s\n" % dir
         raise RuntimeError, cmd
  
     # Look for the standard CMSSW python configuration file (empty file is fine)
-    cmsswFile = os.environ['KRAKEN_BASE'] + '/' + mitCfg + '/' + version + '/' + cmssw + '.py'
+    cmsswFile = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + cmssw + '.py'
     if not os.path.exists(cmsswFile):
         cmd = "Cmssw file not found: %s" % cmsswFile
         raise RuntimeError, cmd
 
-def findPath(mitCfg,version):
+def findPath(config,version):
     # Find the path to where we store our samples
 
     # start with T2_US_MIT as default
@@ -101,7 +101,7 @@ def findPath(mitCfg,version):
     elif re.search('cern.ch',domain):
         storageTag = 'T0_CH_CERN'
     # make connection with our storage information
-    seTable = os.environ['KRAKEN_BASE'] + '/' + mitCfg + '/' + version + '/' + 'seTable'
+    seTable = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + 'seTable'
     if not os.path.exists(seTable):
         cmd = "seTable file not found: %s" % seTable
         raise RuntimeError, cmd
@@ -109,7 +109,7 @@ def findPath(mitCfg,version):
     cmd = 'grep ^' + storageTag + ' ' + seTable + ' | cut -d = -f2 | sed \'s# : ##\''
     path = ''
     for line in os.popen(cmd).readlines():
-        path = line[:-1] +  '/' + mitCfg + '/' + version
+        path = line[:-1] +  '/' + config + '/' + version
 
     return path
 
@@ -117,7 +117,7 @@ def findPath(mitCfg,version):
 # M A I N
 #---------------------------------------------------------------------------------------------------
 # Define string to explain usage of the script
-usage  = "\nUsage: findSamples.py --mitCfg=<name>\n"
+usage  = "\nUsage: findSamples.py --config=<name>\n"
 usage += "                      --version=<version> [ default: MIT_VERS ]\n"
 usage += "                      --cmssw=<name>\n"
 usage += "                      --pattern=<name>\n"
@@ -129,7 +129,7 @@ usage += "                      --debug\n"
 usage += "                      --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['mitCfg=','version=','cmssw=','pattern=', \
+valid = ['config=','version=','cmssw=','pattern=', \
          'help','exe','useExistingLfns','useExistingSites','debug', \
          'displayOnly' ]
 try:
@@ -142,7 +142,7 @@ except getopt.GetoptError, ex:
 # Get all parameters for the production
 # -------------------------------------
 # Set defaults for each option
-mitCfg = 'filefi'
+config = 'filefi'
 version = '000'
 cmssw = 'data'
 pattern = ''
@@ -157,8 +157,8 @@ for opt, arg in opts:
     if opt == "--help":
         print usage
         sys.exit(0)
-    if opt == "--mitCfg":
-        mitCfg = arg
+    if opt == "--config":
+        config = arg
     if opt == "--version":
         version = arg
     if opt == "--cmssw":
@@ -192,7 +192,7 @@ sql = 'select ' + \
     'Datasets.DatasetDbsInstance,Datasets.DatasetNFiles,' + \
     'RequestConfig,RequestVersion,RequestPy,RequestId,RequestNFilesDone from Requests ' + \
     'left join Datasets on Requests.DatasetId = Datasets.DatasetId '+ \
-    'where RequestConfig="' + mitCfg + '" and RequestVersion = "' + version + \
+    'where RequestConfig="' + config + '" and RequestVersion = "' + version + \
     '" and RequestPy = "' + cmssw + \
     '" order by Datasets.DatasetProcess, Datasets.DatasetSetup, Datasets.DatasetTier;'
 if debug:
@@ -233,7 +233,7 @@ for row in results:
     if matchObj:
         # Make filtered list
         filteredResults.append(row)
-        (nDone,nAll) = productionStatus(mitCfg,version,datasetName,debug)
+        (nDone,nAll) = productionStatus(config,version,datasetName,debug)
         if first:
             first = False
             print '#'
@@ -278,7 +278,7 @@ if displayOnly:
     sys.exit(0)
 
 # Basic tests first
-testEnvironment(mitCfg,version,cmssw)
+testEnvironment(config,version,cmssw)
 if testTier2Disk(0) < 0:
     print '\n ERROR -- Tier-2 disks seem unavailable, please check! EXIT review process.\n'
     sys.exit(0)
@@ -287,7 +287,7 @@ else:
 
 
 # Where is our storage?
-path = findPath(mitCfg,version)
+path = findPath(config,version)
 
 #==================
 # M A I N  L O O P
@@ -319,7 +319,7 @@ for row in filteredResults:
         continue
 
     # check how many files are done
-    nFilesDone = findNumberOfFilesDone(mitCfg,version,datasetName)
+    nFilesDone = findNumberOfFilesDone(config,version,datasetName)
     print ' Number of files completed: %d (last check: %d) -- Dataset: %s' \
         %(nFilesDone,dbNFilesDone,datasetName)
 
@@ -378,7 +378,7 @@ for row in filteredResults:
 
     # if work not complete submit the remainder
     print '# Submit new dataset: ' + datasetName
-    cmd = ' submitCondor.py --cmssw=' + cmssw + ' --mitCfg=' + mitCfg + ' --version=' \
+    cmd = ' submitCondor.py --cmssw=' + cmssw + ' --config=' + config + ' --version=' \
         + version + ' --dbs=' + dbs
 
     # make sure to use existing cache if requested

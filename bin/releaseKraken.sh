@@ -69,28 +69,33 @@ function downloadFile {
   echo ""
   echo " Make local copy of the root file with LFN: $LFN"
 
-  for server in $serverList
-  do
-    echo " Trying server: $server at "`date`
-
-    echo " Execute:  xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root"
-    xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root
-    rc="$?"
-
-    if [ "$rc" != "0" ]
-    then
-      echo " ERROR -- Copy command failed -- RC: $rc at "`date`
-      rm -f ./$GPACK.root
-    fi
-
-    if [ -e "./$GPACK.root" ]
-    then
-      echo " Looks like copy worked on server: $server at "`date`
-      break
-    else
-      echo " ERROR -- file ./$GPACK.root does not exist or is corrupt (RC: $rc, server: $server at "`date`")"
-    fi
-  done
+  if [ -e "./$GPACK.root" ]
+  then
+    echo " File exists already locally: ./$GPACK.root"
+  else
+    for server in $serverList
+    do
+      echo " Trying server: $server at "`date`
+  
+      echo " Execute:  xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root"
+      xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root
+      rc="$?"
+  
+      if [ "$rc" != "0" ]
+      then
+        echo " ERROR -- Copy command failed -- RC: $rc at "`date`
+        rm -f ./$GPACK.root
+      fi
+  
+      if [ -e "./$GPACK.root" ]
+      then
+        echo " Looks like copy worked on server: $server at "`date`
+        break
+      else
+        echo " ERROR -- file ./$GPACK.root does not exist or is corrupt (RC: $rc, server: $server at "`date`")"
+      fi
+    done
+  fi
 
   if [ -e "./$GPACK.root" ]
   then
@@ -208,6 +213,13 @@ CRAB="$7"
 
 # load all parameters relevant to this task
 echo " Initialize package"
+test=`ls kraken_*tgz 2> /dev/null`
+if [ "$test" == "" ]
+then
+  echo ' ERROR - Kraken tar ball is missing. No point to continue.'
+  exit 1
+fi
+
 cmsswVersion=`echo kraken_*.tgz | sed -e 's@kraken_@@' -e 's@.tgz@@'`
 
 # make sure to contain file mess
@@ -251,7 +263,7 @@ else
 fi
 
 # prepare the python config from the given templates
-cat $MIT_PROD_DIR/$CONFIG/$VERSION/${PY}.py \
+cat $CMSSW_BASE/$CONFIG/$VERSION/${PY}.py \
     | sed -e "s@XX-LFN-XX@$LFN@g" -e "s@XX-GPACK-XX@$GPACK@g" \
     > $WORKDIR/${PY}.py
 
@@ -265,6 +277,7 @@ pwd
 ls -lhrt
 
 echo " Execute cmsRun ${PY}.py" 
+python ${PY}.py
 cmsRun ${PY}.py
 rc=$?
 if [ "$rc" != "0" ] 

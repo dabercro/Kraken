@@ -21,7 +21,10 @@ function killAgent {
   fi
 
   killall $daemon
-  killall $process  
+  if ! [ -z "$process" ]
+  then
+    killall $process
+  fi
   list=`ps auxw |grep $KRAKEN_USER | grep -v grep | grep jobSitter| tr -s ' '| cut -d ' ' -f2`
   if [ "$list" != "" ]
   then
@@ -29,7 +32,10 @@ function killAgent {
   fi
 
   ps auxw |grep $KRAKEN_USER | grep -v grep | grep $daemon  
-  ps auxw |grep $KRAKEN_USER | grep -v grep | grep $process
+  if ! [ -z "$process" ]
+  then
+    ps auxw |grep $KRAKEN_USER | grep -v grep | grep $process
+  fi
 
 }
 #---------------------------------------------------------------------------------------------------
