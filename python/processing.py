@@ -837,7 +837,7 @@ class TaskCleaner:
         vers = self.task.request.version
         dset = self.task.request.sample.dataset
 
-        local = '/local/' + self.localUser + '/MitProd/agents/reviewd'
+        local = os.getenv('KRAKEN_AGENTS_LOG') + '/reviewd'
 
         print ' - remove completed logs'
 
@@ -862,10 +862,8 @@ class TaskCleaner:
             self.webRemoveScript += cmd
 
         print ' -- LogRemoval'
-        #print self.logRemoveScript
         (irc,rc,out,err) = self.rex.executeLongAction(self.logRemoveScript)
         print ' -- WebRemoval'
-        #print self.webRemoveScript
         (rc,out,err) = self.rex.executeLocalLongAction(self.webRemoveScript)
 
         return
