@@ -909,6 +909,18 @@ class TaskCleaner:
 
         print ' - find failed logs'
 
+        # make the directory in any case
+        cmd = 'mkdir -p %s/%s/%s/%s/;'%(local,cfg,vers,dset)
+        print ' Mkdir: ' + cmd
+        (rc,out,err) = self.rex.executeLocalAction(cmd)
+
+        # copy the indexer to make it pretty
+        cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + '/html/index-sample.php ' \
+            + '%s/%s/%s/%s/index.php'%(local,cfg,vers,dset)
+        print ' index: ' + cmd
+        (rc,out,err) = self.rex.executeLocalAction(cmd)
+
+        # construct the script to make the tar ball
         self.logSaveScript += 'cd cms/logs/%s/%s/%s\ntar fzc %s-%s-%s.tgz'\
             %(cfg,vers,dset,cfg,vers,dset)
 
@@ -928,17 +940,6 @@ class TaskCleaner:
         # log saver script
         print self.logSaveScript
         (irc,rc,out,err) = self.rex.executeLongAction(self.logSaveScript)
-
-        # make the directory
-        cmd = 'mkdir -p %s/%s/%s/%s/;'%(local,cfg,vers,dset)
-        print ' Mkdir: ' + cmd
-        (rc,out,err) = self.rex.executeLocalAction(cmd)
-
-        # copy the indexer
-        cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + '/html/index-sample.php ' \
-            + '%s/%s/%s/%s/index.php'%(local,cfg,vers,dset)
-        print ' index: ' + cmd
-        (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         # pull the tar ball over
         cmd = 'scp ' + self.task.scheduler.user + '@' + self.task.scheduler.host \
