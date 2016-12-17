@@ -905,7 +905,7 @@ class TaskCleaner:
         vers = self.task.request.version
         dset = self.task.request.sample.dataset
 
-        local = '/local/' + self.localUser + '/MitProd/agents/reviewd'
+        local = os.getenv('KRAKEN_AGENTS_LOG') + '/reviewd'
 
         print ' - find failed logs'
 
@@ -929,10 +929,18 @@ class TaskCleaner:
         print self.logSaveScript
         (irc,rc,out,err) = self.rex.executeLongAction(self.logSaveScript)
 
+        # make the directory
         cmd = 'mkdir -p %s/%s/%s/%s/;'%(local,cfg,vers,dset)
         print ' Mkdir: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
+        # copy the indexer
+        cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + 'html/index-sample.php ' \
+            + '%s/%s/%s/%s/index.php'%(local,cfg,vers,dset)
+        print ' index: ' + cmd
+        (rc,out,err) = self.rex.executeLocalAction(cmd)
+
+        # pull the tar ball over
         cmd = 'scp ' + self.task.scheduler.user + '@' + self.task.scheduler.host \
             + ':cms/logs/%s/%s/%s/%s-%s-%s.tgz'%(cfg,vers,dset,cfg,vers,dset) \
             + ' %s/%s/%s/%s/'%(local,cfg,vers,dset)
