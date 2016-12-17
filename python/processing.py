@@ -935,7 +935,7 @@ class TaskCleaner:
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         # copy the indexer
-        cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + 'html/index-sample.php ' \
+        cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + '/html/index-sample.php ' \
             + '%s/%s/%s/%s/index.php'%(local,cfg,vers,dset)
         print ' index: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
