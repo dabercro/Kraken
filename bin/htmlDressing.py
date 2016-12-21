@@ -70,9 +70,6 @@ f.pop()
 version = f.pop()
 config = f.pop()
 
-#if version != "" and config != "":
-#    trunc = config + "/" + version + "/"
-
 # insert header
 fileOutput.write(getHeader())
 
