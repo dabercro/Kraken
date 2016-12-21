@@ -39,20 +39,6 @@ except getopt.GetoptError, ex:
     print str(ex)
     sys.exit(1)
 
-# --------------------------------------------------------------------------------------------------
-# Get all parameters for the production
-# --------------------------------------------------------------------------------------------------
-# condor id
-cmd = "date +crab_0_%y%m%d_%H%M%S"
-for line in os.popen(cmd).readlines():  # run command
-    line = line[:-1]
-    condorId = line
-print ""
-print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o"
-print "\n This job will be CondorId: " + condorId + "\n"
-print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o"
-print ""
-
 # Set defaults for each command line parameter/option
 dataset = None
 py = "cmssw"
@@ -89,7 +75,20 @@ for opt, arg in opts:
 if dataset == None:
     cmd = "--dataset  required parameter not provided."
     raise RuntimeError, cmd
-cmsswPy  = py + '_' + condorId + '.py'
+
+# --------------------------------------------------------------------------------------------------
+# Get all parameters for the production
+# --------------------------------------------------------------------------------------------------
+# condor id
+cmd = "date +crab_0_%y%m%d_%H%M%S"
+for line in os.popen(cmd).readlines():  # run command
+    line = line[:-1]
+    condorId = line
+print ""
+print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o"
+print "\n This job will be CondorId: " + condorId + "\n"
+print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o"
+print ""
 
 # Read all information about the sample
 sample = processing.Sample(dataset,dbs,useExistingLfns,useExistingSites)

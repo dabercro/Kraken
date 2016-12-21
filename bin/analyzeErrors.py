@@ -13,7 +13,7 @@
 # will be removed.
 #
 #==================================================================================================
-import os,sys,subprocess
+import os,sys,subprocess,getopt
 
 def addSite(siteTag,nErrsSites):
     # add a new site to the mix
@@ -68,7 +68,7 @@ def findHeldJobStubs(config,version,dataset,debug=0):
     
     cmd = "ls " + os.getenv('KRAKEN_AGENTS_WWW') + "/reviewd/%s/%s/%s/*.err" \
         %(config,version,dataset)
-    if debug > -1:
+    if debug > 0:
         print " CMD: " + cmd
     
     p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -77,13 +77,12 @@ def findHeldJobStubs(config,version,dataset,debug=0):
     
     if debug > 0:
         print "\n\n RC : " + str(rc)
-        print "\n\n OUT: " + out
-        print "\n\n ERR: " + err
+        print "\n\n OUT:\n" + out
+        print "\n\n ERR:\n" + err
     
     out = out.replace('.err','')
-    stubs = out.split("\n") 
-
-    print ' Number of held jobs found: %d'%(len(stubs))
+    stubs = (out[:-1]).split("\n")                 # make sure to ignore the last '\n'
+    print ' Number of failed jobs found: %d'%(len(stubs))
 
     return stubs
 
@@ -109,12 +108,40 @@ def readPatterns(debug=0):
 if not os.getenv('KRAKEN_AGENTS_WWW'):
     print "\n Kraken agent environment is not initialized (KRAKEN_AGENTS_WWW).\n"
     sys.exit(1)
+
+# Define the valid options which can be specified and check out the command line
+valid = ['config=','version=','dataset=','debug=','interactive','help']
+try:
+    opts, args = getopt.getopt(sys.argv[1:], "", valid)
+except getopt.GetoptError, ex:
+    print usage
+    print str(ex)
+    sys.exit(1)
+
+# Set defaults for each command line parameter/option
     
 # general parameters
 debug = 0
-config = sys.argv[1]
-version = sys.argv[2]
-dataset = sys.argv[3]
+interactive = False
+config = 'pandaf'
+version = '001'
+dataset = ''
+
+# Read new values from the command line
+for opt, arg in opts:
+    if opt == "--help":
+        print usage
+        sys.exit(0)
+    if opt == "--config":
+        config = arg
+    if opt == "--version":
+        version = arg
+    if opt == "--dataset":
+        dataset = arg
+    if opt == "--debug":
+        debug = arg
+    if opt == "--interactive":
+        interactive = True
 
 # get the patterns to look for
 (outPatterns, errPatterns) = readPatterns(debug)
@@ -199,9 +226,9 @@ nTotal = 0
 for tag in sorted(errPatterns):
     print '  %-14s: %4d'%(tag,errCounts[tag])
     nTotal += errCounts[tag]
-print ' ---------------------------'
+print ' ---------------------------------'
 print '  %-14s: %4d'%('TOTAL',nTotal)
-print ' ==========================='
+print ' ================================='
 print ''
 print ''
 print ' ------ ERROR SUMMARY SITE -------'
@@ -211,16 +238,20 @@ nTotal = 0
 for tag in sorted(nErrsSites):
     print '  %-25s: %4d'%(tag,nErrsSites[tag])
     nTotal += nErrsSites[tag]
-print ' --------------------------------'
+print ' ---------------------------------'
 print '  %-25s: %4d'%('TOTAL',nTotal)
-print ' ================================'
+print ' ================================='
 print ''
 
-print ' Error Matrix'
+print ' Err Matrix'
 printErrorAtSite(nErrsSitesTypes)
 print ''
 
-answer = raw_input('Wanna watch error files? [N/y] ')
+if sys.stdin.isatty() and interactive:
+    # running interactively
+    answer = raw_input('Wanna watch error files? [N/y] ')
+else:
+    sys.exit(0)
 
 # go through the error files
 for stub in stubs:

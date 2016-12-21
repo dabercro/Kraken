@@ -8,7 +8,7 @@ print '<html>';
 print '<head>';
 print '<title>'. $name .'</title>';
 print '</head>';
-print '<h1 style="font-family: arial;font-size: 20px;font-weight: medium;color:#222222;">Sample: ' . $name . '</h1>';
+print '<h1 style="font-family:arial;font-size:20px;font-weight:medium;color:#222222;">Sample: <a href=README>' . $name . '</a></h1>';
 print '<style>';
 print 'a:link{color:#000000; background-color:transparent; text-decoration:none}';
 print 'a:visited{color:#009000; background-color:transparent; text-decoration:none}';
@@ -20,17 +20,16 @@ print '<body class="ex" bgcolor="#EFEFEF">';
 print '<body style="font-family: arial;font-size: 16px;font-weight: medium;color:#444444;">';
 print '<hr>';
 
-// add the error analysis overview here
-$output = shell_exec('cat README');
-if ($output != '') {
-  print '<pre>';
-  $f = explode("\n",$output);
-  foreach ($f as &$file) {
-    print $file.'<br>';
-  }
-  //print $output;
-  print '</pre><hr>';
-}
+// add the error analysis overview explicitely here
+//$output = shell_exec('cat README');
+//if ($output != '') {
+//  print '<pre>';
+//  $f = explode("\n",$output);
+//  foreach ($f as &$file) {
+//    print $file.'<br>';
+//  }
+//  print '</pre><hr>';
+//}
 
 // list the log files and provide link access
 $output = shell_exec('ls -t *.err');

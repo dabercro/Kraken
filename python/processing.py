@@ -812,8 +812,8 @@ class TaskCleaner:
 
         # B - find all logs from the held jobs, save them and generate failure summary
         self.saveFailedLogs()
-        ## self.analyzeLogs()
-        ## 
+        self.analyzeLogs()
+
         ## # C - remove all held jobs from the queue
         self.removeHeldJobs()
 
@@ -824,8 +824,16 @@ class TaskCleaner:
     #-----------------------------------------------------------------------------------------------
     def analyzeLogs(self):
 
-        print ' - analyze failed logs \n     FAKE FOR NOW \n\n'
+        cfg = self.task.request.config
+        vers = self.task.request.version
+        dset = self.task.request.sample.dataset
 
+        local = os.getenv('KRAKEN_AGENTS_LOG') + '/reviewd/%s/%s/%s/README'%(cfg,vers,dset)
+
+        print ' - analyze failed logs'
+        cmd = "analyzeErrors.py --config=%s --version=%s --dataset=%s >& %s"%(cfg,vers,dset,local)
+        (rc,out,err) = self.rex.executeLocalAction(cmd)
+        
         return
 
     #-----------------------------------------------------------------------------------------------
