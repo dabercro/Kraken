@@ -228,8 +228,10 @@ for row in results:
         (nDone,nAll) = productionStatus(config,version,datasetName,debug)
         if first:
             first = False
+            print '#---------------------------------------------------------------------------'
             print '#'
-            print '#                                O V E R V I E W -- VERSION: ' + version
+            print '#                            O V E R V I E W '
+            print '#                              %s/%s'%(config,version)
             print '#'
             print '# Perct   Done/ Total--Dataset Name'
             print '#---------------------------------------------------------------------------'
