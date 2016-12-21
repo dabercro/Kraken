@@ -103,7 +103,7 @@ do
                --input=$KRAKEN_AGENTS_LOG/${daemon}/${cfg}/${vrs}/status-$py
 
         # keep log files up to speed
-        rsync -Cavz $KRAKEN_AGENTS_LOG/${daemon} $KRAKEN_AGENTS_WWW >& /dev/null
+        synchronizeWeb.py
 
         # Full submit cycle
         #==================
@@ -114,16 +114,15 @@ do
         echo " "                                                                >> $logFile
 
         # keep log file up to speed
-        rsync -Cavz $KRAKEN_AGENTS_LOG/${daemon} $KRAKEN_AGENTS_WWW >& /dev/null
+        synchronizeWeb.py                                                       >> $logFile
 
       done
 
     done
 
-    echo " completed review cycle."                                               >> $logFile
-    echo " FINISH by updating log files on web."                                  >> $logFile
+    echo " completed review cycle."                                             >> $logFile
+    echo " FINISH by updating log files on web."                                >> $logFile
 
-    rsync -Cavz --delete $KRAKEN_AGENTS_LOG/${daemon} $KRAKEN_AGENTS_WWW          >> $logFile 2>&1
     sleep $wait
   done
 

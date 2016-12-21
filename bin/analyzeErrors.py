@@ -106,13 +106,15 @@ def readPatterns(debug=0):
 #---------------------------------------------------------------------------------------------------
 #                                         M A I N
 #---------------------------------------------------------------------------------------------------
-
+if not os.getenv('KRAKEN_AGENTS_WWW'):
+    print "\n Kraken agent environment is not initialized (KRAKEN_AGENTS_WWW).\n"
+    sys.exit(1)
+    
 # general parameters
 debug = 0
 config = sys.argv[1]
 version = sys.argv[2]
 dataset = sys.argv[3]
-
 
 # get the patterns to look for
 (outPatterns, errPatterns) = readPatterns(debug)

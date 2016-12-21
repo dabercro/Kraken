@@ -114,8 +114,9 @@ do
 
     # insure that the log information is updated
     mkdir -p $KRAKEN_AGENTS_WWW 
-    # sync the daemon log file area
-    rsync -Cavz --delete $KRAKEN_AGENTS_LOG/${daemon} $KRAKEN_AGENTS_WWW            >> $logFile 2>&1
+
+    # sync the web area
+    synchronizeWeb.py                                                               >> $logFile 2>&1
 
     sleep $wait
   done

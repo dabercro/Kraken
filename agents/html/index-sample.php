@@ -20,6 +20,19 @@ print '<body class="ex" bgcolor="#EFEFEF">';
 print '<body style="font-family: arial;font-size: 16px;font-weight: medium;color:#444444;">';
 print '<hr>';
 
+// add the error analysis overview here
+$output = shell_exec('cat README');
+if ($output != '') {
+  print '<pre>';
+  $f = explode("\n",$output);
+  foreach ($f as &$file) {
+    print $file.'<br>';
+  }
+  //print $output;
+  print '</pre><hr>';
+}
+
+// list the log files and provide link access
 $output = shell_exec('ls -t *.err');
 $f = explode("\n",$output);
 if (sizeof($f) > 1) {
