@@ -737,7 +737,9 @@ class Task:
         self.nJobs = 0
 
         # start with the base submit script
-        cmd = 'cp ' + os.getenv('KRAKEN_BASE') + '/condor/base.sub ' +  self.submitCmd
+        cmd = 'cat ' + os.getenv('KRAKEN_BASE') + '/condor/req-all.sub ' \
+            +          os.getenv('KRAKEN_BASE') + '/condor/base.sub > ' \
+            +  self.submitCmd
         os.system(cmd)
 
         # attach the additional processing lines defining the specifc LFN productions
