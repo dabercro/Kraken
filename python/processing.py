@@ -126,6 +126,35 @@ class Scheduler:
         self.here = socket.gethostname()
         self.update(host,user,base)
 
+
+    #-----------------------------------------------------------------------------------------------
+    # execute a condor command on the given scheduler
+    #-----------------------------------------------------------------------------------------------
+    def executeCondorCmd(self,cmd='condor_q',output=False):
+
+        print ' execute condor command: %s'%(cmd)
+
+        myRx = rex.Rex(self.host,self.user);
+        irc = 0
+
+        if not self.isLocal():
+            (irc,rc,out,err) = myRx.executeAction(cmd)
+            if (irc != 0 or rc != 0):
+                print ' ERROR -- IRC: %d'%(irc) 
+        else:
+            (rc,out,err) = myRx.executeLocalAction(cmd)
+            
+        if (irc != 0 or rc != 0):
+            print ' ERROR -- RC: %d'%(rc) 
+            print ' ERROR -- ERR:\n%s'%(err) 
+
+        if output:
+            print ' OUT:\n%s'%(out) 
+            if err!='':
+                print '\n ERR:\n%s'%(err) 
+
+        return
+
     #-----------------------------------------------------------------------------------------------
     # find number of all jobs on this scheduler
     #-----------------------------------------------------------------------------------------------

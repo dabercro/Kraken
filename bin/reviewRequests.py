@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #---------------------------------------------------------------------------------------------------
-# Script to identify all samples which are kept in our database.
+# Script to review all samples which are kept in our database and take approriate action to get
+# them into the processing queues.
 #
 # Author: C.Paus                                                                (September 23, 2008)
 #---------------------------------------------------------------------------------------------------
