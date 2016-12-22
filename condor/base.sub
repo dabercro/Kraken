@@ -12,7 +12,7 @@
 ##                           ( isUndefined(CVMFS_cms_cern_ch_REVISION) \
 ##                             || (CVMFS_cms_cern_ch_REVISION >= 21812) )
 
-# Run on all avalable resources excluding some that seem to fail a lot
+# Run on all avalaible resources excluding some that seem to fail a lot
 Requirements            = ( \
                            (OSGVO_OS_STRING == "RHEL 6" && HAS_CVMFS_cms_cern_ch) || \
                            GLIDEIN_REQUIRED_OS == "rhel6" || \
