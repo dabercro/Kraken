@@ -845,7 +845,7 @@ class TaskCleaner:
         self.saveFailedLogs()
         self.analyzeLogs()
 
-        ## # C - remove all held jobs from the queue
+        # C - remove all held jobs from the queue
         self.removeHeldJobs()
 
         return
@@ -916,19 +916,18 @@ class TaskCleaner:
         iwd = base + "/%s/%s/%s"%\
             (self.task.request.config,self.task.request.version,self.task.request.sample.dataset)
         cmd = 'condor_rm -constraint "JobStatus==5 && Iwd==\\\"%s\\\""'%(iwd)
-        debug = 1
         irc = 0
         rc = 0
 
         print ' - remove Held jobs (there are %d): %s'%(len(self.task.request.sample.heldLfns),cmd)
         if not self.task.scheduler.isLocal():
             (irc,rc,out,err) = self.rex.executeAction(cmd)
-            if debug > 0 and (irc != 0 or rc != 0):
+            if DEBUG > 0 and (irc != 0 or rc != 0):
                 print ' IRC: %d'%(irc) 
         else:
             (rc,out,err) = self.rex.executeLocalAction(cmd)
             
-        if debug > 0 and (irc != 0 or rc != 0):
+        if DEBUG > 0 and (irc != 0 or rc != 0):
             print ' RC: %d'%(rc) 
             print ' ERR:\n%s'%(err) 
             print ' OUT:\n%s'%(out) 
@@ -950,13 +949,15 @@ class TaskCleaner:
 
         # make the directory in any case
         cmd = 'mkdir -p %s/%s/%s/%s/;'%(local,cfg,vers,dset)
-        print ' Mkdir: ' + cmd
+        if DEBUG>0:
+            print ' Mkdir: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         # copy the indexer to make it pretty
         cmd = 'cp ' + os.getenv('KRAKEN_AGENTS_BASE') + '/html/index-sample.php ' \
             + '%s/%s/%s/%s/index.php'%(local,cfg,vers,dset)
-        print ' index: ' + cmd
+        if DEBUG>0:
+            print ' index: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         # construct the script to make the tar ball
@@ -984,21 +985,25 @@ class TaskCleaner:
         cmd = 'scp ' + self.task.scheduler.user + '@' + self.task.scheduler.host \
             + ':cms/logs/%s/%s/%s/%s-%s-%s.tgz'%(cfg,vers,dset,cfg,vers,dset) \
             + ' %s/%s/%s/%s/'%(local,cfg,vers,dset)
-        print ' Get tar: ' + cmd
+        if DEBUG>0:
+            print ' Get tar: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         cmd = 'cd %s/%s/%s/%s/\n'%(local,cfg,vers,dset) \
             + 'tar fzx %s-%s-%s.tgz\n'%(cfg,vers,dset) \
             + 'chmod a+r *'
-        print ' Untar: ' + cmd
+        if DEBUG>0:
+            print ' Untar: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         cmd = 'rm -f %s/%s/%s/%s/%s-%s-%s.tgz'%(local,cfg,vers,dset,cfg,vers,dset) 
-        print ' Remove local tar: ' + cmd
+        if DEBUG>0:
+            print ' Remove local tar: ' + cmd
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         cmd = 'rm -f cms/logs/%s/%s/%s/%s-%s-%s.tgz'%(cfg,vers,dset,cfg,vers,dset)
-        print ' Remove remote tar: ' + cmd
+        if DEBUG>0:
+            print ' Remove remote tar: ' + cmd
         (irc,rc,out,err) = self.rex.executeAction(cmd)
 
         return
