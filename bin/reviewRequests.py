@@ -8,6 +8,7 @@
 import os,sys,getopt,re,string
 import MySQLdb
 import task
+import rex
 
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
@@ -16,17 +17,17 @@ import task
 def testTier2Disk(debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
 
-    nFiles = -1
     cmd = "list /cms/store/user/paus 2> /dev/null"
     if debug > 0:
         print " CMD: %s"%(cmd)
-    try:
-        for line in os.popen(cmd).readlines():   # run command
-            nFiles += 1
-    except:
-        nFiles = -1
 
-    return nFiles
+    myRx = rex.Rex()
+    (rc,out,err) = myRx.executeLocalAction("list /cms/store/user/paus 2> /dev/null")
+
+    if debug > 0:
+        print " RC: %d\n OUT:\n%s\n ERR:\n%s\n"%(rc,out,err)
+
+    return rc
 
 def productionStatus(config,version,dataset,debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
@@ -90,6 +91,18 @@ def testEnvironment(config,version,cmssw):
     if not os.path.exists(cmsswFile):
         cmd = "Cmssw file not found: %s" % cmsswFile
         raise RuntimeError, cmd
+
+    # Make sure the Tier-2 is up and running
+    testResult = testTier2Disk(debug)
+    if debug>0:
+        print ' Test result: %d'%(testResult) 
+    
+    if testResult != 0:
+        print '\n ERROR -- Tier-2 disks seem unavailable, please check! EXIT review process.\n'
+        sys.exit(0)
+    else:
+        print '\n INFO -- Tier-2 disks are available, start review process.\n'
+
 
 def findPath(config,version):
     # Find the path to where we store our samples
@@ -271,19 +284,13 @@ for row in filteredResults:
     # make up the proper mit datset name
     datasetName = process + '+' + setup+ '+' + tier
     if debug:
-        print ' addDatasetToBambu.py --dataset=/' + process + '/' + setup+ '/' + tier
+        print ' addDataset.py --dataset=/' + process + '/' + setup+ '/' + tier
 
 if displayOnly:
     sys.exit(0)
 
 # Basic tests first
 testEnvironment(config,version,cmssw)
-if testTier2Disk(0) < 0:
-    print '\n ERROR -- Tier-2 disks seem unavailable, please check! EXIT review process.\n'
-    sys.exit(0)
-else:
-    print '\n INFO -- Tier-2 disks are available, start review process.\n'
-
 
 # Where is our storage?
 path = findPath(config,version)
@@ -375,7 +382,7 @@ for row in filteredResults:
     else:                      # weird, more files found than available               
         print '\n ERROR more files found than available in dataset. NO ACTION on this dataset'
         print '       done: %d   all: %d'%(nFilesDone,nFiles)
-        cmd = 'addDataset --exec --dataset=' + datasetName
+        cmd = 'addDataset.py --exec --dataset=' + datasetName
         print '       updating the dataset from dbs: ' + cmd
         os.system(cmd)
 

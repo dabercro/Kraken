@@ -76,7 +76,7 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
     # test whether this is a legitimate dataset by asking DAS and determine size and number of files
 
     if not isDatasetValid(dataset,dbsInst,debug):
-        return (-1,-1)
+        return (-1,-1,-1)
 
     proxy = getProxy()
     url = 'curl -s --cert %s -k -H "Accept: application/json"'%proxy \

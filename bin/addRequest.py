@@ -32,6 +32,8 @@ def testLocalSetup(dataset,config,version,dbs,py,delete,debug=0):
     # check that the dataset exists in bambu database
     if delete<1:
         cmd = 'addDataset.py --exec --dataset=' + dataset + ' --dbs=' + dbs
+        if debug>0:
+            print ' CMD: ' + cmd
         rc = os.system(cmd)
         if rc != 0:
             print ' Error - dataset seems not to be valid. EXIT!\n'
