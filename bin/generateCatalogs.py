@@ -59,17 +59,20 @@ def writeRawFile(rawFile,book,dataset):
 
     nFiles = 0
 
-    with open(rawFile,'w') as fHandle:
-        #fHandle.write('# SAMPLE: %s - %s\n'%(book,dataset)) # this is confusing
-        catalogedIds = getFiles(book,dataset)
-
-        for id in sorted(catalogedIds.getIds()):
-            fileId = catalogedIds.getFileId(id)
-            nEvents = fileId.getNEvents()
-            fileName = fileId.getFileName()
-            fHandle.write('root://xrootd.cmsaf.mit.edu//store/user/paus/%s/%s/%s %d %d 1 1 1 1\n' \
-                              %(book,dataset,fileName,nEvents,nEvents))
-            nFiles += 1
+    try:
+        with open(rawFile,'w') as fHandle:
+            #fHandle.write('# SAMPLE: %s - %s\n'%(book,dataset)) # this is confusing
+            catalogedIds = getFiles(book,dataset)
+    
+            for id in sorted(catalogedIds.getIds()):
+                fileId = catalogedIds.getFileId(id)
+                nEvents = fileId.getNEvents()
+                fileName = fileId.getFileName()
+                fHandle.write('root://xrootd.cmsaf.mit.edu//store/user/paus/%s/%s/%s %d %d 1 1 1 1\n' \
+                                  %(book,dataset,fileName,nEvents,nEvents))
+                nFiles += 1
+    except:
+        print ' ERROR -- could not write raw file.'
 
     return nFiles
 
@@ -155,6 +158,9 @@ for dataset in allDatasets:
     os.system('mkdir -p %s'%catalogDir)
     rawFile = '%s/RawFiles.00'%(catalogDir)
     nFiles = writeRawFile(rawFile,book,dataset)
+    if nFiles<1:
+        print ' ERROR - no files found. NEXT.'
+        continue
 
     # decide how many files per fileset
     if nEventsPerSet > 0:

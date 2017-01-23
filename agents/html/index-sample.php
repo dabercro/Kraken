@@ -54,8 +54,14 @@ print '</ul></code>';
 <hr>
 <p style="font-family: arial;font-size: 10px;font-weight: bold;color:#900000;">
 <!-- hhmts start -->
-Modified: Sat Dec 17 14:23:04 EST 2016
-<a href="http://web.mit.edu/physics/people/faculty/paus_christoph.html">Christoph Paus</a>
+<?php
+$output = shell_exec('cat ../../../../heartbeat');
+$f = explode("\n",$output);
+foreach ($f as &$line) {
+  print $line;
+}
+?>
+-- <a href="http://web.mit.edu/physics/people/faculty/paus_christoph.html">Christoph Paus</a>
 <!-- hhmts end -->
 </p>
 </body></html>

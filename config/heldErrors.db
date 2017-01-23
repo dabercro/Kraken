@@ -1,7 +1,7 @@
 { 'outPatterns': { 'node': "running on",
                    'glidein': "GLIDEIN_ResourceName",
                    'glideinSe': "GLIDEIN_SEs",
-                   'dloadFail': "EXIT -- download failed."
+                   'dloadFail': "EXIT(255) -- download failed",
                  },
   'errPatterns': { 'xrdFailOpn': "Failed to open the file",
                    'xrdExpired': "[ERROR] Operation expired",

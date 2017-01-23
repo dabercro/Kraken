@@ -110,6 +110,8 @@ if not os.getenv('KRAKEN_AGENTS_WWW'):
     sys.exit(1)
 
 # Define the valid options which can be specified and check out the command line
+usage = "\n analyzeErrors.py --config=<cfg>  --version=<vrs>  --dataset=<dset>"\
+    + "  [ --debug=<int> [ --interactive ] ]\n"
 valid = ['config=','version=','dataset=','debug=','interactive','help']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
