@@ -220,6 +220,8 @@ except:
 # Take the result from the database and look at it
 filteredResults = []
 first = True
+nDone = 0
+nAll = 0
 nAllTotal = 0
 nDoneTotal = 0
 nMissingTotal = 0
@@ -265,7 +267,7 @@ for row in results:
         nMissingTotal += nMissing
 
 percentage = 0.0
-if nAll > 0:
+if nAllTotal > 0:
     percentage = 100.0 * float(nDoneTotal)/float(nAllTotal)
 print '#'
 print '# TOTAL:  %6.2f%% (%d/ %d) -->  %6.2f%% (%d) missing.'\

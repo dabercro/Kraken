@@ -160,7 +160,6 @@ function setupCmssw {
   then
     cd ..
     tar fzx $BASEDIR/kraken_$THIS_CMSSW_VERSION.tgz
-    #source ./src/MitProd/Processing/bin/processing.sh
   fi
   cd $PWD
   echo "============================================================"
@@ -255,9 +254,6 @@ then
     exit 255
   fi
   LFN="file:$GPACK.root"
-#
-  #SERVER=cmsxrootd.fnal.gov
-  #LFN="root://$SERVER/$LFN"
 else
   echo " Local file exists: $localFile"
 fi
@@ -266,6 +262,20 @@ fi
 cat $CMSSW_BASE/$CONFIG/$VERSION/${PY}.py \
     | sed -e "s@XX-LFN-XX@$LFN@g" -e "s@XX-GPACK-XX@$GPACK@g" \
     > $WORKDIR/${PY}.py
+
+# create the local links
+cd $WORKDIR
+echo " Preparing links -- "
+echo  $CMSSW_BASE/src/PandaProd/Ntupler/test
+ls -l $CMSSW_BASE/src/PandaProd/Ntupler/test
+if [ -d "$CMSSW_BASE/src/PandaProd/Ntupler/test/jec" ]
+then
+  ln -s $CMSSW_BASE/src/PandaProd/Ntupler/test/jec 
+fi
+if [ -d "$CMSSW_BASE/src/PandaProd/Ntupler/test/jer" ]
+then
+  ln -s $CMSSW_BASE/src/PandaProd/Ntupler/test/jer 
+fi
 
 ####################################################################################################
 # run KRAKEN

@@ -679,15 +679,15 @@ class Task:
     # find the present CMSSW version
     #-----------------------------------------------------------------------------------------------
     def findCmsswVersion(self):
+        cmd = "ls -1rt %s/%s/"%(os.getenv('KRAKEN_CMSSW'),self.request.version)
+        print " CMD: " + cmd
         myRex = rex.Rex()
-        (rc,out,err) = myRex.executeLocalAction("ls -rt %s/%s/"%
-                                                (os.getenv('KRAKEN_CMSSW'),self.request.version))
-        #print " CMD: ls -1rt %s/%s/"%(os.getenv('KRAKEN_CMSSW'),self.request.version)
+        (rc,out,err) = myRex.executeLocalAction(cmd)
         cmsswVersion = ""
-        for line in out.split("/n"):
+        for line in out.split("\n"):
             if 'CMSSW_' in line:
-                cmsswVersion = line[:-1]
-        #print " CMSSW: " + cmsswVersion
+                cmsswVersion = line
+        print " CMSSW: " + cmsswVersion
     
         return (cmsswVersion.replace('CMSSW_',''))
 
@@ -708,17 +708,21 @@ class Task:
                 + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"
             cmd = "cd " + cmsswBase \
                 + "; tar fch kraken_" + self.cmsswVersion + ".tar lib/ src/"
+            #print ' CMD: ' + cmd
             os.system(cmd)
             cmd = "cd " + cmsswBase \
                 + "; tar fr kraken_" + self.cmsswVersion + ".tar  python/"
+            #print ' CMD: ' + cmd
             os.system(cmd)
             cmd = "cd " + os.getenv('KRAKEN_BASE') \
                 + "; tar fr " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tar tgz/ " \
                 + self.request.config + "/" + self.request.version
+            #print ' CMD: ' + cmd
             os.system(cmd)
             cmd = "cd " + cmsswBase \
                 + "; gzip kraken_" + self.cmsswVersion + ".tar; mv  kraken_" \
                 + self.cmsswVersion + ".tar.gz  kraken_"  + self.cmsswVersion + ".tgz"
+            #print ' CMD: ' + cmd
             os.system(cmd)
 
         # see whether the tar ball needs to be copied locally or to remote scheduler
