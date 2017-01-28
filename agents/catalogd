@@ -38,17 +38,17 @@ do
   logFile=$KRAKEN_AGENTS_LOG/${daemon}/${daemon}.log
   rm -f $logFile
   touch $logFile
-  echo ""                                                                          >> $logFile
-  echo " = = = =  I N I T I A L  K R A K E N  E N V I R O N M E N T  = = = = ="    >> $logFile
-  echo ""                                                                          >> $logFile
-  env  | grep ^KRAKEN                                                              >> $logFile
-  echo ""                                                                          >> $logFile
-  echo " = = = =  I N I T I A L  C A T A L O G  E N V I R O N M E N T  = = = ="    >> $logFile
-  echo ""                                                                          >> $logFile
-  env  | grep ^KRAKEN_CATALOG                                                      >> $logFile
-  echo ""                                                                          >> $logFile
-  echo "[ PYTHON PATH: $PYTHONPATH ]"                                              >> $logFile
-  echo ""                                                                          >> $logFile
+  echo ""                                                                           >> $logFile
+  echo " = = = =  I N I T I A L  K R A K E N  E N V I R O N M E N T  = = = = ="     >> $logFile
+  echo ""                                                                           >> $logFile
+  env  | grep ^KRAKEN                                                               >> $logFile
+  echo ""                                                                           >> $logFile
+  echo " = = = =  I N I T I A L  C A T A L O G  E N V I R O N M E N T  = = = ="     >> $logFile
+  echo ""                                                                           >> $logFile
+  env  | grep ^KRAKEN_CATALOG                                                       >> $logFile
+  echo ""                                                                           >> $logFile
+  echo "[ PYTHON PATH: $PYTHONPATH ]"                                               >> $logFile
+  echo ""                                                                           >> $logFile
 
   # ten loops over the process with one logfile (keep it small)
   for index in `echo 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19`
@@ -56,11 +56,11 @@ do
     # period nSeconds
     let wait=$KRAKEN_CATALOG_CYCLE_SECONDS
 
-    echo " "                                                                       >> $logFile
-    echo " catalog loop $index started -- $tag (cycle wait $wait sec)"             >> $logFile
-    echo " "                                                                       >> $logFile
-    echo "   --> "`date`                                                           >> $logFile
-    echo " "                                                                       >> $logFile
+    echo " "                                                                        >> $logFile
+    echo " catalog loop $index started -- $tag (cycle wait $wait sec)"              >> $logFile
+    echo " "                                                                        >> $logFile
+    echo "   --> "`date`                                                            >> $logFile
+    echo " "                                                                        >> $logFile
 
     # find out how many files are still in the list
     nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
@@ -71,19 +71,21 @@ do
       # load updated config
       source $KRAKEN_BASE/agents/cycle.cfg
   
-      echo " Remake the list for cataloging."                                     >> $logFile
+      echo " Remake the list for cataloging."                                       >> $logFile
       rm -f tmp.list
       touch tmp.list
+
 
       # loop over all requested configurations
       for reqset in $KRAKEN_REVIEW_CYCLE
       do
- 
-        echo " ==list file== Request Set: $reqset"                                >> $logFile
+        echo " ==list file== Request Set: $reqset"                                  >> $logFile
   
         cfg=`echo $reqset | cut -d: -f1`
         vrs=`echo $reqset | cut -d: -f2`
-        echo "list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root"                >> $logFile 
+        pys=`echo $reqset | cut -d: -f3`
+
+        echo "list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root"                  >> $logFile 
         list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root | grep root \
              | grep -v 'ls: ' | cut -d ' ' -f 2 >>  tmp.list
 
@@ -100,12 +102,42 @@ do
     # loop over all requested configurations
     for reqset in $KRAKEN_REVIEW_CYCLE
     do
- 
       echo " ==generate catalogs== Request Set: $reqset"                            >> $logFile
-  
+
       cfg=`echo $reqset | cut -d: -f1`
       vrs=`echo $reqset | cut -d: -f2`
+      pys=`echo $reqset | cut -d: -f3`
+
       generateCatalogs.py $cfg/$vrs ''                                              >> $logFile
+
+      for py in `echo $pys | tr ',' ' '`
+      do
+        mydaemon=reviewd
+
+        echo " ====-- cfg: $cfg, vrs: $vrs, py: $py"                                >> $logFile
+        echo " "                                                                    >> $logFile
+      
+        # Make relevant directories
+        #==========================
+      
+        mkdir -p $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}
+      
+      
+        # Display only stuff
+        #===================
+      
+        stdbuf -o0 -e0 \
+        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
+               --displayOnly >  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+      
+        # make sure ascii files get 'dressing'
+        $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \
+               --input=$KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+      
+        # keep log files up to speed
+        synchronizeWeb.py                                                           >> $logFile
+      
+      done
 
     done
 
@@ -121,6 +153,7 @@ do
 
     sleep $wait
   done
+
 
   # move log file to a dated version
   mv $logFile $KRAKEN_AGENTS_LOG/${daemon}/${daemon}-${tag}.log
