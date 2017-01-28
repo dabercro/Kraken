@@ -26,11 +26,12 @@ usage += "                       --dbs=<name>\n"
 usage += "                       --local  # submitting to the local scheduler (ex. t3serv015)\n"
 usage += "                       --useExistingLfns\n"
 usage += "                       --useExistingSites\n"
+usage += "                       --noCleanup\n"
 usage += "                       --help\n"
 
 # Define the valid options which can be specified and check out the command line
 valid = ['dataset=','cmssw=','config=','version=','dbs=',
-         'local','useExistingLfns','useExistingSites',
+         'local','useExistingLfns','useExistingSites','noCleanup',
          'help']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
@@ -48,6 +49,7 @@ dbs = "prod/global"
 local = False
 useExistingLfns = False
 useExistingSites = False
+noCleanup = False
 
 # Read new values from the command line
 for opt, arg in opts:
@@ -70,6 +72,8 @@ for opt, arg in opts:
         useExistingLfns  = True
     if opt == "--useExistingSites":
         useExistingSites = True
+    if opt == "--noCleanup":
+        noCleanup = True
 
 # Deal with obvious problems
 if dataset == None:
@@ -110,9 +114,11 @@ task = processing.Task(condorId,request)
 task.createDirectories()
 task.makeTarBall()
 
-# Quick analysis of ongoing failures and related logfile cleanup
-taskCleaner = processing.TaskCleaner(task)
-taskCleaner.logCleanup()
+# Cleaning up only when you nwant to (careful cleanup only works as agent)
+if not noCleanup:
+    # Quick analysis of ongoing failures and related logfile cleanup
+    taskCleaner = processing.TaskCleaner(task)
+    taskCleaner.logCleanup()
 
 # Make the submit file
 task.writeCondorSubmit()

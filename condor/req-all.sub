@@ -10,6 +10,4 @@ Requirements = ( Arch == "X86_64" && \
                 ( isUndefined(GLIDEIN_Site) || \
                   !stringListMember(GLIDEIN_Site,"HOSTED_BOSCO_CE",",") ) ) && \
                ( TARGET.OpSys == "LINUX" ) && \
-               ( TARGET.Disk >= RequestDisk ) && \
-               ( TARGET.Memory >= RequestMemory ) && \
                ( TARGET.HasFileTransfer )

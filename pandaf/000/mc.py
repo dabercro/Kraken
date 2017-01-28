@@ -85,29 +85,29 @@ if isData:
     jeclabel = 'Spring16_23Sep2016AllV2_DATA'
 else:
     jeclabel = 'Spring16_23Sep2016V2_MC'
-    process.jec = cms.ESSource("PoolDBESSource",
-                               CondDBSetup,
-                               timetype = cms.string('runnumber'),
-                               toGet = cms.VPSet(
-            cms.PSet(record = cms.string('JetCorrectionsRecord'),
-                     tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFPuppi'),
-                     label = cms.untracked.string('AK4Puppi')
-                     ),
-            cms.PSet(record = cms.string('JetCorrectionsRecord'),
-                     tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFPuppi'),
-                     label = cms.untracked.string('AK8Puppi')
-                     ),
-            cms.PSet(record = cms.string('JetCorrectionsRecord'),
-                     tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFchs'),
-                     label = cms.untracked.string('AK4chs')
-                     ),
-            cms.PSet(record = cms.string('JetCorrectionsRecord'),
-                     tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFchs'),
-                     label = cms.untracked.string('AK8chs')
-                     ),
-            ),
-                               
-                               )	
+process.jec = cms.ESSource("PoolDBESSource",
+                           CondDBSetup,
+                           timetype = cms.string('runnumber'),
+                           toGet = cms.VPSet(
+        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+                 tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFPuppi'),
+                 label = cms.untracked.string('AK4Puppi')
+                 ),
+        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+                 tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFPuppi'),
+                 label = cms.untracked.string('AK8Puppi')
+                 ),
+        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+                 tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFchs'),
+                 label = cms.untracked.string('AK4chs')
+                 ),
+        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+                 tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFchs'),
+                 label = cms.untracked.string('AK8chs')
+                 ),
+        ),
+                           
+                           )	
 
 process.jec.connect = cms.string('sqlite:jec/%s.db'%jeclabel)
 process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
