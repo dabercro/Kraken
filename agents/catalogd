@@ -65,11 +65,11 @@ do
     # find out how many files are still in the list
     nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
     echo " Number of files left to catalog: $nFilesLeft"                            >> $logFile
+    # load updated config
+    source $KRAKEN_BASE/agents/cycle.cfg
+
     if [ "$nFilesLeft" == "0" ]
     then
-
-      # load updated config
-      source $KRAKEN_BASE/agents/cycle.cfg
   
       echo " Remake the list for cataloging."                                       >> $logFile
       rm -f tmp.list
@@ -139,7 +139,7 @@ do
       
         # make sure ascii files get 'dressing'
         $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \
-               --input=$KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+                         --input=$KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
       
         # keep log files up to speed
         synchronizeWeb.py                                                           >> $logFile
