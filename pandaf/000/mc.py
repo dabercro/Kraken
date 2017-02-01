@@ -53,98 +53,94 @@ else:
 
 ### LOAD DATABASE
 from CondCore.DBCommon.CondDBSetup_cfi import *
-#from CondCore.CondDB.CondDB_cfi import *
 
 ######## LUMI MASK
 if isData and False:
-		import FWCore.PythonUtilities.LumiList as LumiList
-		process.source.lumisToProcess = LumiList.LumiList(filename='/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt').getVLuminosityBlockRange()
-		print "Using local JSON"
+    import FWCore.PythonUtilities.LumiList as LumiList
+    process.source.lumisToProcess = LumiList.LumiList(filename = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt').getVLuminosityBlockRange()
+    print "Using local JSON"
 
 ### LOAD CONFIGURATION
 process.load('PandaProd.Filter.infoProducerSequence_cff')
 process.load('PandaProd.Filter.MonoXFilterSequence_cff')
 process.load('PandaProd.Ntupler.PandaProd_cfi')
-#process.load('PandaProd.Ntupler.VBF_cfi')
+
+### ##ISO
+process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
+process.load("RecoEgamma/ElectronIdentification/ElectronIDValueMapProducer_cfi")
 
 process.PandaNtupler.isData = isData
-if isData:
-	process.triggerFilter = cms.EDFilter('TriggerFilter',
-																triggerPaths = process.PandaNtupler.triggerPaths,
-																trigger = process.PandaNtupler.trigger
-															)
-	process.triggerFilterSequence = cms.Sequence( process.triggerFilter )
-else:
-	process.triggerFilterSequence = cms.Sequence()
+process.triggerFilterSequence = cms.Sequence() # let's turn this off for now
 
 if options.isSignal:
 	process.PandaNtupler.nSystWeight = -1
-
+        
 #-----------------------JES/JER----------------------------------
+from CondCore.DBCommon.CondDBSetup_cfi import *
 if isData:
-    jeclabel = 'Spring16_23Sep2016AllV2_DATA'
+    jeclabel = 'Summer16_23Sep2016AllV3_DATA'
 else:
-    jeclabel = 'Spring16_23Sep2016V2_MC'
+    jeclabel = 'Summer16_23Sep2016V3_MC'
 process.jec = cms.ESSource("PoolDBESSource",
-                           CondDBSetup,
+                           DBParameters = cms.PSet(messageLevel = cms.untracked.int32(0)),
                            timetype = cms.string('runnumber'),
                            toGet = cms.VPSet(
-        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+        cms.PSet(record	= cms.string('JetCorrectionsRecord'),
                  tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFPuppi'),
-                 label = cms.untracked.string('AK4Puppi')
+                 label = cms.untracked.string('AK4PFPuppi')
                  ),
-        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+        cms.PSet(record	= cms.string('JetCorrectionsRecord'),
                  tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFPuppi'),
-                 label = cms.untracked.string('AK8Puppi')
+                 label = cms.untracked.string('AK8PFPuppi')
                  ),
-        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+        cms.PSet(record	= cms.string('JetCorrectionsRecord'),
                  tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK4PFchs'),
-                 label = cms.untracked.string('AK4chs')
+                 label = cms.untracked.string('AK4PFchs')
                  ),
-        cms.PSet(record = cms.string('JetCorrectionsRecord'),
+        cms.PSet(record	= cms.string('JetCorrectionsRecord'),
                  tag = cms.string('JetCorrectorParametersCollection_'+jeclabel+'_AK8PFchs'),
-                 label = cms.untracked.string('AK8chs')
+                 label = cms.untracked.string('AK8PFchs')
                  ),
         ),
-                           
-                           )	
+                             )	
 
 process.jec.connect = cms.string('sqlite:jec/%s.db'%jeclabel)
 process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
 if isData:
-	jerlabel = 'Spring16_25nsV6_DATA'
+    jerlabel = 'Spring16_25nsV6_DATA'
 else:
-	jerlabel = 'Spring16_25nsV6_MC'
+    jerlabel = 'Spring16_25nsV6_MC'
 process.jer = cms.ESSource("PoolDBESSource",
-                  CondDBSetup,
-                  toGet = cms.VPSet(
-              cms.PSet(record  = cms.string('JetResolutionRcd'),
-                       tag     = cms.string('JR_%s_PtResolution_AK4PFchs'%jerlabel),
-                       label   = cms.untracked.string('AK4PFchs_pt'),
-                      ),
-              cms.PSet(record  = cms.string('JetResolutionRcd'),
-                       tag     = cms.string('JR_%s_PhiResolution_AK4PFchs'%jerlabel),
-                       label   = cms.untracked.string('AK4PFchs_phi'),
-                      ),
-              cms.PSet(record  = cms.string('JetResolutionScaleFactorRcd'),
-                       tag     = cms.string('JR_%s_SF_AK4PFchs'%jerlabel),
-                       label   = cms.untracked.string('AK4PFchs'),
-                      ),
-              cms.PSet(record  = cms.string('JetResolutionRcd'),
-                       tag     = cms.string('JR_%s_PtResolution_AK4PFPuppi'%jerlabel),
-                       label   = cms.untracked.string('AK4PFPuppi_pt'),
-                      ),
-              cms.PSet(record  = cms.string('JetResolutionRcd'),
-                       tag     = cms.string('JR_%s_PhiResolution_AK4PFPuppi'%jerlabel),
-                       label   = cms.untracked.string('AK4PFPuppi_phi'),
-                      ),
-              cms.PSet(record  = cms.string('JetResolutionScaleFactorRcd'),
-                       tag     = cms.string('JR_%s_SF_AK4PFPuppi'%jerlabel),
-                       label   = cms.untracked.string('AK4PFPuppi'),
-                      ),
-             )
+                           DBParameters = cms.PSet(messageLevel = cms.untracked.int32(0)),
+                           toGet = cms.VPSet(
+        cms.PSet(record	= cms.string('JetResolutionRcd'),
+                 tag = cms.string('JR_%s_PtResolution_AK4PFchs'%jerlabel),
+                 label = cms.untracked.string('AK4PFchs_pt'),
+                 ),
+        cms.PSet(record	= cms.string('JetResolutionRcd'),
+                 tag = cms.string('JR_%s_PhiResolution_AK4PFchs'%jerlabel),
+                 label = cms.untracked.string('AK4PFchs_phi'),
+                 ),
+        cms.PSet(record	= cms.string('JetResolutionScaleFactorRcd'),
+                 tag = cms.string('JR_%s_SF_AK4PFchs'%jerlabel),
+                 label = cms.untracked.string('AK4PFchs'),
+                 ),
+        cms.PSet(record	= cms.string('JetResolutionRcd'),
+                 tag = cms.string('JR_%s_PtResolution_AK4PFPuppi'%jerlabel),
+                 label = cms.untracked.string('AK4PFPuppi_pt'),
+                 ),
+        cms.PSet(record	= cms.string('JetResolutionRcd'),
+                 tag = cms.string('JR_%s_PhiResolution_AK4PFPuppi'%jerlabel),
+                 label = cms.untracked.string('AK4PFPuppi_phi'),
+                 ),
+        cms.PSet(record	= cms.string('JetResolutionScaleFactorRcd'),
+                 tag = cms.string('JR_%s_SF_AK4PFPuppi'%jerlabel),
+                 label = cms.untracked.string('AK4PFPuppi'),
+                 ),
         )
+                           )
+
 process.jer.connect = cms.string('sqlite:jer/%s.db'%jerlabel)
 process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
 
@@ -154,16 +150,12 @@ from PandaProd.Ntupler.egammavid_cfi import *
 
 initEGammaVID(process,options)
 
-### ##ISO
-process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
-process.load("RecoEgamma/ElectronIdentification/ElectronIDValueMapProducer_cfi")
-
 #### RECOMPUTE JEC From GT ###
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
  
-jecLevels= ['L1FastJet',  'L2Relative', 'L3Absolute']
+jecLevels= ['L1FastJet', 'L2Relative', 'L3Absolute']
 if options.isData:
-        jecLevels.append('L2L3Residual')
+    jecLevels.append('L2L3Residual')
  
 updateJetCollection(
     process,
@@ -195,24 +187,28 @@ if not options.isData:
 
 ############ RECOMPUTE PUPPI/MET #######################
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+runMetCorAndUncFromMiniAOD(process,				 ## PF MET
+                           isData=isData)
+
+process.PandaNtupler.pfmet = cms.InputTag('slimmedMETs','','PandaNtupler')
+process.MonoXFilter.met = cms.InputTag('slimmedMETs','','PandaNtupler')
+
 from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
 
 makePuppiesFromMiniAOD(process,True)
 process.puppi.useExistingWeights = False # I still don't trust miniaod...
 process.puppiNoLep.useExistingWeights = False
 
-runMetCorAndUncFromMiniAOD(process,         ## PF MET
-                            isData=isData)
-runMetCorAndUncFromMiniAOD(process,         ## Puppi MET
+runMetCorAndUncFromMiniAOD(process,				 ## Puppi MET
                            isData=options.isData,
                            metType="Puppi",
                            pfCandColl=cms.InputTag("puppiForMET"),
                            recoMetFromPFCs=True,
                            jetFlavor="AK4PFPuppi",
                            postfix="Puppi")
-process.PandaNtupler.pfmet = cms.InputTag('slimmedMETs','','PandaNtupler')
+
+process.puppiForMET.photonId = process.PandaNtupler.phoLooseIdMap
 process.PandaNtupler.puppimet = cms.InputTag('slimmedMETsPuppi','','PandaNtupler')
-process.MonoXFilter.met = cms.InputTag('slimmedMETs','','PandaNtupler')
 process.MonoXFilter.puppimet = cms.InputTag('slimmedMETsPuppi','','PandaNtupler')
 
 ############ RUN CLUSTERING ##########################
@@ -253,6 +249,7 @@ addJetCollection(
 if not isData:
   process.jetSequence += process.patJetPartonMatchPFAK4Puppi
   process.jetSequence += process.patJetGenJetMatchPFAK4Puppi
+
 process.jetSequence += process.pfImpactParameterTagInfosPFAK4Puppi
 process.jetSequence += process.pfInclusiveSecondaryVertexFinderTagInfosPFAK4Puppi
 process.jetSequence += process.pfCombinedInclusiveSecondaryVertexV2BJetTagsPFAK4Puppi
@@ -260,7 +257,7 @@ process.jetSequence += process.patJetsPFAK4Puppi
 
 ##################### FAT JETS #############################
 
-from PandaProd.Ntupler.makeFatJets_cff import *
+from PandaProd.Ntupler.makeFatJets_cff import initFatJets, makeFatJets
 fatjetInitSequence = initFatJets(process,isData)
 process.jetSequence += fatjetInitSequence
 

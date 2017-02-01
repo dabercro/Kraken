@@ -119,16 +119,23 @@ do
       
         # Make relevant directories
         #==========================
-      
+
         mkdir -p $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}
       
       
         # Display only stuff
         #===================
-      
+
+        rm -f $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+        touch $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+
+        echo "#"        >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+        echo "# "`date` >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+        echo "#"        >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+        
         stdbuf -o0 -e0 \
-        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
-               --displayOnly >  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+          $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
+               --displayOnly >>  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
       
         # make sure ascii files get 'dressing'
         $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \

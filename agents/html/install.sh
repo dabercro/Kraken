@@ -20,6 +20,8 @@ echo " Copy images from $KRAKEN_BASE"
 cp $KRAKEN_BASE/agents/html/agent*jpg $KRAKEN_AGENTS_LOG
 
 # global index files to log area
+#echo " Generate index files"
+#cp $KRAKEN_BASE/agents/html/index-kraken.php $KRAKEN_AGENTS_LOG
 echo " Generate index files"
 cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG
 

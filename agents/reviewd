@@ -90,21 +90,6 @@ do
 
         mkdir -p $KRAKEN_AGENTS_LOG/${daemon}/${cfg}/${vrs}
 
-
-        # Display only stuff
-        #===================
-
-        stdbuf -o0 -e0 \
-        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
-               --displayOnly >  $KRAKEN_AGENTS_LOG/${daemon}/${cfg}/${vrs}/status-$py
-
-        # make sure ascii files get 'dressing'
-        $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \
-               --input=$KRAKEN_AGENTS_LOG/${daemon}/${cfg}/${vrs}/status-$py
-
-        # keep log files up to speed
-        synchronizeWeb.py
-
         # Full submit cycle
         #==================
 
