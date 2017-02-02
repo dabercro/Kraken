@@ -4,6 +4,7 @@ import MySQLdb
 import fileIds
 
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
+#DEBUG = 1
 
 TRUNC = "/cms"
 DATA = "/store/user/paus"
@@ -38,8 +39,14 @@ def getFiles(book,dataset):
     results = []
     try:
         # Execute the SQL command
+        if DEBUG>0:
+            print ' SQL: %s'%(sql)
         Cursor.execute(sql)
+        if DEBUG>0:
+            print ' SQL: fetch results'
         results = Cursor.fetchall()
+        if DEBUG>0:
+            print ' SQL: DONE'
     except:
         print 'ERROR(%s) - could not find request id.'%(sql)
 
@@ -60,8 +67,12 @@ def writeRawFile(rawFile,book,dataset):
     nFiles = 0
 
     try:
+        if DEBUG>0:
+            print ' Open Raw'
         with open(rawFile,'w') as fHandle:
             #fHandle.write('# SAMPLE: %s - %s\n'%(book,dataset)) # this is confusing
+            if DEBUG>0:
+                print ' Get files'
             catalogedIds = getFiles(book,dataset)
     
             for id in sorted(catalogedIds.getIds()):
@@ -70,6 +81,8 @@ def writeRawFile(rawFile,book,dataset):
                 fileName = fileId.getFileName()
                 fHandle.write('root://xrootd.cmsaf.mit.edu//store/user/paus/%s/%s/%s %d %d 1 1 1 1\n' \
                                   %(book,dataset,fileName,nEvents,nEvents))
+                if DEBUG>0:
+                    print ' file: %s'%(fileName)
                 nFiles += 1
     except:
         print ' ERROR -- could not write raw file.'
@@ -155,16 +168,26 @@ for dataset in allDatasets:
     print ' --> %s'%(dataset)
 
     catalogDir = '%s/%s/%s'%(CATA,book,dataset)
+    if DEBUG>0:
+        print ' Makedir'
     os.system('mkdir -p %s'%catalogDir)
     rawFile = '%s/RawFiles.00'%(catalogDir)
+    if DEBUG>0:
+        print ' Write Raw'
     nFiles = writeRawFile(rawFile,book,dataset)
     if nFiles<1:
         print ' ERROR - no files found. NEXT.'
         continue
 
     # decide how many files per fileset
+    if DEBUG>0:
+        print ' Make files*'
     if nEventsPerSet > 0:
+        if DEBUG>0:
+            print ' Making catalog'
         makeCatalog(catalogDir,nEventsPerSet)
+        if DEBUG>0:
+            print ' Making catalog DONE'
     else:
         if   nFiles > 400:
             makeCatalog(catalogDir,10)

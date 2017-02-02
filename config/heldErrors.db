@@ -13,6 +13,7 @@
                    'siteConf': "Valid site-local-config not found",
                    'frontier': "[frontier.c:1111]: No more proxies",
                    'coral': "::realloc failed",
+		   'coral2': "cannot be established ( CORAL",
                    'memoryBad': "std::bad_alloc exception was thrown.",
                    'memoryAlloc': "cannot allocate memory",
                    'space': "No space left on device",
