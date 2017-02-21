@@ -37,13 +37,15 @@ for opt, arg in opts:
 
 # Setup the scheduler we are going to use
 scheduler = None
+user = 'cmsprod'
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu','cmsprod')
+    scheduler = processing.Scheduler('t3serv015.mit.edu',user)
 else:
-    scheduler = processing.Scheduler()
+    user = 'paus'
+    scheduler = processing.Scheduler('submit.mit.edu',user,'/work/paus')
 
 # Issue the condor command
-cmd = 'condor_rm -constraint "JobStatus==1&&Owner==\\"cmsprod\\""'
+cmd = 'condor_rm -constraint "JobStatus==1&&Owner==\\"'+user+'\\""'
 scheduler.executeCondorCmd(cmd,True)
 
 sys.exit(0)

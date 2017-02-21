@@ -83,6 +83,7 @@ def testEnvironment(config,version,cmssw):
     # Does the local environment exist?
     dir = './' + config + '/' + version
     if not os.path.exists(dir):
+        os.system('pwd')
         cmd = "\n Local work directory does not exist: %s\n" % dir
         raise RuntimeError, cmd
  
@@ -131,16 +132,16 @@ def findPath(config,version):
 # M A I N
 #---------------------------------------------------------------------------------------------------
 # Define string to explain usage of the script
-usage  = "\nUsage: findSamples.py --config=<name>\n"
-usage += "                      --version=<version> [ default: MIT_VERS ]\n"
-usage += "                      --cmssw=<name>\n"
-usage += "                      --pattern=<name>\n"
-usage += "                      --useExistingLfns\n"
-usage += "                      --useExistingSites\n"
-usage += "                      --displayOnly\n"
-usage += "                      --exe\n"
-usage += "                      --debug\n"
-usage += "                      --help\n\n"
+usage  = "\nUsage: reviewRequests.py --config=<name>\n"
+usage += "                         --version=<version> [ default: MIT_VERS ]\n"
+usage += "                         --cmssw=<name>\n"
+usage += "                         --pattern=<name>\n"
+usage += "                         --useExistingLfns\n"
+usage += "                         --useExistingSites\n"
+usage += "                         --displayOnly\n"
+usage += "                         --exe\n"
+usage += "                         --debug\n"
+usage += "                         --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
 valid = ['config=','version=','cmssw=','pattern=', \

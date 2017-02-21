@@ -265,9 +265,8 @@ cat $CMSSW_BASE/$CONFIG/$VERSION/${PY}.py \
 
 # create the local links
 cd $WORKDIR
-echo " Preparing links -- "
-echo  $CMSSW_BASE/src/PandaProd/Ntupler/test
-ls -l $CMSSW_BASE/src/PandaProd/Ntupler/test
+echo " Preparing links -- $CMSSW_BASE/src/PandaProd/Ntupler/test"
+ls -l $CMSSW_BASE/src/PandaProd/Ntupler/test 2> /dev/null
 if [ -d "$CMSSW_BASE/src/PandaProd/Ntupler/test/jec" ]
 then
   ln -s $CMSSW_BASE/src/PandaProd/Ntupler/test/jec 

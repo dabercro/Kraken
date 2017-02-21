@@ -102,7 +102,7 @@ scheduler = None
 if local:
     scheduler = processing.Scheduler('t3serv015.mit.edu','cmsprod')
 else:
-    scheduler = processing.Scheduler()
+    scheduler = processing.Scheduler('submit.mit.edu','paus','/work/paus')
 
 # Generate the request
 request = processing.Request(scheduler,sample,config,version,py)
