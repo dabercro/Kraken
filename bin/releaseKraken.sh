@@ -35,7 +35,7 @@ function configureSite {
 
   link="/cvmfs/cms.cern.ch/SITECONF/local"
   
-  echo "---- Configure Site ----"
+  echo "---- Setup SiteConfig ----"
   echo " Link       = $link"
   echo " CMSSW_BASE = $CMSSW_BASE"
   ls -lh $CMSSW_BASE/tgz/siteconf.tgz
@@ -49,11 +49,26 @@ function configureSite {
     executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
     cd SITECONF
     rm -f local
-    ln -s ./T3_US_OSG ./local
+    testGeoId=`curl -s http://cmsopsquid.cern.ch/wpad.dat | grep 'Bad Request'`
+    if [ "$testGeoId" == "" ]
+    then
+      ln -s ./T3_US_OSG ./local
+    else
+      ln -s ./T2_US_MIT ./local
+    fi
     ls -lhrt
     cd -
     # make sure this is the config to be used
     export CMS_PATH=`pwd`
+  fi
+
+  # get the certificates
+  echo "---- Setup certificates ----"
+  if ! [ -d "/etc/grid-security/certificates" ] 
+  then
+    CERTS_DIR="/cvmfs/oasis.opensciencegrid.org/osg-software/osg-wn-client/3.2/current/el6-x86_64/etc/grid-security/certificates"
+    echo "Using OSG location at: $CERTS_DIR"
+    export X509_CERT_DIR=$CERTS_DIR
   fi
 }
 
