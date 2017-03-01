@@ -64,11 +64,14 @@ function configureSite {
 
   # get the certificates
   echo "---- Setup certificates ----"
-  if ! [ -d "/etc/grid-security/certificates" ] 
+  CERTS_DIR="/etc/grid-security/certificates"
+  if ! [ -d "$CERTS_DIR" ] 
   then
     CERTS_DIR="/cvmfs/oasis.opensciencegrid.org/osg-software/osg-wn-client/3.2/current/el6-x86_64/etc/grid-security/certificates"
     echo "Using OSG location at: $CERTS_DIR"
     export X509_CERT_DIR=$CERTS_DIR
+  else
+    echo "Using local certificates: $CERTS_DIR"
   fi
 }
 

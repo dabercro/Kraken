@@ -327,7 +327,7 @@ class Sample:
         os.system(cmd)
         
         # recreate if requested or not existing
-        if not self.useExistingLfns or not os.path.exists(lfnFile):
+        if not self.useExistingLfns or not os.path.exists(lfnFile) or os.stat(lfnFile).st_size == 0:
             cmd = 'input.py --dbs=' + self.dbs + ' --option=lfn --dataset=' + self.dataset \
                   + ' | sort -u > ' + lfnFile + '-TMP'
             print ' Input: ' + cmd
@@ -357,7 +357,8 @@ class Sample:
         os.system(cmd)
         
         # recreate if requested or not existing
-        if not self.useExistingSites or not os.path.exists(siteFile):
+        if not self.useExistingSites or not os.path.exists(siteFile) \
+                or os.stat(siteFile).st_size == 0:
             cmd = 'sites.py --dbs=' + self.dbs + ' --dataset=' + self.dataset + ' > ' \
                 + siteFile + '-TMP'
             print ' Sites: ' + cmd
