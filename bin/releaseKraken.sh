@@ -32,35 +32,38 @@ function configureSite {
   #
   # -- ATTENTION -- CMSSW has to be setup before calling configure site
   #
-
   link="/cvmfs/cms.cern.ch/SITECONF/local"
-  
+  xml="$link/JobConfig/site-local-config.xml"
+
   echo "---- Setup SiteConfig ----"
   echo " Link       = $link"
+  echo " Xml        = $xml"
   echo " CMSSW_BASE = $CMSSW_BASE"
-  ls -lh $CMSSW_BASE/tgz/siteconf.tgz
 
-  if [ -d "`readlink $link`" ]
+  if [ -e "$xml" ]
   then
-    echo " Link exists. No action needed. ($link)"
+    echo " Config exists: $xml."
+    return
   else
-    echo " WARNING -- Link points nowhere! ($link)"
-    echo "  -- unpacking private local config to recover"
-    executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
-    cd SITECONF
-    rm -f local
-    testGeoId=`curl -s http://cmsopsquid.cern.ch/wpad.dat | grep 'Bad Request'`
-    if [ "$testGeoId" == "" ]
-    then
-      ln -s ./T3_US_OSG ./local
-    else
-      ln -s ./T2_US_MIT ./local
-    fi
-    ls -lhrt
-    cd -
-    # make sure this is the config to be used
-    export CMS_PATH=`pwd`
+    echo " ERROR -- config does not exist: $xml"
   fi
+
+  ls -lh $CMSSW_BASE/tgz/siteconf.tgz
+  echo "  -- unpacking private local config to recover"
+  executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
+  cd SITECONF
+  rm -f local
+  testGeoId=`curl -s http://cmsopsquid.cern.ch/wpad.dat | grep 'Bad Request'`
+  if [ "$testGeoId" == "" ]
+  then
+    ln -s ./T3_US_OSG ./local
+  else
+    ln -s ./T2_US_MIT ./local
+  fi
+  ls -lhrt
+  cd -
+  # make sure this is the config to be used
+  export CMS_PATH=`pwd`
 
   # get the certificates
   echo "---- Setup certificates ----"
