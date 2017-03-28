@@ -36,7 +36,10 @@ The executable that is used inside the execution script can be freely specified.
 
 Instead of just submitting your sample, which you could with submitCondor.py and many parameters, it is recommended to add a request to the database. This might seem painful initially but it enables a whole slew of automation, including monitoring.
 
-* addRequest.py --dbs=local --config=slimmr --version=000 --py=fake --dataset=pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
+* addRequest.py --dbs local --config slimmr --version 000 --py fake --dataset pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
+
+The sample we request is not an officical CMS sample (dbs) but a local Panda sample. It derives from the official CMS sample SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD and was derived using the pandaf configuration with version 002 as inidcated in the full dataset name.
+The dataset properties will be stored when you request the dataset so make sure it is complete at this time. If you want to go back, you can re-declare the sample which will update the database, but be careful, the output of the same previously requested sample should be carefully removed to avoid event overlaps as several input files are combined into one output file and the definitions are likely not the same anymore. The input for the job splitting comes from the catalogs (one fileset one job).
 
 ### Submitting a job standalone
 
