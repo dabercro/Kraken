@@ -38,6 +38,13 @@ Instead of just submitting your sample, which you could with submitCondor.py and
 
 * addRequest.py --dbs=local --config=slimmr --version=000 --py=fake --dataset=pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
 
+### Submitting a job standalone
+
+There is no need to request the sample through the database and you can go head and submit a sample production interactively. To submit your jobs running on the local Panda sample as specified above just do this:
+
+* submitCondor.py --noCleanup --dbs=local --py=fake --config=slimmr --version=000 --dataset=pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
+
+The submission is safe as far as already submitted of completed jobs concerns. They are accounted for in the submission process and only what is not completed or not queued will be submitted.
 
 ## Status
 
