@@ -47,7 +47,7 @@ There is no need to request the sample through the database and you can go head 
 
 * submitCondor.py --noCleanup --dbs=local --py=fake --config=slimmr --version=000 --dataset=pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
 
-The submission is safe as far as already submitted of completed jobs concerns. They are accounted for in the submission process and only what is not completed or not queued will be submitted.
+The submission is safe as far as already submitted or completed jobs concerns. They are accounted for in the submission process and only what is not completed or not queued will be submitted.
 
 ## Status
 
