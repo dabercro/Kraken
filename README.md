@@ -1,1 +1,43 @@
 
+## Kraken
+
+Kraken is a processing tool that allows the user to run on either official CMS data/MC samples or on locally produced Panda files. It uses a number of other packages and relies on a database to manage requests and the output files.
+
+## Installation
+
+* clone git://github.com/cpausmit/Kraken
+* edit the ./Kraken/setup.sh file to match your specific setup
+* source ./Kraken/setup.sh
+
+## Typical use for Panda file production
+
+### Install your own code
+
+* export KRAKEN_CMSSW=$HOME/cms/cmssw
+
+To properly version your output/code use a three digit number starting from '000' to '999' which will be used subsequently to make sure the right code is selected and data is stored depending on the version number. So, install the code for example in $KRAKEN_CMSSW/000.
+
+The tar ball later created for the submission will pack up your bin/ lib/ src/ python/ so you can use all of that.
+
+### Execution Script
+
+export KRAKEN_SCRIPT=releaseKraken.sh
+
+This script is what condor executes. Release Kraken is fairly general and should allow you to do what you need to do. It would be a good idea to not change the script, but of course you can, and you can edit releaseKraken.sh to your likings, but be careful, damage can be done.
+
+### Executable
+
+export KRAKEN_EXE=slimmer
+
+The executable that is used inside the execution script can be freely specified. Best is to place it in the bin directory in your CMSSW release area because that will be in your path automatically.
+
+
+### Requesting a Sample
+
+Instead of just submitting your sample, which you could with submitCondor.py and many parameters, it is recommended to add a request to the database. This might seem painful initially but it enables a whole slew of automation, including monitoring.
+
+* addRequest.py --dbs=local --config=slimmr --version=000 --py=fake --dataset=pandaf=002=SinglePhoton+Run2016H-03Feb2017_ver3-v1+MINIAOD
+
+
+## Status
+
