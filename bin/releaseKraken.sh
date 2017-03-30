@@ -60,6 +60,7 @@ function configureSite {
   else
     ln -s ./T2_US_MIT ./local
   fi
+
   ls -lhrt
   cd -
   # make sure this is the config to be used
