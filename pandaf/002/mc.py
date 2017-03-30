@@ -15,8 +15,8 @@ options._tagOrder.remove('numEvent%d')
 options.parseArguments()
 
 options.config = 'Summer16'
-options.inputFiles = ['XX-LFN-XX']
-options.outputFile = 'kraken-output-file-tmp_000.root'
+## options.inputFiles = ['XX-LFN-XX']
+## options.outputFile = 'kraken-output-file-tmp_000.root'
 
 jetMETReco = True
 muEGFixed = False

@@ -92,6 +92,7 @@ do
       done
  
       # list is complete, let's move it safely where it belongs
+      echo " FiBS base: $FIBS_BASE"
       fibsLock.py --configFile=$FIBS_BASE/config/checkFile.cfg \
                   --cmd="mv tmp.list $FIBS_WORK/checkFile.list"                     >> $logFile
 
@@ -134,7 +135,7 @@ do
         echo "#"        >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
         
         stdbuf -o0 -e0 \
-          $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
+          $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --py=$py \
                --displayOnly >>  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
       
         # make sure ascii files get 'dressing'

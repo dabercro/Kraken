@@ -10,6 +10,9 @@ import MySQLdb
 import task
 import rex
 
+CATALOG = os.getenv('KRAKEN_CATALOG')
+JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
+
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
 #---------------------------------------------------------------------------------------------------
@@ -32,8 +35,8 @@ def testTier2Disk(debug=0):
 def productionStatus(config,version,dataset,debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
 
-    cmd = "cat /home/cmsprod/catalog/t2mit/%s/%s/%s/Files 2> /dev/null | wc -l"\
-        %(config,version,dataset)
+    cmd = "cat %s/%s/%s/%s/Files 2> /dev/null | wc -l"\
+        %(CATALOG,config,version,dataset)
     if debug > 0:
         print " CMD: %s"%(cmd)
 
@@ -44,7 +47,7 @@ def productionStatus(config,version,dataset,debug=0):
     except:
         nDone = -1
 
-    cmd = "grep root /home/cmsprod/cms/jobs/lfns/%s.lfns 2> /dev/null | wc -l"%(dataset)
+    cmd = "grep root %s/%s.jobs 2> /dev/null | wc -l"%(JOBS,dataset)
     if debug > 0:
         print " CMD: %s"%(cmd)
 
@@ -77,7 +80,7 @@ def findNumberOfFilesDone(config,version,dataset,debug=0):
 
     return nFilesDone
 
-def testEnvironment(config,version,cmssw):
+def testEnvironment(config,version,py):
     # Basic checks will be implemented here to remove the clutter from the main
 
     # Does the local environment exist?
@@ -88,7 +91,7 @@ def testEnvironment(config,version,cmssw):
         raise RuntimeError, cmd
  
     # Look for the standard CMSSW python configuration file (empty file is fine)
-    cmsswFile = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + cmssw + '.py'
+    cmsswFile = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + py + '.py'
     if not os.path.exists(cmsswFile):
         cmd = "Cmssw file not found: %s" % cmsswFile
         raise RuntimeError, cmd
@@ -134,7 +137,7 @@ def findPath(config,version):
 # Define string to explain usage of the script
 usage  = "\nUsage: reviewRequests.py --config=<name>\n"
 usage += "                         --version=<version> [ default: MIT_VERS ]\n"
-usage += "                         --cmssw=<name>\n"
+usage += "                         --py=<name>\n"
 usage += "                         --pattern=<name>\n"
 usage += "                         --useExistingLfns\n"
 usage += "                         --useExistingSites\n"
@@ -144,7 +147,7 @@ usage += "                         --debug\n"
 usage += "                         --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['config=','version=','cmssw=','pattern=', \
+valid = ['config=','version=','py=','pattern=', \
          'help','exe','useExistingLfns','useExistingSites','debug', \
          'displayOnly' ]
 try:
@@ -159,7 +162,7 @@ except getopt.GetoptError, ex:
 # Set defaults for each option
 config = 'filefi'
 version = '000'
-cmssw = 'data'
+py = 'data'
 pattern = ''
 displayOnly = False
 exe = False
@@ -176,8 +179,8 @@ for opt, arg in opts:
         config = arg
     if opt == "--version":
         version = arg
-    if opt == "--cmssw":
-        cmssw = arg
+    if opt == "--py":
+        py = arg
     if opt == "--pattern":
         pattern = arg
     if opt == "--exe":
@@ -200,7 +203,7 @@ sql = 'select ' + \
     'RequestConfig,RequestVersion,RequestPy,RequestId,RequestNFilesDone from Requests ' + \
     'left join Datasets on Requests.DatasetId = Datasets.DatasetId '+ \
     'where RequestConfig="' + config + '" and RequestVersion = "' + version + \
-    '" and RequestPy = "' + cmssw + \
+    '" and RequestPy = "' + py + \
     '" order by Datasets.DatasetProcess, Datasets.DatasetSetup, Datasets.DatasetTier;'
 if debug:
     print ' SQL: ' + sql
@@ -293,7 +296,7 @@ if displayOnly:
     sys.exit(0)
 
 # Basic tests first
-testEnvironment(config,version,cmssw)
+testEnvironment(config,version,py)
 
 # Where is our storage?
 path = findPath(config,version)
@@ -391,7 +394,7 @@ for row in filteredResults:
 
     # if work not complete submit the remainder
     print '# Submit new dataset: ' + datasetName
-    cmd = ' submitCondor.py --cmssw=' + cmssw + ' --config=' + config + ' --version=' \
+    cmd = ' submitCondor.py --py=' + py + ' --config=' + config + ' --version=' \
         + version + ' --dbs=' + dbs
 
     # make sure to use existing cache if requested

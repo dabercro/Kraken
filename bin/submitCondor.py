@@ -19,7 +19,7 @@ SRMSRC='/usr/bin'
 #===================================================================================================
 # Define string to explain usage of the script
 usage =  "Usage: submitCondor.py --dataset=<name>\n"
-usage += "                       --cmssw=<name>\n"
+usage += "                       --py=<name>\n"
 usage += "                       --config=<name>\n"
 usage += "                       --version=<version>\n"
 usage += "                       --dbs=<name>\n"
@@ -30,7 +30,7 @@ usage += "                       --noCleanup\n"
 usage += "                       --help\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['dataset=','cmssw=','config=','version=','dbs=',
+valid = ['dataset=','py=','config=','version=','dbs=',
          'local','useExistingLfns','useExistingSites','noCleanup',
          'help']
 try:
@@ -58,7 +58,7 @@ for opt, arg in opts:
         sys.exit(0)
     if opt == "--dataset":
         dataset = arg
-    if opt == "--cmssw":
+    if opt == "--py":
         py = arg
     if opt == "--config":
         config = arg
@@ -100,9 +100,11 @@ sample = processing.Sample(dataset,dbs,useExistingLfns,useExistingSites)
 # Setup the scheduler we are going to use
 scheduler = None
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu','cmsprod')
+    scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'))
 else:
-    scheduler = processing.Scheduler('submit.mit.edu','paus','/work/paus')
+    scheduler = processing.Scheduler('submit.mit.edu',
+                                     os.getenv('KRAKEN_REMOTE_USER','paus'),
+                                     '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')))
 
 # Generate the request
 request = processing.Request(scheduler,sample,config,version,py)
@@ -130,4 +132,5 @@ task.condorSubmit()
 task.cleanUp()
 
 print ''
+
 sys.exit(0)

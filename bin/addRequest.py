@@ -99,6 +99,8 @@ version = ''
 dbs = 'prod/global'
 py = 'mc'
 
+isPanda = False
+
 # Read new values from the command line
 for opt, arg in opts:
     if opt == "--help":
@@ -108,6 +110,8 @@ for opt, arg in opts:
         dataset = arg
         if dataset[0] != '/':
             dataset = '/' + dataset.replace('+','/')
+        if '=' in dataset:
+            isPanda = True
     if opt == "--config":
         config = arg
     if opt == "--version":
@@ -160,6 +164,7 @@ else:
         print ' DatasetId=%d.'%(id)
 
 # Check whether this processing request already exists in the database
+
 sql  = "select * from Requests where "
 sql += "DatasetId=%d and RequestConfig='%s' and RequestVersion='%s' and RequestPy='%s' ;"\
        %(id,config,version,py)
@@ -183,11 +188,13 @@ else:
     pass
 
 # order of deletion is important to be least vulnerable to database problems
+
 if delete > 1:
     removeDataset(cursor,id)
     sys.exit(0)
 
 # now insert if this is not a deletion request
+
 if delete<1:
     # Prepare SQL query to insert a new record into the database.
     sql = "insert into Requests(DatasetId, RequestConfig, RequestVersion, RequestPy)" + \

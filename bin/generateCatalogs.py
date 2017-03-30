@@ -4,11 +4,8 @@ import MySQLdb
 import fileIds
 
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
-#DEBUG = 1
-
-TRUNC = "/cms"
-DATA = "/store/user/paus"
-CATA = "/home/cmsprod/catalog/t2mit"
+DATA = os.environ.get('KRAKEN_SE_BASE','/cms/store/user/paus')
+CATALOG = os.environ.get('KRAKEN_CATALOG','/home/cmsprod/catalog/t2mit')
 
 Db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
 Cursor = Db.cursor()
@@ -150,7 +147,7 @@ nEventsPerSet = -1
 if len(sys.argv) > 3:
     nEventsPerSet = sys.argv[3]
 
-cmd = 'list ' + TRUNC + DATA + "/" + book
+cmd = 'list ' +  DATA + "/" + book
 if pattern != "":
     cmd += "| grep %s"%(pattern)
 
@@ -167,7 +164,7 @@ for dataset in allDatasets:
 
     print ' --> %s'%(dataset)
 
-    catalogDir = '%s/%s/%s'%(CATA,book,dataset)
+    catalogDir = '%s/%s/%s'%(CATALOG,book,dataset)
     if DEBUG>0:
         print ' Makedir'
     os.system('mkdir -p %s'%catalogDir)

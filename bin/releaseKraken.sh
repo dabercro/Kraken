@@ -32,35 +32,38 @@ function configureSite {
   #
   # -- ATTENTION -- CMSSW has to be setup before calling configure site
   #
-
   link="/cvmfs/cms.cern.ch/SITECONF/local"
-  
+  xml="$link/JobConfig/site-local-config.xml"
+
   echo "---- Setup SiteConfig ----"
   echo " Link       = $link"
+  echo " Xml        = $xml"
   echo " CMSSW_BASE = $CMSSW_BASE"
-  ls -lh $CMSSW_BASE/tgz/siteconf.tgz
 
-  if [ -d "`readlink $link`" ]
+  if [ -e "$xml" ]
   then
-    echo " Link exists. No action needed. ($link)"
+    echo " Config exists: $xml."
+    return
   else
-    echo " WARNING -- Link points nowhere! ($link)"
-    echo "  -- unpacking private local config to recover"
-    executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
-    cd SITECONF
-    rm -f local
-    testGeoId=`curl -s http://cmsopsquid.cern.ch/wpad.dat | grep 'Bad Request'`
-    if [ "$testGeoId" == "" ]
-    then
-      ln -s ./T3_US_OSG ./local
-    else
-      ln -s ./T2_US_MIT ./local
-    fi
-    ls -lhrt
-    cd -
-    # make sure this is the config to be used
-    export CMS_PATH=`pwd`
+    echo " ERROR -- config does not exist: $xml"
   fi
+
+  ls -lh $CMSSW_BASE/tgz/siteconf.tgz
+  echo "  -- unpacking private local config to recover"
+  executeCmd tar fzx $CMSSW_BASE/tgz/siteconf.tgz
+  cd SITECONF
+  rm -f local
+  testGeoId=`curl -s http://cmsopsquid.cern.ch/wpad.dat | grep 'Bad Request'`
+  if [ "$testGeoId" == "" ]
+  then
+    ln -s ./T3_US_OSG ./local
+  else
+    ln -s ./T2_US_MIT ./local
+  fi
+  ls -lhrt
+  cd -
+  # make sure this is the config to be used
+  export CMS_PATH=`pwd`
 
   # get the certificates
   echo "---- Setup certificates ----"
@@ -75,51 +78,92 @@ function configureSite {
   fi
 }
 
-function downloadFile {
-  # download a given lfn using xrootd
+function downloadFiles {
+  # find all input files and loop through to 
 
   # read command line parameters
-  GPACK="$1"
-  LFN="$2"
+  task="$1"
+  gpack="$2"
+  lfn="$3"
+
+  echo " Downloading all input files: $task $gpack $lfn"
+  cat $BASEDIR/$task.lfns
+
+  # grep the input files belonging to this job
+  inputLfns=`grep ^$gpack $BASEDIR/$task.lfns | cut -d' ' -f2`
+  voms-proxy-info -all
+  cd $WORKDIR; pwd; ls -lhrt
+
+  rm -rf ./inputFiles
+  touch  ./inputFiles
+
+  for lfn in $inputLfns
+  do
+    fileId=`basename $lfn | sed 's/.root//'`
+    downloadFile $fileId $lfn
+    if ! [ -e "./$fileId.root" ]
+    then
+      echo " EXIT(255) -- download failed."
+      exit 255
+    fi
+    echo "$fileId.root" >> ./inputFiles
+  done
+
+  echo " =========================="
+  echo "  Input files for this job "
+  echo " =========================="
+  cat ./inputFiles
+}
+
+function downloadFile {
+  # download one given lfn using xrootd
+
+  # read command line parameters
+  gpack="$1"
+  lfn="$2"
 
   serverList="cms-xrd-global.cern.ch cmsxrootd.fnal.gov xrootd.unl.edu"
+  if [ "`grep store/user/paus $lfn`" != "" ]
+  then
+    serverList="xrootd.cmsaf.mit.edu xrootd1.cmsaf.mit.edu xrootd10.cmsaf.mit.edu "
+  fi
 
   echo ""
-  echo " Make local copy of the root file with LFN: $LFN"
+  echo " Make local copy of the root file with LFN: $lfn"
 
-  if [ -e "./$GPACK.root" ]
+  if [ -e "./$gpack.root" ]
   then
-    echo " File exists already locally: ./$GPACK.root"
+    echo " File exists already locally: ./$gpack.root"
   else
     for server in $serverList
     do
       echo " Trying server: $server at "`date`
   
-      echo " Execute:  xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root"
-      xrdcp -d 1 -s root://$server/$LFN ./$GPACK.root
+      echo " Execute:  xrdcp -d 1 -s root://$server/$lfn ./$gpack.root"
+      xrdcp -d 1 -s root://$server/$lfn ./$gpack.root
       rc="$?"
   
       if [ "$rc" != "0" ]
       then
         echo " ERROR -- Copy command failed -- RC: $rc at "`date`
-        rm -f ./$GPACK.root
+        rm -f ./$gpack.root
       fi
   
-      if [ -e "./$GPACK.root" ]
+      if [ -e "./$gpack.root" ]
       then
         echo " Looks like copy worked on server: $server at "`date`
         break
       else
-        echo " ERROR -- file ./$GPACK.root does not exist or is corrupt (RC: $rc, server: $server at "`date`")"
+        echo " ERROR -- ./$gpack.root does not exist or corrupt (RC:$rc, server:$server at "`date`")"
       fi
     done
   fi
 
-  if [ -e "./$GPACK.root" ]
+  if [ -e "./$gpack.root" ]
   then
-    ls -lhrt ./$GPACK.root
+    ls -lhrt ./$gpack.root
   else
-    echo " ERROR -- input file ./$GPACK.root does not exist. Failed on all servers: $serverList"
+    echo " ERROR -- input file ./$gpack.root does not exist. Failed on all servers: $serverList"
     echo "          EXIT now because there is no AOD* file to process."
     return
   fi
@@ -220,13 +264,15 @@ export BASEDIR=`pwd`
 echo " Executing: $0 $* "
 
 # command line arguments
-CONFIG="$1"
-VERSION="$2"
-PY="$3"
-TASK="$4"
-GPACK="$5"
-LFN="$6"
-CRAB="$7"
+             # -- example
+EXE="$1"     # cmsRun
+CONFIG="$2"  # pandaf
+VERSION="$3" # 002
+PY="$4"	     # data-03feb2017
+TASK="$5"    # MET+Run2016B-03Feb2017_ver2-v2+MINIAOD
+GPACK="$6"   # 6EBC0286-34EE-E611-832F-0025905B8600
+LFN="$7"     # /store/data/Run2016B/ ... /6EBC0286-34EE-E611-832F-0025905B8600.root
+CRAB="$8"    # crab_0_170302_132124                               
 
 # load all parameters relevant to this task
 echo " Initialize package"
@@ -257,24 +303,8 @@ initialState $*
 # setting up the software
 setupCmssw $cmsswVersion
 
-# make sure to properly define the LFN
-localFile=`edmFileUtil -d $LFN | sed 's@^file:@@'`
-if ! [ -e "$localFile" ]
-then
-  echo " Local file does NOT exists: $localFile"
-  echo " --> perform xrdcp ...." 
-  cd $WORKDIR; pwd; ls -lhrt
-  voms-proxy-info -all
-  downloadFile $GPACK $LFN
-  if ! [ -e "./$GPACK.root" ]
-  then
-    echo " EXIT(255) -- download failed."
-    exit 255
-  fi
-  LFN="file:$GPACK.root"
-else
-  echo " Local file exists: $localFile"
-fi
+# download all input files to have them local
+downloadFiles $TASK $GPACK $LFN
 
 # prepare the python config from the given templates
 cat $CMSSW_BASE/$CONFIG/$VERSION/${PY}.py \
@@ -303,10 +333,13 @@ cd $WORKDIR
 pwd
 ls -lhrt
 
-echo " Execute cmsRun ${PY}.py" 
+echo " Exe: python ${PY}.py" 
 python ${PY}.py
-cmsRun ${PY}.py
+echo " Exe: $KRAKEN_EXE ${PY}.py inputFiles=./inputFiles outputFile=kraken_000.root" 
+$KRAKEN_EXE ${PY}.py inputFiles=./inputFiles outputFile=kraken_000.root
+
 rc=$?
+
 if [ "$rc" != "0" ] 
 then
   echo ""
@@ -317,7 +350,7 @@ then
 fi
 
 # this is a little naming issue that has to be fixed
-mv kraken-output-file-tmp*.root  ${GPACK}_tmp.root
+mv kraken*.root  ${GPACK}_tmp.root
 
 # cleanup the input
 rm -f ./$GPACK.root

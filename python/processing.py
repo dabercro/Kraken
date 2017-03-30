@@ -31,15 +31,15 @@ class Request:
         self.version = version
         self.py = py
 
-        self.loadQueuedLfns()
-        self.loadHeldLfns()
-        self.loadCompletedLfns()
-        self.sample.createMissingLfns()
+        self.loadQueuedJobs()
+        self.loadHeldJobs()
+        self.loadCompletedJobs()
+        self.sample.createMissingJobs()
 
     #-----------------------------------------------------------------------------------------------
-    # load all lfns so far completed relevant to this task
+    # load all jobs so far completed relevant to this task
     #-----------------------------------------------------------------------------------------------
-    def loadCompletedLfns(self):
+    def loadCompletedJobs(self):
 
         # initialize from scratch
         path = self.base + '/' + self.config + '/' + self.version + '/' \
@@ -49,25 +49,25 @@ class Request:
         for line in os.popen(cmd).readlines():  # run command
             f    = line.split()
             file = (f[1].split("/")).pop()
-            self.sample.addCompletedLfn(file)
+            self.sample.addCompletedJob(file)
         # now also look at the temporary files (not yet cataloged)
         cmd = 'list ' + path + '/crab_*/  2> /dev/null | grep _tmp.root'
         for line in os.popen(cmd).readlines():  # run command
             f    = line.split()
             file = (f[1].split("/")).pop()
             file = file.replace('_tmp','')
-            self.sample.addNoCatalogLfn(file)
+            self.sample.addNoCatalogJob(file)
         if DEBUG > 0:
-            print ' NOCATAL - Lfns: %6d'%(len(self.sample.noCatalogLfns))
-            print ' DONE    - Lfns: %6d'%(len(self.sample.completedLfns))
+            print ' NOCATAL - Jobs: %6d'%(len(self.sample.noCatalogJobs))
+            print ' DONE    - Jobs: %6d'%(len(self.sample.completedJobs))
 
     #-----------------------------------------------------------------------------------------------
-    # load all lfns that are presently queued
+    # load all jobs that are presently queued
     #-----------------------------------------------------------------------------------------------
-    def loadQueuedLfns(self):
+    def loadQueuedJobs(self):
 
         # initialize from scratch
-        self.sample.resetQueuedLfns()
+        self.sample.resetQueuedJobs()
 
         path = self.base + '/' + self.config + '/' + self.version + '/' + self.sample.dataset
         pattern = "%s %s %s %s"%(self.config,self.version,self.py,self.sample.dataset)
@@ -79,18 +79,18 @@ class Request:
                 + ' \"' + cmd + '\"'
         for line in os.popen(cmd).readlines():  # run command
             f    = line.split(' ')
-            file = f[4] + '.root'
-            self.sample.addQueuedLfn(file)
+            file = f[5] + '.root'
+            self.sample.addQueuedJob(file)
         if DEBUG > 0:
-            print ' QUEUED  - Lfns: %6d'%(len(self.sample.queuedLfns))
+            print ' QUEUED  - Jobs: %6d'%(len(self.sample.queuedJobs))
 
     #-----------------------------------------------------------------------------------------------
-    # load all lfns that are presently queued but in held state
+    # load all jobs that are presently queued but in held state
     #-----------------------------------------------------------------------------------------------
-    def loadHeldLfns(self):
+    def loadHeldJobs(self):
 
         # initialize from scratch
-        self.sample.resetHeldLfns()
+        self.sample.resetHeldJobs()
 
         path = self.base + '/' + self.config + '/' + self.version + '/' \
             + self.sample.dataset
@@ -103,11 +103,11 @@ class Request:
                 + ' \"' + cmd + '\"'
         for line in os.popen(cmd).readlines():  # run command
             f    = line.split(' ')
-            file = f[4] + '.root'
-            self.sample.addHeldLfn(file)
+            file = f[5] + '.root'
+            self.sample.addHeldJob(file)
 
         if DEBUG > 0:
-            print ' HELD    - Lfns: %6d'%(len(self.sample.heldLfns))
+            print ' HELD    - Jobs: %6d'%(len(self.sample.heldJobs))
 
 #---------------------------------------------------------------------------------------------------
 """
@@ -186,7 +186,6 @@ class Scheduler:
     def findHome(self,host,user):
 
         cmd = 'ssh ' + user + '@' + host + ' pwd'
-        #print 'CMD: ' + cmd
         home = ''
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]
@@ -200,7 +199,6 @@ class Scheduler:
     def findRemoteUid(self,host,user):
 
         cmd = 'ssh ' + user + '@' + host + ' id -u'
-        #print 'CMD: ' + cmd
         ruid = ''
         for line in os.popen(cmd).readlines():  # run command
             line = line[:-1]
@@ -276,7 +274,7 @@ class Scheduler:
 #---------------------------------------------------------------------------------------------------
 """
 Class:  Sample(dataset='undefined',dbs='instance=prod/global',
-               useExistingLfns=False,useExistingSites=False)
+               useExistingLfns=False,useExistingJobs=False,useExistingSites=False)
 Each sample can be described through this class
 """
 #---------------------------------------------------------------------------------------------------
@@ -287,29 +285,33 @@ class Sample:
     # constructor
     #-----------------------------------------------------------------------------------------------
     def __init__(self,dataset='undefined',dbs='instance=prod/global',\
-                     useExistingLfns=False,useExistingSites=False):
+                     useExistingLfns=False,useExistingJobs=False,useExistingSites=False):
 
         # define command line parameters
         self.dataset = dataset
         self.dbs = dbs
+        if dbs == 'local':
+            self.dbs = '/home/cmsprod/catalog/t2mit'
         self.useExistingLfns = useExistingLfns
+        self.useExistingJobs = useExistingJobs
         self.useExistingSites = useExistingSites
 
         # define the other contents
         self.nEvents = 0
         self.nEvtTotal = 0
-        self.nMissingLfns = 0
+        self.nMissingJobs = 0
         self.allLfns = {}
-        self.queuedLfns = {}               # queued lfns do NOT include the held ones
-        self.heldLfns = {}                 # those are kept separate for further analysis
-        self.noCatalogLfns = {}
-        self.completedLfns = {}
-        self.missingLfns = {}
+        self.allJobs = {}
+        self.queuedJobs = {}               # queued jobs do NOT include the held ones
+        self.heldJobs = {}                 # those are kept separate for further analysis
+        self.noCatalogJobs = {}
+        self.completedJobs = {}
+        self.missingJobs = {}
 
         # fill contents
         self.loadAllLfns(self.makeLfnFile())
+        self.loadAllJobs(self.makeJobFile())
         self.loadSites(self.makeSiteFile())
-
 
     #-----------------------------------------------------------------------------------------------
     # generate the lfn file and return it's location
@@ -340,6 +342,36 @@ class Sample:
             os.system(cmd)
     
         return lfnFile
+
+    #-----------------------------------------------------------------------------------------------
+    # generate the job file and return it's location
+    #-----------------------------------------------------------------------------------------------
+    def makeJobFile(self):
+
+        jobFile  = os.getenv('KRAKEN_WORK') + '/jobs/' + self.dataset + '.jobs'
+    
+        # give notice that file already exists
+        if os.path.exists(jobFile):
+            print " INFO -- Job file found: %s. Someone already worked on this dataset." % jobFile
+    
+        # remove what we need to to start clean
+        cmd = 'rm -f ' +  jobFile + '-TMP'
+        os.system(cmd)
+        
+        # recreate if requested or not existing
+        if not self.useExistingJobs or not os.path.exists(jobFile) or os.stat(jobFile).st_size == 0:
+            cmd = 'input.py --dbs=' + self.dbs + ' --option=job --dataset=' + self.dataset \
+                  + ' | sort -u > ' + jobFile + '-TMP'
+            print ' Input: ' + cmd
+            os.system(cmd)
+    
+        # move the new file into the proper location
+        if os.path.exists(jobFile + '-TMP'):
+            cmd = 'mv ' + jobFile + '-TMP ' + jobFile
+            print ' Move: ' + cmd
+            os.system(cmd)
+    
+        return jobFile
     
     #-----------------------------------------------------------------------------------------------
     # generate the sites file and return it's location
@@ -381,11 +413,12 @@ class Sample:
         print ' Dbs           : ' + self.dbs
         print ' NEvtTotal     : ' + str(self.nEvtTotal)
         print ' All Lfns      : ' + str(len(self.allLfns))
-        print ' Queued Lfns   : ' + str(len(self.queuedLfns))
-        print ' Held Lfns     : ' + str(len(self.heldLfns))
-        print ' NoCatalog Lfns: ' + str(len(self.noCatalogLfns))
-        print ' Completed Lfns: ' + str(len(self.completedLfns))
-        print ' Missing Lfns  : ' + str(len(self.missingLfns))
+        print ' All Jobs      : ' + str(len(self.allJobs))
+        print ' Queued Jobs   : ' + str(len(self.queuedJobs))
+        print ' Held Jobs     : ' + str(len(self.heldJobs))
+        print ' NoCatalog Jobs: ' + str(len(self.noCatalogJobs))
+        print ' Completed Jobs: ' + str(len(self.completedJobs))
+        print ' Missing Jobs  : ' + str(len(self.missingJobs))
 
     #-----------------------------------------------------------------------------------------------
     # return a string for all valid sites
@@ -438,6 +471,43 @@ class Sample:
                 %(len(self.allLfns),self.nEvtTotal)
 
     #-----------------------------------------------------------------------------------------------
+    # load all jobs relevant to this task
+    #-----------------------------------------------------------------------------------------------
+    def loadAllJobs(self, jobFile):
+        
+        print ' JOB file: %s\n'%(jobFile)
+
+        # initialize from scratch
+        self.allJobs = {}
+        self.nEvtTotal = 0
+        # use the complete job file list
+        cmd = 'cat ' + jobFile
+        for line in os.popen(cmd).readlines():  # run command
+            line = line[:-1]
+            # get ride of empty or commented lines
+            if line == '' or line[0] == '#':
+                continue
+
+            # decoding the input line
+            f       = line.split() # splitting every blank
+            job     = f[1]
+            file    = (f[1].split("/")).pop()
+
+            self.nEvents = int(f[2])
+            self.nEvtTotal += self.nEvents
+            if file in self.allJobs.keys():
+                print " ERROR -- job appeared twice! This should never happen. IGNORE. (%s)"%file
+                #print " ERROR -- job appeared twice! This should never happen. EXIT."
+                #sys.exit(1)
+            # add this job to the mix
+            self.allJobs[file] = job
+
+        if DEBUG > 0:
+            print ''
+            print ' TOTAL   - Jobs: %6d  [ Events: %9d ]'\
+                %(len(self.allJobs),self.nEvtTotal)
+
+    #-----------------------------------------------------------------------------------------------
     # load sites for this sample/task
     #-----------------------------------------------------------------------------------------------
     def loadSites(self, siteFile):
@@ -470,109 +540,109 @@ class Sample:
             print ' Sites: %2d: %s'%(len(self.Sites),siteString)
 
     #-----------------------------------------------------------------------------------------------
-    # add one queued lfn to the list
+    # add one queued job to the list
     #-----------------------------------------------------------------------------------------------
-    def addQueuedLfn(self,file):
+    def addQueuedJob(self,file):
 
-        if file not in self.allLfns.keys():
-            print ' ERROR -- found queued lfn not in list of all lfns?! ->' + file + '<-'
-            #print ' DEBUG - length: %d'%(len(self.allLfns))
-        if file in self.queuedLfns.keys():
-            print " ERROR -- queued lfn appeared twice! Should not happen but no danger. (%s)"%file
+        if file not in self.allJobs.keys():
+            print ' ERROR -- found queued job not in list of all jobs?! ->' + file + '<-'
+            #print ' DEBUG - length: %d'%(len(self.allJobs))
+        if file in self.queuedJobs.keys():
+            print " ERROR -- queued job appeared twice! Should not happen but no danger. (%s)"%file
             #sys.exit(1)
-        # add this lfn to the mix
-        self.queuedLfns[file] = self.allLfns[file]
+        # add this job to the mix
+        self.queuedJobs[file] = self.allJobs[file]
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # add one held lfn to the list
+    # add one held job to the list
     #-----------------------------------------------------------------------------------------------
-    def addHeldLfn(self,file):
+    def addHeldJob(self,file):
 
-        if file not in self.allLfns.keys():
-            print ' ERROR -- found queued lfn not in list of all lfns?! ->' + file + '<-'
-        if file in self.heldLfns.keys():
-            print " ERROR -- held lfn appeared twice! Should not happen but no danger. (%s)"%file
+        if file not in self.allJobs.keys():
+            print ' ERROR -- found queued job not in list of all jobs?! ->' + file + '<-'
+        if file in self.heldJobs.keys():
+            print " ERROR -- held job appeared twice! Should not happen but no danger. (%s)"%file
             #sys.exit(1)
-        # add this lfn to the mix
-        self.heldLfns[file] = self.allLfns[file]
+        # add this job to the mix
+        self.heldJobs[file] = self.allJobs[file]
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # reset the list of queued lfns
+    # reset the list of queued jobs
     #-----------------------------------------------------------------------------------------------
-    def resetQueuedLfns(self):
+    def resetQueuedJobs(self):
 
-        self.queuedLfns = {}
+        self.queuedJobs = {}
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # reset the list of held lfns
+    # reset the list of held jobs
     #-----------------------------------------------------------------------------------------------
-    def resetHeldLfns(self):
+    def resetHeldJobs(self):
 
-        self.heldLfns = {}
+        self.heldJobs = {}
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # add all lfns so far completed but not yet cataloged relevant to this task
+    # add all jobs so far completed but not yet cataloged relevant to this task
     # - they might fail cataloging but we assume they worked
     #-----------------------------------------------------------------------------------------------
-    def addNoCatalogLfn(self,file):
+    def addNoCatalogJob(self,file):
 
-        if file not in self.allLfns.keys():
-            print ' ERROR -- found queued lfn not in list of all lfns?! ->' + file + '<-'
-        if file in self.noCatalogLfns.keys():
-            print " ERROR -- noCatalog lfn appeared twice! Should not happen. EXIT (%s)"%file
+        if file not in self.allJobs.keys():
+            print ' ERROR -- found queued job not in list of all jobs?! ->' + file + '<-'
+        if file in self.noCatalogJobs.keys():
+            print " ERROR -- noCatalog job appeared twice! Should not happen. EXIT (%s)"%file
             sys.exit(1)
-        # add this lfn to the mix
-        self.noCatalogLfns[file] = self.allLfns[file]
+        # add this job to the mix
+        self.noCatalogJobs[file] = self.allJobs[file]
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # add all lfns so far completed relevant to this task
+    # add all jobs so far completed relevant to this task
     #-----------------------------------------------------------------------------------------------
-    def addCompletedLfn(self,file):
+    def addCompletedJob(self,file):
 
-        if file not in self.allLfns.keys():
-            print ' ERROR -- found completed lfn not in list of all lfns?! ->' + file + '<-'
-        if file in self.completedLfns.keys():
-            print " ERROR -- completed lfn appeared twice! Should not happen. EXIT (%s)"%file
+        if file not in self.allJobs.keys():
+            print ' ERROR -- found completed job not in list of all jobs?! ->' + file + '<-'
+        if file in self.completedJobs.keys():
+            print " ERROR -- completed job appeared twice! Should not happen. EXIT (%s)"%file
             sys.exit(1)
-        # add this lfn to the mix
-        self.completedLfns[file] = self.allLfns[file]
+        # add this job to the mix
+        self.completedJobs[file] = self.allJobs[file]
 
         return
 
     #-----------------------------------------------------------------------------------------------
-    # create the list of missing Lfns extracted fromt he previously created lists
+    # create the list of missing Jobs extracted fromt he previously created lists
     #-----------------------------------------------------------------------------------------------
-    def createMissingLfns(self):
+    def createMissingJobs(self):
 
-        # fill the remaining lfns from complete database
-        self.missingLfns = {}
-        for file,lfn in self.allLfns.iteritems():
-            if file in self.missingLfns.keys():
-                print " ERROR -- missing lfn appeared twice! Should never happen. EXIT. (%s)"%file
+        # fill the remaining jobs from complete database
+        self.missingJobs = {}
+        for file,job in self.allJobs.iteritems():
+            if file in self.missingJobs.keys():
+                print " ERROR -- missing job appeared twice! Should never happen. EXIT. (%s)"%file
                 sys.exit(1)
             # is it already completed?
-            if file not in self.completedLfns.keys() and \
-               file not in self.noCatalogLfns.keys() and \
-               file not in self.queuedLfns.keys():
+            if file not in self.completedJobs.keys() and \
+               file not in self.noCatalogJobs.keys() and \
+               file not in self.queuedJobs.keys():
                 # adding this one to the missing ones
-                self.missingLfns[file] = lfn
+                self.missingJobs[file] = job
 
         if DEBUG > 0:
-            print ' MISSING - Lfns: %6d'%(len(self.missingLfns))
+            print ' MISSING - Jobs: %6d'%(len(self.missingJobs))
 
 #---------------------------------------------------------------------------------------------------
 """
-Class:  Task(tag,config,version,cmssw,dataset,dbs,lfnFile,siteFile)
+Class:  Task(tag,config,version,cmssw,dataset,dbs,jobFile,siteFile)
 Each task in condor can be described through this class
 """
 #---------------------------------------------------------------------------------------------------
@@ -601,8 +671,9 @@ class Task:
             + self.request.version + '/' + self.sample.dataset
         self.outputData = self.scheduler.base + '/cms/data/' + self.request.config + '/' \
             + self.request.version + '/' + self.sample.dataset
-        self.executable = self.logs + '/' + os.getenv('KRAKEN_SCRIPT')
         self.tarBall = self.logs + '/kraken_' + self.cmsswVersion + '.tgz'
+        self.executable = self.logs + '/' + os.getenv('KRAKEN_SCRIPT')
+        self.lfnFile = self.logs + '/' + self.sample.dataset + '.lfns'
 
         # show what we got
         print ''
@@ -610,15 +681,15 @@ class Task:
         print ''
 
     #-----------------------------------------------------------------------------------------------
-    # add specification to given file for exactly one more condor queue request (one lfn)
+    # add specification to given file for exactly one more condor queue request (one job)
     #-----------------------------------------------------------------------------------------------
-    def addLfn(self,fileH,file,lfn):
+    def addJob(self,fileH,file,job):
 
         gpack = file.replace('.root','')
 
-        fileH.write("Arguments = " + self.request.config + ' ' + self.request.version + ' ' \
-                        + ' ' + self.request.py + ' ' + self.sample.dataset + ' ' + gpack + ' ' \
-                        + lfn + ' ' + self.tag + '\n')
+        fileH.write("Arguments = " + os.getenv('KRAKEN_EXE') + ' ' + self.request.config + ' ' \
+                        + self.request.version + ' ' + ' ' + self.request.py + ' ' \
+                        + self.sample.dataset + ' ' + gpack + ' ' + job + ' ' + self.tag + '\n')
         fileH.write("Output = " + self.logs + '/' + gpack + '.out' + '\n')
         fileH.write("Error = " + self.logs + '/' + gpack + '.err' + '\n')
         fileH.write("transfer_output_files = " + gpack + '.empty' + '\n')
@@ -708,7 +779,7 @@ class Task:
             print ' Make kraken tar ball: ' \
                 + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz"
             cmd = "cd " + cmsswBase \
-                + "; tar fch kraken_" + self.cmsswVersion + ".tar lib/ src/"
+                + "; tar fch kraken_" + self.cmsswVersion + ".tar bin/ lib/ src/"
             #print ' CMD: ' + cmd
             os.system(cmd)
             cmd = "cd " + cmsswBase \
@@ -735,11 +806,18 @@ class Task:
             cmd = "cp " + os.getenv('KRAKEN_BASE') + "/bin/" + os.getenv('KRAKEN_SCRIPT') + " " \
                 + self.logs
             os.system(cmd)
+            # also copy the lfn list over 
+            cmd = "cp " + os.getenv('KRAKEN_WORK') + '/lfns/' + self.sample.dataset + '.lfns' \
+                + " " + self.logs
+            os.system(cmd)
         else:
             cmd = "scp -q " + cmsswBase + "/kraken_" + self.cmsswVersion + ".tgz " \
                 + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
             cmd = "scp -q " + os.getenv('KRAKEN_BASE') + "/bin/" + os.getenv('KRAKEN_SCRIPT') \
+                + " " + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
+            os.system(cmd)
+            cmd = "scp -q " + os.getenv('KRAKEN_WORK') + '/lfns/' + self.sample.dataset + '.lfns' \
                 + " " + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
 
@@ -776,18 +854,19 @@ class Task:
             +  self.submitCmd
         os.system(cmd)
 
-        # attach the additional processing lines defining the specifc LFN productions
+        # attach the additional processing lines defining the specifc JOB productions
         with open(self.submitCmd,'a') as fileH:
-            fileH.write("Environment = \"HOSTNAME=" + os.getenv('HOSTNAME') + "\"" + '\n')
+            fileH.write("Environment = \"HOSTNAME=" + os.getenv('HOSTNAME') + \
+                            "; KRAKEN_EXE=" + os.getenv('KRAKEN_EXE') + "\"" + '\n')
             fileH.write("Initialdir = " + self.outputData + '\n')
             fileH.write("Executable = " + self.executable + '\n')
             fileH.write("Log = " + self.logs + '/' + self.sample.dataset + '.log' + '\n')
-            fileH.write("transfer_input_files = " + self.tarBall+ '\n')
+            fileH.write("transfer_input_files = " + self.tarBall + ',' + self.lfnFile + '\n')
 
-            for file,lfn in self.sample.missingLfns.iteritems():
-                print ' Adding : %s %s'%(file,lfn)
+            for file,job in self.sample.missingJobs.iteritems():
+                print ' Adding : %s %s'%(file,job)
                 self.nJobs += 1
-                self.addLfn(fileH,file,lfn)
+                self.addJob(fileH,file,job)
 
         # make sure submit script is in the right place
         if not self.scheduler.isLocal() and self.nJobs>0:
@@ -843,7 +922,7 @@ class TaskCleaner:
 
         print '\n ====  C l e a n e r  ===='
 
-        # A - take all completed lfns and remove all related logs
+        # A - take all completed jobs and remove all related logs
         self.removeCompletedLogs()
 
         # B - find all logs from the held jobs, save them and generate failure summary
@@ -885,7 +964,7 @@ class TaskCleaner:
 
         print ' - remove completed logs'
 
-        for file,lfn in self.task.sample.completedLfns.iteritems():
+        for file,job in self.task.sample.completedJobs.iteritems():
             # we will make a lot of reference to the ID
             id = file.replace('.root','')
 
@@ -895,7 +974,7 @@ class TaskCleaner:
             cmd = 'rm -f %s/%s/%s/%s/*%s*\n'%(local,cfg,vers,dset,id)
             self.webRemoveScript += cmd
 
-        for file,lfn in self.task.sample.noCatalogLfns.iteritems():
+        for file,job in self.task.sample.noCatalogJobs.iteritems():
             # we will make a lot of reference to the ID
             id = file.replace('.root','')
 
@@ -924,7 +1003,7 @@ class TaskCleaner:
         irc = 0
         rc = 0
 
-        print ' - remove Held jobs (there are %d): %s'%(len(self.task.request.sample.heldLfns),cmd)
+        print ' - remove Held jobs (there are %d): %s'%(len(self.task.request.sample.heldJobs),cmd)
         if not self.task.scheduler.isLocal():
             (irc,rc,out,err) = self.rex.executeAction(cmd)
             if DEBUG > 0 and (irc != 0 or rc != 0):
@@ -971,7 +1050,7 @@ class TaskCleaner:
 
         # find out whether we have held jobs == failures
         haveFailures = False
-        for file,lfn in self.task.sample.heldLfns.iteritems():
+        for file,job in self.task.sample.heldJobs.iteritems():
             id = file.replace('.root','')
             cmd = '  \\\n  %s.{out,err}'%(id)
             self.logSaveScript += cmd

@@ -94,7 +94,7 @@ do
         #==================
 
         stdbuf -o0 -e0 \
-        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py --exe \
+        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --py=$py --exe \
                                           $KRAKEN_REVIEW_OPTIONS                >> $logFile 2>&1
         echo " "                                                                >> $logFile
 

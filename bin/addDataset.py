@@ -4,7 +4,7 @@
 #
 # v1.0                                                                                  Sep 19, 2014
 #===================================================================================================
-import sys,os,subprocess,getopt
+import sys,os,re,subprocess,getopt
 import json
 import MySQLdb
 import rex
@@ -13,13 +13,16 @@ import fileIds
 def addBlock(datasetId,blockName):
     # add a new block of a given datasetId to the database
 
+    #print ' Adding: %d %s'%(datasetId,blockName)
+
     sql  = "insert into Blocks(DatasetId,BlockName) values(%d,'%s')"%(datasetId,blockName)
+    #print "SQL " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
     except:
-        #print ' ERROR (%s) - could not insert new block.'%(sql)
-        #print " Unexpected error:", sys.exc_info()[0]
+        print ' ERROR (%s) - could not insert new block.'%(sql)
+        print " Unexpected error:", sys.exc_info()[0]
         pass
 
     return getBlockId(datasetId,blockName)
@@ -35,6 +38,7 @@ def addLfn(datasetId,blockId,fileName,pathName,nEvents):
 
     sql = "insert into Lfns(DatasetId,BlockId,FileName,PathName,NEvents) " \
         +  " values(%d,%d,'%s','%s',%d)"%(datasetId,blockId,fileName,pathName,nEvents)
+    #print "SQL " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
@@ -75,8 +79,43 @@ def convertSizeToGb(sizeTxt):
 def findDatasetProperties(dataset,dbsInst,debug=0):
     # test whether this is a legitimate dataset by asking DAS and determine size and number of files
 
+    if "=" in dataset:
+        # find config, version and original dataset name
+        f = dataset.split("=")
+        conf = (f[0])[1:]
+        vers = f[1]
+        dset = f[2].replace("/","+")
+
+        sizeGb = 10 # does not matter
+        nFiles = 0
+        lfns = {}
+
+        cmd = 'cat /home/cmsprod/catalog/t2mit/%s/%s/%s/Filesets'%(conf,vers,dset)
+        myRex = rex.Rex()
+        (rc,out,err) = myRex.executeLocalAction(cmd)
+
+        for line in out.split("\n"):
+            line = ' '.join(line.split())
+            f = line.split(" ")
+            if len(f) > 1:
+                nFiles += 1
+                id = f[0]
+                path = re.sub(r'root://.*/(/store/.*)',r'\1',f[1])
+                lfn = "%s/%s.root"%(path,id)
+                nEvents = int(f[2])
+
+                fId = fileIds.fileId(id+".root",nEvents)
+                lfn = fileIds.lfn(fId,id,path)
+                lfns[fId.getName()] = lfn
+                if debug>1:
+                    print " Adding: %s, %s"%(id,lfn)
+
+        return (sizeGb,nFiles,lfns)
+
+    # daling with a standard dataset first test
     if not isDatasetValid(dataset,dbsInst,debug):
         return (-1,-1,-1)
+
 
     proxy = getProxy()
     url = 'curl -s --cert %s -k -H "Accept: application/json"'%proxy \
@@ -150,7 +189,7 @@ def getBlockId(datasetId,blockName):
     if not blockId>0:
         print ' ERROR -- invalid block id: %d'%(blockId)
         sys.exit(1)
- 
+
     return blockId
 
 def getDatasetId(dataset):
@@ -305,7 +344,7 @@ def selectDataset(db,process,setup,tier,debug=0):
 
     return results
 
-def testLocalSetup(dataset,debug=0):
+def testLocalSetup(dataset,dbsInst,debug=0):
     # test all relevant components and exit is something is off
 
     # check the user proxy
@@ -330,14 +369,18 @@ def testLocalSetup(dataset,debug=0):
     # check basic dataset parameters
     if dataset[0] != '/':
         dataset = '/' + dataset.replace('+','/')
-        print " DATASET: " + dataset
+
     f = dataset.split('/')
     if len(f) != 4 or f[0] != '':
         print '\n ERROR in dataset format. Please check dataset name.\n'
         print usage
         sys.exit(1)
 
-    return dataset
+    # if this is not a dataset in dbs
+    if "=" in dataset:
+        dbsInst = "local"
+
+    return (dataset,dbsInst)
 
 def updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,debug=0):
 
@@ -405,7 +448,7 @@ for opt, arg in opts:
     if opt == "--exec":
         exe = True
 
-dataset = testLocalSetup(dataset,debug)
+(dataset,dbsInst) = testLocalSetup(dataset,dbsInst,debug)
 
 # Open database connection
 db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
@@ -418,11 +461,12 @@ process = f[1]
 setup   = f[2]
 tier    = f[3]
 
-# First check whether this download request already exists in the database
+# First check whether this dataset already exists in the database
 results = selectDataset(db,process,setup,tier,debug)
 
 # Check the dataset in dbs
 (sizeGb, nFiles, lfns) = findDatasetProperties(dataset,dbsInst,debug)
+
 if sizeGb < 0:
     print ' Dataset does not exist or is invalid (%s).'%dataset
     if len(results) > 0:
@@ -451,7 +495,7 @@ if len(results) == 1:
         dbSizeGb = float(row[5])
         dbNFiles = int(row[6])
     # check whether information correct and adjust if needed
-    if dbSizeGb != sizeGb or dbNFiles != nFiles:
+    if True or dbSizeGb != sizeGb or dbNFiles != nFiles:
         print " Update!  Size: %.3f -> %.3f  nFiles: %d -> %d"%(dbSizeGb,sizeGb,dbNFiles,nFiles)
         rc = 0
         if exe:
