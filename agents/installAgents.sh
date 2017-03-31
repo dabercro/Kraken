@@ -44,6 +44,7 @@ function install {
 # Setup the environment
 source ../setup.sh
 source setupAgents.sh
+source ../../FiBS/setup.sh
 
 # General installation (you have to be in the directory of install script and you have to be root)
 

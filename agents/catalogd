@@ -4,10 +4,7 @@
 #
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
-# initialize environment variables
-source /home/cmsprod/Tools/Kraken/setup.sh
-source /home/cmsprod/Tools/FiBS/setup.sh
-source $KRAKEN_AGENTS_BASE/setupAgents.sh
+# environment has to be setup: Kraken, Kraken agents, FiBS
 
 # daemon
 daemon=`basename $0`

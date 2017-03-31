@@ -42,7 +42,8 @@ function killAgent {
 #                                               M A I N
 #---------------------------------------------------------------------------------------------------
 # Setup the environment
-source setupAgents.sh
+source ../setup.sh
+source ./setupAgents.sh
 
 # kill all daemons and main processes inside
 #===========================================

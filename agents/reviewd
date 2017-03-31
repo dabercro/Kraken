@@ -4,9 +4,7 @@
 #
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
-# initialize environment variables
-source /home/cmsprod/Tools/Kraken/setup.sh
-source $KRAKEN_AGENTS_BASE/setupAgents.sh
+# environment has to be setup: Kraken, Kraken agents
 
 # daemon
 daemon=`basename $0`
@@ -95,7 +93,7 @@ do
         #==================
 
         stdbuf -o0 -e0 \
-        $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --py=$py --exe \
+        reviewRequests.py --config=$cfg --version=$vrs --py=$py --exe \
                                           $KRAKEN_REVIEW_OPTIONS                >> $logFile 2>&1
         echo " "                                                                >> $logFile
 
