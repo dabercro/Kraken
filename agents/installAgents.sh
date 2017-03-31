@@ -7,6 +7,13 @@
 #                                                                Ch.Paus: Version 0.0 (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 
+function init {
+  # function to initialize the local environment
+  source ../setup.sh
+  source setupAgents.sh
+  source ../../FiBS/setup.sh
+}
+
 function install {
   # function that will install the daemon named as the given first parameter
   #   example: install reviewd
@@ -41,10 +48,7 @@ function install {
 #---------------------------------------------------------------------------------------------------
 #                                               M A I N
 #---------------------------------------------------------------------------------------------------
-# Setup the environment
-source ../setup.sh
-source setupAgents.sh
-source ../../FiBS/setup.sh
+init
 
 # General installation (you have to be in the directory of install script and you have to be root)
 
