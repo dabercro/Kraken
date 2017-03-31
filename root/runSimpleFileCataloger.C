@@ -47,17 +47,12 @@ void catalogFile(const char *dir, const char *file)
   // Now deal with trees
   TTree *tree = 0, *allTree = 0;
 
-  tree = (TTree*) f->FindObjectAny("Delphes");
-  if (tree) {
-    printf("0000 %s %lld %lld\n",fileName.Data(),tree->GetEntries(),tree->GetEntries());
-    return;
-  }
-
-  tree    = (TTree*) f->FindObjectAny("events");
+  tree = (TTree*) f->FindObjectAny("events");
   allTree  = (TTree*) f->FindObjectAny("all");
+
   if (tree && allTree) {
     if (nAll < 0)
-      allTree->GetEntries();
+      nAll = allTree->GetEntries();
     printf("XX-CATALOG-XX 0000 %s %lld %lld %d %d %d %d\n",
 	   fileName.Data(),tree->GetEntries(),nAll,1,1,1,1);
     return;
@@ -65,7 +60,7 @@ void catalogFile(const char *dir, const char *file)
 
   if (tree) {
     if (nAll < 0)
-      tree->GetEntries();
+      nAll = tree->GetEntries();
     printf("XX-CATALOG-XX 0000 %s %lld %lld %d %d %d %d\n",
 	   fileName.Data(),tree->GetEntries(),nAll,1,1,1,1);
     return;
@@ -74,7 +69,7 @@ void catalogFile(const char *dir, const char *file)
   tree    = (TTree*) f->FindObjectAny("Events");
   if (tree) {
     if (nAll < 0)
-      tree->GetEntries();
+      nAll = tree->GetEntries();
     printf("XX-CATALOG-XX 0000 %s %lld %lld %d %d %d %d\n",
 	   fileName.Data(),tree->GetEntries(),nAll,1,1,1,1);
   }
@@ -82,7 +77,7 @@ void catalogFile(const char *dir, const char *file)
   allTree = (TTree*) f->FindObjectAny("AllEvents");
   if (tree && allTree) {
     if (nAll < 0)
-      allTree->GetEntries();
+      nAll = allTree->GetEntries();
     printf("XX-CATALOG-XX 0000 %s %lld %lld %d %d %d %d\n",
 	   fileName.Data(),tree->GetEntries(),nAll,1,1,1,1);
   }

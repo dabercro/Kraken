@@ -5,6 +5,8 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # initialize environment variables
+source /home/cmsprod/Tools/Kraken/setup.sh
+source /home/cmsprod/Tools/FiBS/setup.sh
 source $KRAKEN_AGENTS_BASE/setupAgents.sh
 
 # daemon
@@ -92,7 +94,6 @@ do
       done
  
       # list is complete, let's move it safely where it belongs
-      echo " FiBS base: $FIBS_BASE"
       fibsLock.py --configFile=$FIBS_BASE/config/checkFile.cfg \
                   --cmd="mv tmp.list $FIBS_WORK/checkFile.list"                     >> $logFile
 

@@ -1,6 +1,6 @@
 # Where does stuff come from
 
-myRoot=/home/$USER
+myRoot=/home/cmsprod
 pkgRoot=/home/cmsprod/Tools
 
 # Kraken parameters (edit as needed)

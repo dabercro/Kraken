@@ -42,6 +42,7 @@ function install {
 #                                               M A I N
 #---------------------------------------------------------------------------------------------------
 # Setup the environment
+source ../setup.sh
 source setupAgents.sh
 
 # General installation (you have to be in the directory of install script and you have to be root)

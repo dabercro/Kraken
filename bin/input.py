@@ -43,7 +43,7 @@ usage += "                [ --help ]\n"
 ##
 ##    return content
     
-def generateContent(dataset,dbs,option,debug):
+def generateContent(dataset,option,debug):
     # use officical dbs commands to generate the content
 
     f = dataset.split("/")
@@ -79,12 +79,13 @@ def generateContent(dataset,dbs,option,debug):
         nEvents = int(row[3])
         bName = dataset+'#'+row[0]
         pName = row[1]
-        fName = row[2] + '.root'
+        fName = row[2]
+        fNameR = fName + '.root'
         if nEvents>0:
             if option == 'job':
-                content.append("%s %s %d"%(fName,pName+'/'+fName,nEvents))
+                content.append("%s %s %d"%(fName,pName+'/'+fNameR,nEvents))
             elif option == 'lfn':
-                content.append("%s %s %d"%(bName,pName+'/'+fName,nEvents))
+                content.append("%s %s %d"%(bName,pName+'/'+fNameR,nEvents))
                 
 
     return content
@@ -195,8 +196,10 @@ if dataset == None:
 # initialize the content of the file
 content = []
 
-#content = generateContent(dataset,dbs,option,dbs,debug)
-content = generateContentFromPanda(dataset,dbs,option,debug)
+if 'catalog' in dbs:
+    content = generateContentFromPanda(dataset,dbs,option,debug)
+else:
+    content = generateContent(dataset,option,debug)
 
 # here is where we print
 for line in content:

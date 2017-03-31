@@ -5,6 +5,7 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # initialize environment variables
+source /home/cmsprod/Tools/Kraken/setup.sh
 source $KRAKEN_AGENTS_BASE/setupAgents.sh
 
 # daemon
