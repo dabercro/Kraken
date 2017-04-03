@@ -124,7 +124,7 @@ function downloadFile {
   lfn="$2"
 
   serverList="cms-xrd-global.cern.ch cmsxrootd.fnal.gov xrootd.unl.edu"
-  if [ "`grep store/user/paus $lfn`" != "" ]
+  if [ "`echo $lfn | grep store/user/paus`" != "" ]
   then
     serverList="xrootd.cmsaf.mit.edu xrootd1.cmsaf.mit.edu xrootd10.cmsaf.mit.edu "
   fi
