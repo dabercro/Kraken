@@ -336,8 +336,8 @@ ls -lhrt
 
 echo " Exe: python ${PY}.py" 
 python ${PY}.py
-echo " Exe: $KRAKEN_EXE ${PY}.py inputFiles=./inputFiles outputFile=kraken_000.root" 
-$KRAKEN_EXE ${PY}.py inputFiles=./inputFiles outputFile=kraken_000.root
+echo " Exe: $EXE ${PY}.py inputFiles="`cat ./inputFiles | tr "\n" ","`" outputFile=kraken_000.root" 
+$EXE ${PY}.py inputFiles=`cat ./inputFiles | tr "\n" ","` outputFile=kraken_000.root
 
 rc=$?
 
