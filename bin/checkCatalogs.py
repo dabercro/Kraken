@@ -14,9 +14,7 @@ import os,sys,subprocess
 import fileIds
 
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
-
-TRUNC = "/cms"
-DIR = "/store/user/paus"
+DIR = "/cms/store/user/paus"
 
 #---------------------------------------------------------------------------------------------------
 #  H E L P E R S
@@ -26,7 +24,7 @@ def removeFileIdsFromDisk(book,dataset,fileIds):
 
     for badFileId in sorted(fileIds):
         if badFileId != '':
-            cmd = " t2tools.py --action=rm --source=" + TRUNC + DIR + '/' \
+            cmd = " t2tools.py --action=rm --source=" + DIR + '/' \
                 + book + '/' + dataset + '/' + badFileId + '*' 
             print " RM - from disk: " + cmd
             os.system(cmd)
@@ -42,7 +40,7 @@ def cleanCatalogFile(file,book,dataset,patterns):
         if badWord != '':
             badWords.append(badWord)
             print "  " + badWord
-            #cmd = " t2tools.py --action=rm --source=" + TRUNC + DIR + '/' \
+            #cmd = " t2tools.py --action=rm --source=" + DIR + '/' \
             #    + book + '/' + dataset + '/' + badWord + '*' 
             #print " RM - from disk: " + cmd
             #os.system(cmd)
@@ -145,7 +143,7 @@ def loadFilesFromDisk(book,dataset):
     fileOnDiskIds = fileIds.fileIds()
 
     # list all files from the giben directory
-    cmd = 'list ' + TRUNC + DIR + "/" + book + "/" + dataset
+    cmd = 'list ' + DIR + "/" + book + "/" + dataset
     if DEBUG>0:
         print " CMD (loadFilesFromDisk): " + cmd
     
@@ -175,7 +173,7 @@ def loadFilesFromDisk(book,dataset):
 #---------------------------------------------------------------------------------------------------
 #  M A I N
 #---------------------------------------------------------------------------------------------------
-catalog = "/home/cmsprod/catalog/t2mit"
+catalog = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
 
 book = sys.argv[1]
 pattern = ''
@@ -192,7 +190,7 @@ if pattern == '':
 else:
     print ' Find all datasets matching %s.'%(pattern)
 
-cmd = 'list ' + TRUNC + DIR + "/" + book
+cmd = 'list ' + DIR + "/" + book
 if pattern != "":
     cmd += "| grep %s"%(pattern)
 

@@ -18,7 +18,8 @@ export KRAKEN_EXE=cmsRun
 export KRAKEN_CMSSW=$myRoot/cms/cmssw
 
 export KRAKEN_SE_BASE=/cms/store/user/paus
-export KRAKEN_CATALOG=/home/cmsprod/catalog/t2mit
+export KRAKEN_CATALOG_INPUT=/home/cmsprod/catalog/t2mit
+export KRAKEN_CATALOG_OUTPUT=/home/cmsprod/catalog/t2mit
 
 export PATH=${PATH}:${KRAKEN_BASE}/bin
 export PYTHONPATH=${PYTHONPATH}:${KRAKEN_BASE}/python

@@ -10,7 +10,7 @@ import MySQLdb
 import task
 import rex
 
-CATALOG = os.getenv('KRAKEN_CATALOG')
+CATALOG = os.getenv('KRAKEN_CATALOG_OUTPUT')
 JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
 
 #---------------------------------------------------------------------------------------------------

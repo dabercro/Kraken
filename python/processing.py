@@ -291,7 +291,7 @@ class Sample:
         self.dataset = dataset
         self.dbs = dbs
         if dbs == 'local':
-            self.dbs = '/home/cmsprod/catalog/t2mit'
+            self.dbs = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
         self.useExistingLfns = useExistingLfns
         self.useExistingJobs = useExistingJobs
         self.useExistingSites = useExistingSites

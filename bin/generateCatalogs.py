@@ -5,7 +5,7 @@ import fileIds
 
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
 DATA = os.environ.get('KRAKEN_SE_BASE','/cms/store/user/paus')
-CATALOG = os.environ.get('KRAKEN_CATALOG','/home/cmsprod/catalog/t2mit')
+CATALOG = os.environ.get('KRAKEN_CATALOG_OUTPUT','/home/cmsprod/catalog/t2mit')
 
 Db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
 Cursor = Db.cursor()

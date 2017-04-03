@@ -10,6 +10,8 @@ import MySQLdb
 import rex
 import fileIds
 
+CATALOG_INPUT = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
+
 def addBlock(datasetId,blockName):
     # add a new block of a given datasetId to the database
 
@@ -90,7 +92,7 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
         nFiles = 0
         lfns = {}
 
-        cmd = 'cat /home/cmsprod/catalog/t2mit/%s/%s/%s/Filesets'%(conf,vers,dset)
+        cmd = 'cat %s/%s/%s/%s/Filesets'%(CATALOG_INPUT,conf,vers,dset)
         myRex = rex.Rex()
         (rc,out,err) = myRex.executeLocalAction(cmd)
 
