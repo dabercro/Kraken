@@ -87,11 +87,24 @@ function downloadFiles {
   gpack="$2"
   lfn="$3"
 
+  echo " "
   echo " Downloading all input files: $task $gpack $lfn"
-  cat $BASEDIR/$task.lfns
+  echo " ============================"
+  #cat $BASEDIR/$task.lfns
 
   # grep the input files belonging to this job
-  inputLfns=`grep ^$gpack $BASEDIR/$task.lfns | cut -d' ' -f2`
+  echo " INPUTS:  grep $gpack $BASEDIR/$task.lfns | cut -d' ' -f2"
+  if   [ ${#gpack} == "4" ]
+  then
+    inputLfns=`grep ^$gpack $BASEDIR/$task.lfns | cut -d' ' -f2`
+  elif [ ${#gpack} == "36" ]
+  then
+    inputLfns=`grep $gpack $BASEDIR/$task.lfns | cut -d' ' -f2`
+  else
+    echo ' ERROR -- unexpected GPACK: $gpack'
+    exit 253
+  fi
+  echo " Input LFNs: $inputLfns"
   voms-proxy-info -all
   cd $WORKDIR; pwd; ls -lhrt
 
@@ -107,7 +120,15 @@ function downloadFiles {
       echo " EXIT(255) -- download failed."
       exit 255
     fi
-    echo "$fileId.root" >> ./inputFiles
+
+    # add this file to the input list
+    if   [ ${#gpack} == "4" ]
+    then
+      echo "$fileId.root" >> ./inputFiles
+    elif [ ${#gpack} == "36" ]
+    then
+      echo "file:$fileId.root" >> ./inputFiles
+    fi
   done
 
   echo " =========================="
@@ -336,8 +357,8 @@ ls -lhrt
 
 echo " Exe: python ${PY}.py" 
 python ${PY}.py
-echo " Exe: $EXE ${PY}.py inputFiles="`cat ./inputFiles | tr "\n" ","`" outputFile=kraken_000.root" 
-$EXE ${PY}.py inputFiles=`cat ./inputFiles | tr "\n" ","` outputFile=kraken_000.root
+echo " Exe: $EXE ${PY}.py inputFiles="`cat ./inputFiles | tr "\n" "," | sed 's/,$//'`" outputFile=kraken_000.root" 
+$EXE ${PY}.py inputFiles=`cat ./inputFiles | tr "\n" "," | sed 's/,$//'` outputFile=kraken_000.root
 
 rc=$?
 

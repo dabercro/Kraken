@@ -5,6 +5,8 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # environment has to be setup: Kraken, Kraken agents, FiBS
+source /home/cmsprod/Tools/Kraken/setup.sh
+source /usr/local/Kraken/agents/setupAgents.sh
 
 # daemon
 daemon=`basename $0`
@@ -91,7 +93,7 @@ do
       done
  
       # list is complete, let's move it safely where it belongs
-      fibsLock.py --configFile=$FIBS_BASE/config/checkFile.cfg \
+      fibsLock.py --configFile=checkFile \
                   --cmd="mv tmp.list $FIBS_WORK/checkFile.list"                     >> $logFile
 
       nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
