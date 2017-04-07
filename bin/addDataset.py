@@ -114,10 +114,9 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
 
         return (sizeGb,nFiles,lfns)
 
-    # daling with a standard dataset first test
-    if not isDatasetValid(dataset,dbsInst,debug):
-        return (-1,-1,-1)
-
+    ## dealing with a standard dataset first test
+    #if not isDatasetValid(dataset,dbsInst,debug):
+    #    return (-1,-1,-1)
 
     proxy = getProxy()
     url = 'curl -s --cert %s -k -H "Accept: application/json"'%proxy \

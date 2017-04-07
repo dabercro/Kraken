@@ -5,6 +5,8 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # environment has to be setup: Kraken, Kraken agents, FiBS
+source /home/cmsprod/Tools/Kraken/setup.sh
+source /usr/local/Kraken/agents/setupAgents.sh
 
 # daemon
 daemon=`basename $0`

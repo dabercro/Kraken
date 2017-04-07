@@ -7,10 +7,10 @@
 #                                                                Ch.Paus: Version 0.0 (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 
-function init {
+function initAgents {
   # function to initialize the local environment
   source ../setup.sh
-  source setupAgents.sh
+  source ./setupAgents.sh
   source ../../FiBS/setup.sh
 }
 
@@ -48,7 +48,7 @@ function install {
 #---------------------------------------------------------------------------------------------------
 #                                               M A I N
 #---------------------------------------------------------------------------------------------------
-init
+initAgents
 
 # General installation (you have to be in the directory of install script and you have to be root)
 
