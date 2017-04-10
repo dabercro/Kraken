@@ -141,7 +141,7 @@ function downloadFile {
   # download one given lfn using xrootd
 
   # read command line parameters
-  gpack="$1"
+  gpackX="$1"
   lfn="$2"
 
   serverList="cms-xrd-global.cern.ch cmsxrootd.fnal.gov xrootd.unl.edu"
@@ -153,39 +153,39 @@ function downloadFile {
   echo ""
   echo " Make local copy of the root file with LFN: $lfn"
 
-  if [ -e "./$gpack.root" ]
+  if [ -e "./$gpackX.root" ]
   then
-    echo " File exists already locally: ./$gpack.root"
+    echo " File exists already locally: ./$gpackX.root"
   else
     for server in $serverList
     do
       echo " Trying server: $server at "`date`
   
-      echo " Execute:  xrdcp -d 1 -s root://$server/$lfn ./$gpack.root"
-      xrdcp -d 1 -s root://$server/$lfn ./$gpack.root
+      echo " Execute:  xrdcp -d 1 -s root://$server/$lfn ./$gpackX.root"
+      xrdcp -d 1 -s root://$server/$lfn ./$gpackX.root
       rc="$?"
   
       if [ "$rc" != "0" ]
       then
         echo " ERROR -- Copy command failed -- RC: $rc at "`date`
-        rm -f ./$gpack.root
+        rm -f ./$gpackX.root
       fi
   
-      if [ -e "./$gpack.root" ]
+      if [ -e "./$gpackX.root" ]
       then
         echo " Looks like copy worked on server: $server at "`date`
         break
       else
-        echo " ERROR -- ./$gpack.root does not exist or corrupt (RC:$rc, server:$server at "`date`")"
+        echo " ERROR -- ./$gpackX.root does not exist or corrupt (RC:$rc, server:$server at "`date`")"
       fi
     done
   fi
 
-  if [ -e "./$gpack.root" ]
+  if [ -e "./$gpackX.root" ]
   then
-    ls -lhrt ./$gpack.root
+    ls -lhrt ./$gpackX.root
   else
-    echo " ERROR -- input file ./$gpack.root does not exist. Failed on all servers: $serverList"
+    echo " ERROR -- input file ./$gpackX.root does not exist. Failed on all servers: $serverList"
     echo "          EXIT now because there is no AOD* file to process."
     return
   fi
