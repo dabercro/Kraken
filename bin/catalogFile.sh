@@ -6,7 +6,8 @@
 #---------------------------------------------------------------------------------------------------
 # some basic printing
 h=`basename $0`
-echo " ${h}: Show who and where we are!"
+
+echo " "
 echo " Script:    $h"
 echo " Arguments: ($*)"
 echo " "
@@ -30,7 +31,7 @@ procId=$$
 logFile=`echo $dataFile.$$ | tr '/' '+'`
 logFile=/tmp/$logFile
 
-echo " "; echo "Initialize CMSSW"; echo " "
+echo " Initialize CMSSW"; echo " "
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 cd     /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw-patch/CMSSW_8_0_26_patch2/src
 eval   `scram runtime -sh`
@@ -42,18 +43,14 @@ then
   export X509_USER_PROXY="./x509up_u`id -u`"
 fi
 echo " INFO -- using the x509 ticket: $X509_USER_PROXY"
-voms-proxy-info -all
+echo " Time left: "`voms-proxy-info -timeleft`" seconds."
 
 # Get ready to run
 rm -f $logFile
-which root
-echo " "; echo "Starting root now"; echo " "
-echo " root -l -b -q $KRAKEN_BASE/root/${CATALOG_MACRO} \ "
-echo "               ($dataDir,$dataFile) \ "
-echo "               >& $logFile "
-root -l -b -q -n \
-     $KRAKEN_BASE/root/${CATALOG_MACRO}\(\"$dataDir\",\"$dataFile\"\) \
-     >& $logFile
+echo "" `which root`
+echo " "; echo " Starting root now"; echo " "
+echo " root -l -b -q $KRAKEN_BASE/root/${CATALOG_MACRO}($dataDir,$dataFile >& $logFile"
+root -l -b -q -n $KRAKEN_BASE/root/${CATALOG_MACRO}\(\"$dataDir\",\"$dataFile\"\) >& $logFile
   
 status=`echo $?`
 error=`cat $logFile |grep -v mithep::Selector::UpdateRunInfo | grep -v 'no dictionary for class' | grep 'Error' | wc -l`
