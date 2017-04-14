@@ -6,9 +6,7 @@
 #
 # Author: C.Paus                                                                     (May 14, 2015)
 #---------------------------------------------------------------------------------------------------
-OPTION="$1"
-source $KRAKEN_BASE/agents/setupAgents.sh
-source $KRAKEN_BASE/agents/cycle.cfg
+source $KRAKEN_AGENTS_BASE/setup.sh
 
 # Message at the begining
 echo " "
@@ -17,11 +15,10 @@ echo " "
 
 # images
 echo " Copy images from $KRAKEN_BASE"
-cp $KRAKEN_BASE/agents/html/agent*jpg $KRAKEN_AGENTS_LOG
+cp $KRAKEN_BASE/agents/html/images/{Kraken,agent}*jpg \
+   $KRAKEN_AGENTS_LOG
 
 # global index files to log area
-#echo " Generate index files"
-#cp $KRAKEN_BASE/agents/html/index-kraken.php $KRAKEN_AGENTS_LOG
 echo " Generate index files"
 cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG
 

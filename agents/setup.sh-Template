@@ -4,11 +4,11 @@
 #
 #---------------------------------------------------------------------------------------------------
 # initialize Kraken base if not yet set
-[ -z "$KRAKEN_BASE" ] && source /home/cmsprod/Tools/Kraken/setup.sh
+[ -z "$KRAKEN_BASE" ] && source XX-KRAKEN_BASE-XX/setup.sh
 
 # general agents info
 
-export KRAKEN_AGENTS_BASE=/usr/local/Kraken
+export KRAKEN_AGENTS_BASE=XX-KRAKEN_AGENTS_BASE-XX
 
 export KRAKEN_AGENTS_LOG="/local/$KRAKEN_USER/Kraken/agents"
 

@@ -7,13 +7,6 @@
 #                                                                Ch.Paus: Version 0.0 (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 
-function initAgents {
-  # function to initialize the local environment
-  source ../setup.sh
-  source ./setupAgents.sh
-  source ../../FiBS/setup.sh
-}
-
 function install {
   # function that will install the daemon named as the given first parameter
   #   example: install reviewd
@@ -48,7 +41,41 @@ function install {
 #---------------------------------------------------------------------------------------------------
 #                                               M A I N
 #---------------------------------------------------------------------------------------------------
-initAgents
+BASE="$1"
+if [ -z "$BASE" ]
+then
+  BASE=/home/cmsprod/Tools/Kraken
+fi
+AGENTS_BASE="$2"
+if [ -z "$AGENTS_BASE" ]
+then
+  AGENTS_BASE=/usr/local/Kraken
+fi
+
+# prepare the correct setup.sh file
+if [ -f "./setup.sh-Template" ]
+then
+  cat ./setup.sh-Template \
+    | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
+    > ./setup.sh
+  cat ./reviewd-Template \
+    | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
+    > ./reviewd
+  cat ./catalogd-Template \
+    | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
+    > ./catalogd
+else
+  echo ""
+  echo " ERROR - setup.sh-Template does not exist."
+  echo "         probably you are in the wrong place."
+  echo ""
+  exit 0
+fi
+
+# load the setup
+source ./setup.sh
+
+env|grep KRAKEN
 
 # General installation (you have to be in the directory of install script and you have to be root)
 
@@ -73,6 +100,7 @@ chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_BASE
 
 # create log/db structure
 #========================
+
 # owner has to be $KRAKEN_USER:$KRAKEN_GROUP, this user runs the process
 mkdir -p $KRAKEN_AGENTS_LOG
 chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_LOG

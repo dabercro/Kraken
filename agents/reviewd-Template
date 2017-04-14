@@ -5,7 +5,7 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # environment has to be setup: Kraken, Kraken agents
-source /usr/local/Kraken/setup.sh
+source XX-KRAKEN_AGENTS_BASE-XX/setup.sh
 
 # daemon
 daemon=`basename $0`

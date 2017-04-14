@@ -7,7 +7,6 @@
 #---------------------------------------------------------------------------------------------------
 import os,sys,getopt,re,string
 import MySQLdb
-import task
 import rex
 
 CATALOG = os.getenv('KRAKEN_CATALOG_OUTPUT')
@@ -16,6 +15,10 @@ JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
 #---------------------------------------------------------------------------------------------------
+def domain():
+    domain = os.uname()[1]
+    f = domain.split('.')
+    return '.'.join(f[1:])
 
 def testTier2Disk(debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
@@ -113,7 +116,7 @@ def findPath(config,version):
 
     # start with T2_US_MIT as default
     storageTag = 'T2_US_MIT'
-    domain = task.Domain()
+    domain = domain()
     if   re.search('mit.edu',domain):
         storageTag = 'T2_US_MIT'
     elif re.search('cern.ch',domain):
