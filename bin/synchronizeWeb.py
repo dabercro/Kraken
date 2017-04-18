@@ -55,7 +55,12 @@ else:
 # issue full rsync on the log directory
 cmd = "rsync -Cavz --delete " + os.getenv('KRAKEN_AGENTS_LOG') + ' ' \
     +                           os.getenv('KRAKEN_AGENTS_WWW') + '/../'
-(rc,out,err) = myRx.executeLocalAction(cmd)
+print ' Synchronizing: %s'%(cmd)
+
+rc = 0
+out = ''
+err = ''
+#(rc,out,err) = myRx.executeLocalAction(cmd)
 
 if rc != 0:
     print '\n ==== ERROR -- RSYNC (%s) ====\n\n%s'%(cmd,err)

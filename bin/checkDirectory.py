@@ -28,7 +28,7 @@ remoteX = rex.Rex('none','none')
 (rc,out,err) = remoteX.executeLocalAction(cmd)
 
 content = out.split("\n")
-print " INFO - number of files to check: %d\n"%(len(content))
+print " INFO - number of files to check: %d\n"%(len(content)-1)
 
 for line in content:
     f = line.split(" ")

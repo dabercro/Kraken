@@ -13,28 +13,35 @@ function install {
 
   # command line parameter
   daemon="$1"
+  echo " Installing daemon: $daemon"
 
   # make sure directories exist
+  
+  echo " - creating daemon log area: $KRAKEN_AGENTS_LOG/${daemon}"
   mkdir -p $KRAKEN_AGENTS_LOG/${daemon}
   chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_LOG
 
   # stop potentially existing server process
   if [ -e "/etc/init.d/${daemon}" ]
   then
+    echo " - stop running daemon"
     /etc/init.d/${daemon} status
     /etc/init.d/${daemon} stop
   fi
   
   # copy daemon
+  echo " - install daemon as system daemon"
   cp $KRAKEN_AGENTS_BASE/sysv/${daemon} /etc/init.d/
   
   # start new server
+  echo " - check and start daemon"
   /etc/init.d/${daemon} status
   /etc/init.d/${daemon} start
   sleep 2
   /etc/init.d/${daemon} status
   
   # start on boot
+  echo " - auto restart daemon on boot"
   chkconfig --level 345 ${daemon} on
 }
 
@@ -49,8 +56,14 @@ fi
 AGENTS_BASE="$2"
 if [ -z "$AGENTS_BASE" ]
 then
-  AGENTS_BASE=/usr/local/Kraken
+  AGENTS_BASE=/usr/local/Kraken/agents
 fi
+
+# basic installation message
+echo ""
+echo " Using Kraken base:    $BASE"
+echo " Installing agents to: $AGENTS_BASE"
+echo ""
 
 # prepare the correct setup.sh file
 if [ -f "./setup.sh-Template" ]
@@ -72,14 +85,14 @@ else
   exit 0
 fi
 
-# load the setup
+# load the setup and show it
 source ./setup.sh
-
-env|grep KRAKEN
+env|grep KRAKEN | sort -u 
 
 # General installation (you have to be in the directory of install script and you have to be root)
 
 TRUNC=`dirname $KRAKEN_AGENTS_BASE`
+echo " Making basic directory: $TRUNC"
 if ! [ -d "$TRUNC" ]
 then
   mkdir -p "$TRUNC"
@@ -95,6 +108,8 @@ then
   echo " Removing previous installation."
   rm -rf "$KRAKEN_AGENTS_BASE"
 fi
+
+echo " Copy agent installation to: $TRUNC"
 cp -r ../agents "$TRUNC"
 chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_BASE
 
@@ -102,6 +117,7 @@ chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_BASE
 #========================
 
 # owner has to be $KRAKEN_USER:$KRAKEN_GROUP, this user runs the process
+echo " Make logfile area: $KRAKEN_AGENTS_LOG"
 mkdir -p $KRAKEN_AGENTS_LOG
 chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_LOG
 
@@ -114,6 +130,6 @@ install catalogd
 # install web pages
 #==================
 
-su - ${KRAKEN_USER} -c $KRAKEN_AGENTS_BASE/html/install.sh
+su - ${KRAKEN_USER} -c $KRAKEN_AGENTS_BASE/html/install.sh $KRAKEN_BASE $KRAKEN_AGENTS_BASE
 
 exit 0

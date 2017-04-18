@@ -15,9 +15,10 @@ JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
 #---------------------------------------------------------------------------------------------------
-def domain():
+def findDomain():
     domain = os.uname()[1]
     f = domain.split('.')
+
     return '.'.join(f[1:])
 
 def testTier2Disk(debug=0):
@@ -54,14 +55,14 @@ def productionStatus(config,version,dataset,debug=0):
     if debug > 0:
         print " CMD: %s"%(cmd)
 
-    nTotal = 0
+    nAll = 0
     try:
         for line in os.popen(cmd).readlines():   # run command
-            nTotal = int(line[:-1])
+            nAll = int(line[:-1])
     except:
-        nTotal = -1
+        nAll = -1
     
-    return(nDone,nTotal)
+    return(nDone,nAll)
 
 def findNumberOfFilesDone(config,version,dataset,debug=0):
     # Find out how many files have been completed for this dataset so far
@@ -116,7 +117,7 @@ def findPath(config,version):
 
     # start with T2_US_MIT as default
     storageTag = 'T2_US_MIT'
-    domain = domain()
+    domain = findDomain()
     if   re.search('mit.edu',domain):
         storageTag = 'T2_US_MIT'
     elif re.search('cern.ch',domain):

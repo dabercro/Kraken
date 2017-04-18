@@ -8,7 +8,7 @@
 
 # general agents info
 
-export KRAKEN_AGENTS_BASE=/usr/local/Kraken
+export KRAKEN_AGENTS_BASE=/usr/local/Kraken/agents
 
 export KRAKEN_AGENTS_LOG="/local/$KRAKEN_USER/Kraken/agents"
 

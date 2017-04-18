@@ -5,7 +5,10 @@
 # v1.0                                                                         C.Paus (Apr 27, 2015)
 # --------------------------------------------------------------------------------------------------
 # environment has to be setup: Kraken, Kraken agents, FiBS
-source /usr/local/Kraken/setup.sh
+source /usr/local/Kraken/agents/setup.sh
+# it is unclear to me why this does not get properly loaded in the line before
+export PATH=${PATH}:${KRAKEN_BASE}/bin:${FIBS_BASE}/bin:${T2TOOLS_BASE}/bin
+export PYTHONPATH=${PYTHONPATH}:${KRAKEN_BASE}/python:${FIBS_BASE}/python:${T2TOOLS_BASE}/python
 
 # daemon
 daemon=`basename $0`
