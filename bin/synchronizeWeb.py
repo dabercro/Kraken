@@ -60,7 +60,7 @@ print ' Synchronizing: %s'%(cmd)
 rc = 0
 out = ''
 err = ''
-#(rc,out,err) = myRx.executeLocalAction(cmd)
+(rc,out,err) = myRx.executeLocalAction(cmd)
 
 if rc != 0:
     print '\n ==== ERROR -- RSYNC (%s) ====\n\n%s'%(cmd,err)

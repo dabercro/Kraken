@@ -40,6 +40,9 @@ except getopt.GetoptError, ex:
     print str(ex)
     sys.exit(1)
 
+# debugging level
+DEBUG = 1
+
 # Set defaults for each command line parameter/option
 dataset = None
 py = "cmssw"
@@ -95,9 +98,13 @@ print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 print ""
 
 # Read all information about the sample
-sample = processing.Sample(dataset,dbs,useExistingLfns,useExistingSites)
+if DEBUG > 0:
+    print ' DG0: Setting up sample.'
+sample = processing.Sample(dataset,dbs,useExistingLfns,useExistingLfns,useExistingSites)
 
 # Setup the scheduler we are going to use
+if DEBUG > 0:
+    print ' DG0: Setting up scheduler.'
 scheduler = None
 if local:
     scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'))
@@ -107,14 +114,14 @@ else:
                                      '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')))
 
 # Generate the request
+if DEBUG > 0:
+    print ' DG0: Setting up request.'
 request = processing.Request(scheduler,sample,config,version,py)
 
 # Create the corresponding condor task
+if DEBUG > 0:
+    print ' DG0: Setting up task.'
 task = processing.Task(condorId,request)
-
-# Prepare the environment
-task.createDirectories()
-task.makeTarBall()
 
 # Cleaning up only when you nwant to (careful cleanup only works as agent)
 if not noCleanup:
@@ -122,11 +129,19 @@ if not noCleanup:
     taskCleaner = processing.TaskCleaner(task)
     taskCleaner.logCleanup()
 
-# Make the submit file
-task.writeCondorSubmit()
+
+# Prepare the environment
+if len(task.sample.missingJobs) > 0:
+
+    # Make the local/remote directories
+    task.createDirectories()
+    task.makeTarBall()
+
+    # Make the submit file
+    task.writeCondorSubmit()
  
-# Submit this job
-task.condorSubmit()
+    # Submit this job
+    task.condorSubmit()
 
 # Make it clean
 task.cleanUp()

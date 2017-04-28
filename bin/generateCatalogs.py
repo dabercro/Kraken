@@ -4,8 +4,10 @@ import MySQLdb
 import fileIds
 
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
+
 DATA = os.environ.get('KRAKEN_SE_BASE','/cms/store/user/paus')
 CATALOG = os.environ.get('KRAKEN_CATALOG_OUTPUT','/home/cmsprod/catalog/t2mit')
+XRDSE = 'root://xrootd.cmsaf.mit.edu/'
 
 Db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
 Cursor = Db.cursor()
@@ -67,7 +69,6 @@ def writeRawFile(rawFile,book,dataset):
         if DEBUG>0:
             print ' Open Raw'
         with open(rawFile,'w') as fHandle:
-            #fHandle.write('# SAMPLE: %s - %s\n'%(book,dataset)) # this is confusing
             if DEBUG>0:
                 print ' Get files'
             catalogedIds = getFiles(book,dataset)
@@ -76,13 +77,13 @@ def writeRawFile(rawFile,book,dataset):
                 fileId = catalogedIds.getFileId(id)
                 nEvents = fileId.getNEvents()
                 fileName = fileId.getFileName()
-                fHandle.write('root://xrootd.cmsaf.mit.edu//store/user/paus/%s/%s/%s %d %d 1 1 1 1\n' \
-                                  %(book,dataset,fileName,nEvents,nEvents))
+                fHandle.write('%s/store/user/paus/%s/%s/%s %d %d 1 1 1 1\n' \
+                                  %(XRDSE,book,dataset,fileName,nEvents,nEvents))
                 if DEBUG>0:
                     print ' file: %s'%(fileName)
                 nFiles += 1
     except:
-        print ' ERROR -- could not write raw file.'
+        print ' ERROR-- could not write raw file.'
 
     return nFiles
 
@@ -173,7 +174,7 @@ for dataset in allDatasets:
         print ' Write Raw'
     nFiles = writeRawFile(rawFile,book,dataset)
     if nFiles<1:
-        print ' ERROR - no files found. NEXT.'
+        print ' INFO - no files found.'
         continue
 
     # decide how many files per fileset
