@@ -23,6 +23,7 @@ usage += "                       --py=<name>\n"
 usage += "                       --config=<name>\n"
 usage += "                       --version=<version>\n"
 usage += "                       --dbs=<name>\n"
+usage += "                       --nJobsMax=<n>\n"
 usage += "                       --local  # submitting to the local scheduler (ex. t3serv015)\n"
 usage += "                       --useExistingLfns\n"
 usage += "                       --useExistingSites\n"
@@ -30,7 +31,7 @@ usage += "                       --noCleanup\n"
 usage += "                       --help\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['dataset=','py=','config=','version=','dbs=',
+valid = ['dataset=','py=','config=','version=','dbs=','nJobsMax=',
          'local','useExistingLfns','useExistingSites','noCleanup',
          'help']
 try:
@@ -49,6 +50,7 @@ py = "cmssw"
 config = "pandaf"
 version = "000"
 dbs = "prod/global"
+nJobsMax = 20000
 local = False
 useExistingLfns = False
 useExistingSites = False
@@ -69,6 +71,8 @@ for opt, arg in opts:
         version = arg
     if opt == "--dbs":
         dbs = arg
+    if opt == "--nJobsMax":
+        nJobsMax = int(arg)
     if opt == "--local":
         local = True
     if opt == "--useExistingLfns":
@@ -107,11 +111,12 @@ if DEBUG > 0:
     print ' DG0: Setting up scheduler.'
 scheduler = None
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'))
+    scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
 else:
     scheduler = processing.Scheduler('submit.mit.edu',
                                      os.getenv('KRAKEN_REMOTE_USER','paus'),
-                                     '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')))
+                                     '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
+                                     nJobsMax)
 
 # Generate the request
 if DEBUG > 0:
@@ -128,7 +133,6 @@ if not noCleanup:
     # Quick analysis of ongoing failures and related logfile cleanup
     taskCleaner = processing.TaskCleaner(task)
     taskCleaner.logCleanup()
-
 
 # Prepare the environment
 if len(task.sample.missingJobs) > 0:

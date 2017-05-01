@@ -143,6 +143,7 @@ usage  = "\nUsage: reviewRequests.py --config=<name>\n"
 usage += "                         --version=<version> [ default: MIT_VERS ]\n"
 usage += "                         --py=<name>\n"
 usage += "                         --pattern=<name>\n"
+usage += "                         --nJobsMax=<n>\n"
 usage += "                         --useExistingLfns\n"
 usage += "                         --useExistingSites\n"
 usage += "                         --displayOnly\n"
@@ -151,7 +152,7 @@ usage += "                         --debug\n"
 usage += "                         --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['config=','version=','py=','pattern=', \
+valid = ['config=','version=','py=','pattern=','nJobsMax=', \
          'help','exe','useExistingLfns','useExistingSites','debug', \
          'displayOnly' ]
 try:
@@ -168,6 +169,7 @@ config = 'filefi'
 version = '000'
 py = 'data'
 pattern = ''
+nJobsMax = 20000
 displayOnly = False
 exe = False
 useExistingLfns = False
@@ -187,6 +189,8 @@ for opt, arg in opts:
         py = arg
     if opt == "--pattern":
         pattern = arg
+    if opt == "--nJobsMax":
+        nJobsMax = int(arg)
     if opt == "--exe":
         exe = True
     if opt == "--useExistingLfns":
@@ -227,6 +231,7 @@ except:
 
 # Take the result from the database and look at it
 filteredResults = []
+incompleteResults = []
 first = True
 nDone = 0
 nAll = 0
@@ -245,8 +250,6 @@ for row in results:
     # make up the proper mit datset name
     datasetName = process + '+' + setup+ '+' + tier
 
-    #matchObj = re.match(pattern,datasetName)
-    #if matchObj:
     if pattern in datasetName:
         # Make filtered list
         filteredResults.append(row)
@@ -270,6 +273,10 @@ for row in results:
             print " %6.2f  %5d= %5d  %s"%(percentage,nDone,nAll,datasetName)
 
         nMissing = nAll-nDone
+
+        # incomplete and filtered result
+        if nMissing > 0:
+            incompleteResults.append(row)    
 
         nAllTotal += nAll
         nDoneTotal += nDone
@@ -306,6 +313,9 @@ testEnvironment(config,version,py)
 # Where is our storage?
 path = findPath(config,version)
 
+# Decide which list to work through
+loopSamples = incompleteResults
+
 #==================
 # M A I N  L O O P
 #==================
@@ -323,7 +333,7 @@ print ''
 print ' @-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@'
 
 # Take the result from the database and look at it
-for row in filteredResults:
+for row in loopSamples:
     process = row[0]
     setup = row[1]
     tier = row[2]
@@ -400,7 +410,7 @@ for row in filteredResults:
     # if work not complete submit the remainder
     print '# Submit new dataset: ' + datasetName
     cmd = ' submitCondor.py --py=' + py + ' --config=' + config + ' --version=' \
-        + version + ' --dbs=' + dbs
+        + version + ' --dbs=' + dbs + ' --nJobsMax=%d'%(nJobsMax)
 
     # make sure to use existing cache if requested
     if useExistingLfns:

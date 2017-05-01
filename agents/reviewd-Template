@@ -6,6 +6,7 @@
 # --------------------------------------------------------------------------------------------------
 # environment has to be setup: Kraken agents
 source XX-KRAKEN_AGENTS_BASE-XX/setup.sh
+source $KRAKEN_BASE/agents/cycle.cfg
 # it is unclear to me why this does not get properly loaded in the line before
 export PATH=${PATH}:${KRAKEN_BASE}/bin:${FIBS_BASE}/bin:${T2TOOLS_BASE}/bin
 export PYTHONPATH=${PYTHONPATH}:${KRAKEN_BASE}/python:${FIBS_BASE}/python:${T2TOOLS_BASE}/python
@@ -47,11 +48,11 @@ do
   echo ""                                                                          >> $logFile
   echo " = = = =  I N I T I A L  M I T _ P R O D   E N V I R O N M E N T  = = = =" >> $logFile
   echo ""                                                                          >> $logFile
-  env  | grep ^KRAKEN                                                              >> $logFile
+  env  | grep ^KRAKEN | sort                                                       >> $logFile
   echo ""                                                                          >> $logFile
-  echo " = = = =  I N I T I A L  R E V I E W   E N V I R O N M E N T  = = = ="     >> $logFile
+  echo " = = = =  I N I T I A L   R E V I E W   E N V I R O N M E N T  = = = ="    >> $logFile
   echo ""                                                                          >> $logFile
-  env  | grep ^KRAKEN_REVIEW                                                       >> $logFile
+  env  | grep ^KRAKEN_REVIEW | sort                                                >> $logFile
   echo ""                                                                          >> $logFile
   echo "[ PYTHON PATH: $PYTHONPATH ]"                                              >> $logFile
   echo ""                                                                          >> $logFile
@@ -67,10 +68,12 @@ do
     echo "   --> "`date`                                                          >> $logFile
     echo " "                                                                      >> $logFile
 
-
     # load updated config
     source $KRAKEN_BASE/agents/cycle.cfg
-    env |grep KRAKEN_REVIEW_CYCLE                                                 >> $logFile
+    echo " = = = =  U P D A T E D   R E V I E W   E N V I R O N M E N T  = = = =" >> $logFile
+    echo ""                                                                       >> $logFile
+    env |grep ^KRAKEN_REVIEW | sort                                               >> $logFile
+    echo ""                                                                       >> $logFile
 
     # loop over all requested configurations
     for reqset in $KRAKEN_REVIEW_CYCLE

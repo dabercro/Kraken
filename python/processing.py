@@ -121,10 +121,12 @@ class Scheduler:
     #-----------------------------------------------------------------------------------------------
     # constructor
     #-----------------------------------------------------------------------------------------------
-    def __init__(self,host='submit.mit.edu',user='cmsprod',base=''):
+    def __init__(self,
+                 host='submit.mit.edu',user='cmsprod',base='',
+                 nMyTotalMax=20000,nTotalMax=100000):
 
         self.here = socket.gethostname()
-        self.update(host,user,base)
+        self.update(host,user,base,nMyTotalMax,nTotalMax)
 
 
     #-----------------------------------------------------------------------------------------------
@@ -251,14 +253,19 @@ class Scheduler:
         print ' Host: ' + self.host
         print ' User: ' + self.user
         print ' Base: ' + self.base
+        print ' ===== '
+        print ' MMax: %d'%self.nMyTotalMax
+        print ' TMax: %d'%self.nTotalMax
 
     #-----------------------------------------------------------------------------------------------
     # update on the fly
     #-----------------------------------------------------------------------------------------------
-    def update(self,host='submit.mit.edu',user='cmsprod',base=''):
+    def update(self,host='submit.mit.edu',user='cmsprod',base='',nMyTotalMax=20000,nTotalMax=100000):
 
         self.host = host
         self.user = user
+        self.nMyTotalMax = nMyTotalMax
+        self.nTotalMax = nTotalMax
 
         if base == '':
             self.base = self.findHome(host,user)
@@ -710,7 +717,9 @@ class Task:
     def condorSubmit(self):
 
         # make sure this condorTask has jobs to be submitted
-        if self.nJobs<1 or self.scheduler.nMyTotal > 20000 or self.scheduler.nTotal > 100000:
+        if self.nJobs<1 \
+                or self.scheduler.nMyTotal > self.scheduler.nMyTotalMax \
+                or self.scheduler.nTotal > self.scheduler.nTotalMax:
             print ' NO SUBMISSION: %d (nJobs)  %d (nMyTotal)  %d (nTotal)\n'\
                 %(self.nJobs,self.scheduler.nMyTotal,self.scheduler.nTotal)
             return

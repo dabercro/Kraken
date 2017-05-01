@@ -77,6 +77,7 @@ then
   cat ./catalogd-Template \
     | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
     > ./catalogd
+  chmod 750 ./catalogd ./reviewd
 else
   echo ""
   echo " ERROR - setup.sh-Template does not exist."
