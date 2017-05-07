@@ -77,7 +77,10 @@ then
   cat ./catalogd-Template \
     | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
     > ./catalogd
-  chmod 750 ./catalogd ./reviewd
+  cat ./cleanupd-Template \
+    | sed -e "s#XX-KRAKEN_BASE-XX#$BASE#" -e "s#XX-KRAKEN_AGENTS_BASE-XX#$AGENTS_BASE#" \
+    > ./cleanupd
+  chmod 750 ./catalogd ./cleanupd ./reviewd
 else
   echo ""
   echo " ERROR - setup.sh-Template does not exist."
@@ -127,6 +130,7 @@ chown ${KRAKEN_USER}:${KRAKEN_GROUP} -R $KRAKEN_AGENTS_LOG
 
 install reviewd
 install catalogd
+install cleanupd
 
 # install web pages
 #==================

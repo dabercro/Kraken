@@ -917,9 +917,9 @@ class TaskCleaner:
         self.task = task
         self.localUser = os.getenv('USER')
 
-        self.logRemoveScript = ''  # '#!/bin/bash\n'
-        self.webRemoveScript = ''  # '#!/bin/bash\n'
-        self.logSaveScript = ''    # '#!/bin/bash\n'
+        self.logRemoveScript = ''
+        self.webRemoveScript = ''
+        self.logSaveScript = ''
 
         self.rex = rex.Rex(self.task.scheduler.host,self.task.scheduler.user)
 

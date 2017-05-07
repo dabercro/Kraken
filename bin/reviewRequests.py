@@ -7,34 +7,88 @@
 #---------------------------------------------------------------------------------------------------
 import os,sys,getopt,re,string
 import MySQLdb
+import processing
 import rex
 
 CATALOG = os.getenv('KRAKEN_CATALOG_OUTPUT')
 JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
+DEBUG = 1
 
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
 #---------------------------------------------------------------------------------------------------
+def cleanupTask(task):
+    # cleanup task at hand
+
+    # ----------------------------------------------------------------------------------------------
+    # Get all parameters for the production
+    # ----------------------------------------------------------------------------------------------
+    taskCleaner = processing.TaskCleaner(task)
+    taskCleaner.logCleanup()
+
+    print ''
+
+    return
+
 def findDomain():
     domain = os.uname()[1]
     f = domain.split('.')
 
     return '.'.join(f[1:])
 
-def testTier2Disk(debug=0):
-    # make sure we can see the Tier-2 disks: returns -1 on failure
+def findNumberOfFilesDone(config,version,dataset,debug=0):
+    # Find out how many files have been completed for this dataset so far
 
-    cmd = "list /cms/store/user/paus 2> /dev/null"
+    if debug > 0:
+        print " Find completed files for dataset: %s"%(dataset)
+
+    cmd = "list /cms/store/user/paus/%s/%s/%s 2> /dev/null | grep .root | wc -l"\
+        %(config,version,dataset)
     if debug > 0:
         print " CMD: %s"%(cmd)
 
-    myRx = rex.Rex()
-    (rc,out,err) = myRx.executeLocalAction("list /cms/store/user/paus 2> /dev/null")
+    nFilesDone = 0
+    try:
+        for line in os.popen(cmd).readlines():   # run command
+            nFilesDone = int(line[:-1])
+    except:
+        nFileDone = -1
 
-    if debug > 0:
-        print " RC: %d\n OUT:\n%s\n ERR:\n%s\n"%(rc,out,err)
+    return nFilesDone
 
-    return rc
+def findPath(config,version):
+    # Find the path to where we store our samples
+
+    # start with T2_US_MIT as default
+    storageTag = 'T2_US_MIT'
+    domain = findDomain()
+    if   re.search('mit.edu',domain):
+        storageTag = 'T2_US_MIT'
+    elif re.search('cern.ch',domain):
+        storageTag = 'T0_CH_CERN'
+    # make connection with our storage information
+    seTable = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + 'seTable'
+    if not os.path.exists(seTable):
+        cmd = "seTable file not found: %s" % seTable
+        raise RuntimeError, cmd
+    # extract the path name
+    cmd = 'grep ^' + storageTag + ' ' + seTable + ' | cut -d = -f2 | sed \'s# : ##\''
+    path = ''
+    for line in os.popen(cmd).readlines():
+        path = line[:-1] +  '/' + config + '/' + version
+
+    return path
+
+def generateCondorId():
+    # condor id
+    cmd = "date +crab_0_%y%m%d_%H%M%S"
+    for line in os.popen(cmd).readlines():  # run command
+        line = line[:-1]
+        condorId = line
+        
+    print "\n CondorId: " + condorId + "\n"
+
+    return condorId
 
 def productionStatus(config,version,dataset,debug=0):
     # make sure we can see the Tier-2 disks: returns -1 on failure
@@ -64,25 +118,49 @@ def productionStatus(config,version,dataset,debug=0):
     
     return(nDone,nAll)
 
-def findNumberOfFilesDone(config,version,dataset,debug=0):
-    # Find out how many files have been completed for this dataset so far
+def setupScheduler(local,nJobsMax):
+    # Setup the scheduler we are going to use (once for all following submissions)
 
-    if debug > 0:
-        print " Find completed files for dataset: %s"%(dataset)
+    if DEBUG > 0:
+        print ' DG0: Setting up scheduler.'
+    scheduler = None
+    if local:
+        scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
+    else:
+        scheduler = processing.Scheduler('submit.mit.edu',
+                                         os.getenv('KRAKEN_REMOTE_USER','paus'),
+                                         '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
+                                         nJobsMax)
+    return scheduler
 
-    cmd = "list /cms/store/user/paus/%s/%s/%s 2> /dev/null | grep .root | wc -l"\
-        %(config,version,dataset)
-    if debug > 0:
-        print " CMD: %s"%(cmd)
+def submitTask(task):
+    # Submit the task at hand
 
-    nFilesDone = 0
-    try:
-        for line in os.popen(cmd).readlines():   # run command
-            nFilesDone = int(line[:-1])
-    except:
-        nFileDone = -1
+    # ----------------------------------------------------------------------------------------------
+    # Get all parameters for the production
+    # ----------------------------------------------------------------------------------------------
 
-    return nFilesDone
+    # Prepare the environment
+    if len(task.sample.missingJobs) > 0:
+    
+        # Make the local/remote directories
+        task.createDirectories()
+        task.makeTarBall()
+    
+        # Make the submit file
+        task.writeCondorSubmit()
+     
+        # Submit this job
+        task.condorSubmit()
+    
+        # Make it clean
+        task.cleanUp()
+
+    else:
+        # Nothing to do here
+        print '\n INFO - we are done here.\n'
+        
+    return
 
 def testEnvironment(config,version,py):
     # Basic checks will be implemented here to remove the clutter from the main
@@ -111,29 +189,20 @@ def testEnvironment(config,version,py):
     else:
         print '\n INFO -- Tier-2 disks are available, start review process.\n'
 
+def testTier2Disk(debug=0):
+    # make sure we can see the Tier-2 disks: returns -1 on failure
 
-def findPath(config,version):
-    # Find the path to where we store our samples
+    cmd = "list /cms/store/user/paus 2> /dev/null"
+    if debug > 0:
+        print " CMD: %s"%(cmd)
 
-    # start with T2_US_MIT as default
-    storageTag = 'T2_US_MIT'
-    domain = findDomain()
-    if   re.search('mit.edu',domain):
-        storageTag = 'T2_US_MIT'
-    elif re.search('cern.ch',domain):
-        storageTag = 'T0_CH_CERN'
-    # make connection with our storage information
-    seTable = os.environ['KRAKEN_BASE'] + '/' + config + '/' + version + '/' + 'seTable'
-    if not os.path.exists(seTable):
-        cmd = "seTable file not found: %s" % seTable
-        raise RuntimeError, cmd
-    # extract the path name
-    cmd = 'grep ^' + storageTag + ' ' + seTable + ' | cut -d = -f2 | sed \'s# : ##\''
-    path = ''
-    for line in os.popen(cmd).readlines():
-        path = line[:-1] +  '/' + config + '/' + version
+    myRx = rex.Rex()
+    (rc,out,err) = myRx.executeLocalAction("list /cms/store/user/paus 2> /dev/null")
 
-    return path
+    if debug > 0:
+        print " RC: %d\n OUT:\n%s\n ERR:\n%s\n"%(rc,out,err)
+
+    return rc
 
 #---------------------------------------------------------------------------------------------------
 # M A I N
@@ -145,16 +214,19 @@ usage += "                         --py=<name>\n"
 usage += "                         --pattern=<name>\n"
 usage += "                         --nJobsMax=<n>\n"
 usage += "                         --useExistingLfns\n"
+usage += "                         --useExistingJobs\n"
 usage += "                         --useExistingSites\n"
 usage += "                         --displayOnly\n"
-usage += "                         --exe\n"
+usage += "                         --local\n"
+usage += "                         --submit\n"
+usage += "                         --cleanup\n"
 usage += "                         --debug\n"
 usage += "                         --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
 valid = ['config=','version=','py=','pattern=','nJobsMax=', \
-         'help','exe','useExistingLfns','useExistingSites','debug', \
-         'displayOnly' ]
+         'help','cleanup','submit','useExistingLfns','useExistingJobs','useExistingSites','local',
+         'debug','displayOnly']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
 except getopt.GetoptError, ex:
@@ -171,9 +243,12 @@ py = 'data'
 pattern = ''
 nJobsMax = 20000
 displayOnly = False
-exe = False
+cleanup = False
+submit = False
 useExistingLfns = False
+useExistingJobs = False
 useExistingSites = False
+local = False
 debug = False
 
 # Read new values from the command line
@@ -191,10 +266,14 @@ for opt, arg in opts:
         pattern = arg
     if opt == "--nJobsMax":
         nJobsMax = int(arg)
-    if opt == "--exe":
-        exe = True
+    if opt == "--cleanup":
+        cleanup = True
+    if opt == "--submit":
+        submit = True
     if opt == "--useExistingLfns":
         useExistingLfns = True
+    if opt == "--useExistingJobs":
+        useExistingJobs = True
     if opt == "--useExistingSites":
         useExistingSites = True
     if opt == "--debug":
@@ -247,7 +326,7 @@ for row in results:
     requestId = int(row[8])
     dbNFilesDone = int(row[9])
 
-    # make up the proper mit datset name
+    # make up the proper mit dataset name
     datasetName = process + '+' + setup+ '+' + tier
 
     if pattern in datasetName:
@@ -314,15 +393,21 @@ testEnvironment(config,version,py)
 path = findPath(config,version)
 
 # Decide which list to work through
-loopSamples = incompleteResults
+if cleanup:
+    loopSamples = filteredResults
+else:
+    loopSamples = incompleteResults
 
 #==================
 # M A I N  L O O P
 #==================
 
 # Make sure we have a valid ticket, because now we will need it
-cmd = "voms-proxy-init --valid 168:00 -voms cms; voms-proxy-info -all"
+cmd = "voms-proxy-init --valid 168:00 -voms cms | grep 'Your proxy'"
 os.system(cmd)
+
+# Get our scheduler ready to use
+scheduler = setupScheduler(local,nJobsMax)
 
 # Initial message 
 print ''
@@ -344,10 +429,6 @@ for row in loopSamples:
 
     # make up the proper mit datset name
     datasetName = process + '+' + setup+ '+' + tier
-
-    # remove all datasets that do not match our pattern
-    if pattern != '' and pattern not in datasetName:
-        continue
 
     # check how many files are done
     nFilesDone = findNumberOfFilesDone(config,version,datasetName)
@@ -394,7 +475,6 @@ for row in loopSamples:
                 sys.exit(0)
         
     # did we already complete the job?
-
     if nFilesDone == nFiles:   # this is the case when all is done
         print ' DONE all files have been produced.\n'
         continue
@@ -407,22 +487,38 @@ for row in loopSamples:
         print '       updating the dataset from dbs: ' + cmd
         os.system(cmd)
 
-    # if work not complete submit the remainder
-    print '# Submit new dataset: ' + datasetName
-    cmd = ' submitCondor.py --py=' + py + ' --config=' + config + ' --version=' \
-        + version + ' --dbs=' + dbs + ' --nJobsMax=%d'%(nJobsMax)
+    # if work not complete consider further remainder
+    print '\n # # # #  New dataset: %s  # # # # \n'%(datasetName)
 
-    # make sure to use existing cache if requested
-    if useExistingLfns:
-        cmd += " --useExistingLfns"
-    if useExistingSites:
-        cmd += " --useExistingSites"
+    #cmd = ' submitCondor.py --py=' + py + ' --config=' + config + ' --version=' \
+    #    + version + ' --dbs=' + dbs + ' --nJobsMax=%d'%(nJobsMax)
+    #
+    ## make sure to use existing cache if requested
+    #if useExistingLfns:
+    #    cmd += " --useExistingLfns"
+    #if useExistingJobs:
+    #    cmd += " --useExistingJobs"
+    #if useExistingSites:
+    #    cmd += " --useExistingSites"
+    #
+    ## last thing to add is the dataset itself (nicer printing)
+    #cmd += ' --dataset=' + datasetName
+    #
+    #print ' submitting: ' + cmd
+    #if submit:
+    #    os.system(cmd)
 
-    # last thing to add is the dataset itself (nicer printing)
-    cmd += ' --dataset=' + datasetName
+    # Get sample info, make request and generate the task
+    sample = processing.Sample(datasetName,dbs,useExistingLfns,useExistingLfns,useExistingSites)
+    request = processing.Request(scheduler,sample,config,version,py)
+    task = processing.Task(generateCondorId(),request)
 
-    print ' submitting: ' + cmd
-    if exe:
-        os.system(cmd)
+    # Submit task
+    if submit:
+        submitTask(task)
+
+    # Cleanup task
+    if cleanup:
+        cleanupTask(task)
 
 sys.exit(0)
