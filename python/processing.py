@@ -5,6 +5,7 @@
 #---------------------------------------------------------------------------------------------------
 import os,sys,re,string,socket
 import rex
+import time
 
 DEBUG = 0
 
@@ -66,13 +67,19 @@ class Request:
     #-----------------------------------------------------------------------------------------------
     def loadQueuedJobs(self):
 
+        if os.environ.get('KRAKEN_REVIEW_OLD_JOBS_AGE'):
+            string_time = str(int(time.time() - int(os.environ['KRAKEN_REVIEW_OLD_JOBS_AGE'])))
+        else:
+            string_time = '0'
+
         # initialize from scratch
         self.sample.resetQueuedJobs()
 
         path = self.base + '/' + self.config + '/' + self.version + '/' + self.sample.dataset
         pattern = "%s %s %s %s"%(self.config,self.version,self.py,self.sample.dataset)
         cmd = 'condor_q ' + self.scheduler.user \
-            + ' -constraint JobStatus!=5 -format \'%s\n\' Args 2> /dev/null|grep \'' + pattern + '\''
+            + ' -constraint \'JobStatus!=5 && QDate > ' + string_time \
+            + '\' -format \'%s\n\' Args 2> /dev/null|grep \'' + pattern + '\''
 
         if not self.scheduler.isLocal():
             cmd = 'ssh -x ' + self.scheduler.user + '@' + self.scheduler.host \
@@ -1045,8 +1052,8 @@ class TaskCleaner:
         (rc,out,err) = self.rex.executeLocalAction(cmd)
 
         # construct the script to make the tar ball
-        self.logSaveScript += 'cd cms/logs/%s/%s/%s\ntar fzc %s-%s-%s.tgz'\
-            %(cfg,vers,dset,cfg,vers,dset)
+        self.logSaveScript += 'cd /work/%s/cms/logs/%s/%s/%s\ntar fzc %s-%s-%s.tgz'\
+            %(os.environ['USER'],cfg,vers,dset,cfg,vers,dset)
 
         # find out whether we have held jobs == failures
         haveFailures = False

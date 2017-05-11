@@ -14,7 +14,7 @@ export KRAKEN_REMOTE_USER=dabercro
 export KRAKEN_BASE=$myRoot/Panda/Kraken
 export KRAKEN_WORK=$myRoot/cms/jobs
 export KRAKEN_SCRIPT=releaseKraken.sh
-export KRAKEN_EXE=slimmer
+export KRAKEN_EXE=unijet
 export KRAKEN_CMSSW=$myRoot/cms/cmssw
 
 export KRAKEN_SE_BASE=/cms/store/user/paus
@@ -26,10 +26,7 @@ export PYTHONPATH=${PYTHONPATH}:${KRAKEN_BASE}/python
 
 # other packages needed
 source $pkgRoot/Dools/setup.sh
-source $pkgRoot/T2Tools/setup.sh
-
-export T2TOOLS_TICKET=dabercro
-export T2TOOLS_USER=dabercro
+source $pkgRoot/T2Tools/setup.sh dabercro dabercro
 
 # bad fix but needed so curl works with cmsweb
 source /cvmfs/cms.cern.ch/slc6_amd64_gcc530/external/curl/7.47.1/etc/profile.d/init.sh
