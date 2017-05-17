@@ -1,0 +1,82 @@
+#!/bin/bash
+# --------------------------------------------------------------------------------------------------
+# cleanupd      Startup script for the cleanup server
+#
+# chkconfig: - 70 15
+# description: Cleanup is a process that will go to our production database and cleanup all production\
+#              requests and submit all remainders needed to complete thje request.
+#
+# processname: cleanupd
+# config:      /etc/cleanupd.conf
+# pidfile:     /var/run/cleanupd.pid
+# --------------------------------------------------------------------------------------------------
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+# Path to the running script, server binary, and short-form for messages.
+#cleanupd=/usr/sbin/cleanupd
+cleanupd=/usr/local/Kraken/agents/cleanupd
+prog=cleanupd
+pidfile=${PIDFILE-/var/run/cleanupd.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/cleanupd}
+
+RETVAL=0
+STOP_TIMEOUT=${STOP_TIMEOUT-10}
+
+# Start cleanup daemon (cleanupd)
+start() {
+    echo -n $"Starting $prog:"
+    daemon --user=$KRAKEN_USER --pidfile=${pidfile} $cleanupd \&
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && touch ${lockfile}
+
+    # this seems like a hack, but I do not know how to do it differently
+    pid=`ps auxw | grep "/bin/bash $cleanupd" |tr -s ' '|cut -d' ' -f2`
+    echo $pid > $pidfile
+
+    return $RETVAL
+}
+
+# Stop cleanup daemon (cleanupd)
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc -p ${pidfile} -d ${STOP_TIMEOUT} $cleanupd
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status -p ${pidfile} $cleanupd
+    RETVAL=$?
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  condrestart|try-restart)
+    if status -p ${pidfile} $cleanupd >&/dev/null
+    then
+      stop
+      start
+    fi
+    ;;
+  *)
+    echo $"Usage: $prog {start|stop|restart|status|help}"
+    RETVAL=2
+esac
+
+exit $RETVAL
