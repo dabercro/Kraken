@@ -9,7 +9,7 @@ import sys,os,subprocess,getopt,time
 import MySQLdb
 
 def testLocalSetup(dataset,config,version,dbs,py,delete,debug=0):
-    # test all relevant components and exit is something is off
+    # test all relevant components and exit if something is off
 
     # check the input parameters
     if dataset == '':
