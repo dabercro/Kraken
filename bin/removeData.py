@@ -5,9 +5,6 @@
 #
 # v1.0                                                                                  Apr 28, 2017
 #---------------------------------------------------------------------------------------------------
-
-##/mnt/hadoop/cms/store/user/paus/pandaf/003/ZNuNuGJets_MonoPhoton_PtG-130_TuneCUETP8M1_13TeV-madgraph+RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1+MINIAODSIM/E84DBC18-70C9-E611-80CB-0025905A4964.root
-
 import sys,os,subprocess,getopt,time
 import MySQLdb
 
@@ -134,9 +131,37 @@ def removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,ver
         except:
             print " Error (%s): unable to delete data."%(sql)
 
-    # regenerate the catalog after the deletion
-    print ' generateCatalogs.py %s/%s %s'%(config,version,dataset)
+def removeDataset(process,setup,tier,datasetId,requestId,config,version):
+    # Delete the given dataset from the disks (T2/3 and the database)
 
+    base = '/cms/store/user/paus'
+    catalog = '/home/cmsprod/catalog/t2mit'
+    dataset = process + '+' + setup + '+' + tier
+
+    fullFile = '%s/%s/%s/%s'%(base,config,version,dataset)
+
+    # delete from T2
+    cmd = 'removedir %s'%(fullFile)
+    print ' t2t: %s'%(cmd)
+    os.system(cmd)
+        
+    # delete from T3
+    cmd = 'hdfs dfs -rm -r %s'%(fullFile)
+    print ' loc: %s'%(cmd)
+    os.system(cmd)
+
+    # delete from the database (for catalogs)
+    sql  = "delete from Files where RequestId=%d"%(requestId)
+    print ' sql: %s'%(sql)
+    try:
+        # Execute the SQL command
+        cursor.execute(sql)
+    except:
+        print " Error (%s): unable to delete data."%(sql)
+
+    cmd = 'rm -rf %s/%s/%s/%s'%(catalog,config,version,dataset)
+    print ' ctg: %s'%(cmd)
+    os.system(cmd)
 
 def testLocalSetup(dataset,config,version,dbs,py,delete,debug=0):
     # test all relevant components and exit is something is off
@@ -230,18 +255,32 @@ process = f[1]
 setup   = f[2]
 tier    = f[3]
 
-# Find the dataset id
+# Find the dataset id and request id
 datasetId = getDatasetId(process,setup,tier,cursor,debug)
 requestId = getRequestId(datasetId,config,version,py,cursor,debug)
-
 print '\n Ids: dataset=%d  request=%d\n'%(datasetId,requestId)
+
+# Is this a complete dataset?
+if fileName == '':
+    print ' Deletion of a complete dataset requested.'
 
 # Show all files to remove
 fileList = findFiles(requestId,fileName,cursor,debug)
 
 if exe == True:
+
     # Remove the files and all records of them
-    removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,version)
+    if fileName == '':
+        removeDataset(process,setup,tier,datasetId,requestId,config,version)
+    else:
+        removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,version)
+
+    # re-generate the catalog after the deletion
+    
+    cmd = 'generateCatalogs.py %s/%s %s'%(config,version,dataset)
+    print ' ctg: %s'%(cmd)
+    os.system(cmd)
+    
 else:
     print ' To execute please add --exec option'
 

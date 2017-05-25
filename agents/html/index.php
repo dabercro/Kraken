@@ -19,6 +19,7 @@ body.ex{margin-top: 0px; margin-bottom:25px; margin-right: 25px; margin-left: 25
 <ul>
   <li> <a href="reviewd">reviewd</a> -- reviews request database and submits missing pieces
   <li> <a href="catalogd">catalogd</a> -- catalogs all files from ongoing productions
+  <li> <a href="cleanupd">cleanupd</a> -- cleans up all ongoing productions
 </ul>
 <!-- <img src="agents.jpg" alt="The Agents"> -->
 <hr>
