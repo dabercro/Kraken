@@ -19,19 +19,53 @@ body.ex{margin-top: 0px; margin-bottom:25px; margin-right: 25px; margin-left: 25
 </a>
 <h1>XX-NAME-XX agent (aka XX-AKA-XX) </h1>
 <?php
-$output = shell_exec('ls -t */*/status*.html');
+$cycle = 'XX-KRAKEN_BASE-XX/agents/cycle.cfg';
+$output = shell_exec('ls -1r */*/status*.html');
 $f = explode("\n",$output);
-$search = array("status-",".html");
-$replace = array("","");
 if (sizeof($f) > 1) {
+
+  $active = shell_exec('source ' . $cycle . '; echo $KRAKEN_REVIEW_CYCLE');
+  print '<h2>Active Reviews</h2>';
+  print '<ul>';
+  $f = explode(" ",$active);
+  foreach ($f as &$request) {
+    print '<li>' . $request . "</li>\n";
+  }
+  print '</ul>';
+
   print '<h2>Status</h2>';
   print '<ul>';
+  $f = explode("\n",$output);
+  $book = "";
+  $pys = array();
+  $search = array("status-",".html");
+  $replace = array("","");
   foreach ($f as &$file) {
     if ($file != "") {
       $text = str_replace($search,$replace,$file);
-      print '<li> <a href="' . $file . '">' . $text . '</a>';
+      $g = explode("/",$text);
+      if ($g[0].'/'.$g[1] == $book) {
+	$pys[] = $g[2];
+      }
+      else {
+	if ($book != '') {
+	  print '<li> '.$book.' : ';
+	  foreach ($pys as &$py) {
+	    print ' <a href="'.$book.'/status-'.$py.'.html">'.$py.'</a>';
+	  }
+	}
+	$book = $g[0].'/'.$g[1];
+	$pys = array();
+	$pys[] = $g[2];
+      }
     }
   }
+  // do not forget last elemet
+  print '<li> '.$book.' : ';
+  foreach ($pys as &$py) {
+    print ' <a href="'.$book.'/status-'.$py.'.html">'.$py.'</a>';
+  }
+
   print '</ul>';
 }
 print '<h2>Logfiles</h2>';

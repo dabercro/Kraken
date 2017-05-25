@@ -42,10 +42,14 @@ cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG
 # agent specific index files
 cat $KRAKEN_BASE/agents/html/index.php-Template \
    | sed 's/XX-NAME-XX/reviewd/g' | sed 's/XX-AKA-XX/Smith/' \
+   | sed "s@XX-KRAKEN_BASE-XX@$KRAKEN_BASE@" \
    > $KRAKEN_AGENTS_LOG/reviewd/index.php
 cat $KRAKEN_BASE/agents/html/index.php-Template \
    | sed 's/XX-NAME-XX/catalogd/g' | sed 's/XX-AKA-XX/Johnson/' \
    > $KRAKEN_AGENTS_LOG/catalogd/index.php
+cat $KRAKEN_BASE/agents/html/index.php-Template \
+   | sed 's/XX-NAME-XX/cleanupd/g' | sed 's/XX-AKA-XX/Williams/' \
+   > $KRAKEN_AGENTS_LOG/cleanupd/index.php
 
 # update web pages from log area
 echo " Sync files to the web area - no deletions"
