@@ -7,6 +7,8 @@
 import sys,os,getopt,time
 import rex
 
+BASE = '/cms/store/user/paus'
+
 # Define string to explain usage of the script
 usage  = "\n"
 usage += " Usage: removeObsoleteDatasets.py  --config=<name>\n"
@@ -40,10 +42,9 @@ def testLocalSetup(config,oldVersion,newVersion,debug):
 
 def makeDatasetList(config,version):
 
-    base = '/cms/store/user/paus'
     myRx = rex.Rex()
     (rc,out,err) = myRx.executeLocalAction("list %s/%s/%s 2> /dev/null | grep ^D:"
-                                           %(base,config,version))
+                                           %(BASE,config,version))
     datasetList = []
     for line in out.split("\n"):
         dataset = line.split("/")[-1]
@@ -55,6 +56,15 @@ def makeDatasetList(config,version):
 
     return datasetList
 
+def numberOfFiles(config,version,dataset):
+
+    nFiles = -1
+    myRx = rex.Rex()
+    (rc,out,err) = myRx.executeLocalAction("list %s/%s/%s/%s/*.root 2> /dev/null"
+                                           %(BASE,config,version,dataset))
+
+    nFiles = len(out.split("\n"))
+    return nFiles
 
 #===================================================================================================
 # Main starts here
@@ -108,12 +118,22 @@ newDatasetsList = makeDatasetList(config,newVersion)
 i = 0
 for dataset in oldDatasetsList:
     if dataset in newDatasetsList:
-        print ' Deleting obsolete data: (%3d) %s -- %s'%(i,oldVersion,dataset)
-        cmd = 'removeData.py --exec --config=%s --version=%s --dataset=%s' \
-              %(config,oldVersion,dataset)
-        print ' rmr: ' + cmd
-        if exe:
-            os.system(cmd)
-        i += 1
+
+        nFilesOld = numberOfFiles(config,oldVersion,dataset)
+        nFilesNew = numberOfFiles(config,newVersion,dataset)
+
+        if nFilesNew > 0.9 * nFilesOld:
+            print ' Deleting obsolete data: (%3d) %s -- %s (%d/%d)' \
+                %(i,oldVersion,dataset,nFilesNew,nFilesOld)
+            cmd = 'removeData.py --exec --config=%s --version=%s --dataset=%s' \
+                %(config,oldVersion,dataset)
+            print ' rmr: ' + cmd
+            if exe:
+                os.system(cmd)
+            i += 1
+        else:
+            print ' Not complete enough   : (---) %s -- %s (new/old: %d/%d)' \
+                %(oldVersion,dataset,nFilesNew,nFilesOld)
     else:
-        print ' Keeping this dataset  : (---) %s -- %s'%(oldVersion,dataset)
+        if debug > 0:
+            print ' Keeping this dataset  : (---) %s -- %s'%(oldVersion,dataset)
