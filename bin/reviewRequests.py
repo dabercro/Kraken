@@ -475,38 +475,21 @@ for row in loopSamples:
                 sys.exit(0)
         
     # did we already complete the job?
-    if nFilesDone == nFiles:   # this is the case when all is done
-        print ' DONE all files have been produced.\n'
-        continue
-    elif nFilesDone < nFiles:  # second most frequent case: work started but not completed
-        print ' files missing, submit the missing ones.\n'
-    else:                      # weird, more files found than available               
-        print '\n ERROR more files found than available in dataset. NO ACTION on this dataset'
-        print '       done: %d   all: %d'%(nFilesDone,nFiles)
-        cmd = 'addDataset.py --exec --dataset=' + datasetName
-        print '       updating the dataset from dbs: ' + cmd
-        os.system(cmd)
-
+    if not cleanup:
+        if nFilesDone == nFiles:   # this is the case when all is done
+            print ' DONE all files have been produced.\n'
+            continue
+        elif nFilesDone < nFiles:  # second most frequent case: work started but not completed
+            print ' files missing, submit the missing ones.\n'
+        else:                      # weird, more files found than available               
+            print '\n ERROR more files found than available in dataset. NO ACTION on this dataset'
+            print '       done: %d   all: %d'%(nFilesDone,nFiles)
+            cmd = 'addDataset.py --exec --dataset=' + datasetName
+            print '       updating the dataset from dbs: ' + cmd
+            os.system(cmd)
+    
     # if work not complete consider further remainder
     print '\n # # # #  New dataset: %s  # # # # \n'%(datasetName)
-
-    #cmd = ' submitCondor.py --py=' + py + ' --config=' + config + ' --version=' \
-    #    + version + ' --dbs=' + dbs + ' --nJobsMax=%d'%(nJobsMax)
-    #
-    ## make sure to use existing cache if requested
-    #if useExistingLfns:
-    #    cmd += " --useExistingLfns"
-    #if useExistingJobs:
-    #    cmd += " --useExistingJobs"
-    #if useExistingSites:
-    #    cmd += " --useExistingSites"
-    #
-    ## last thing to add is the dataset itself (nicer printing)
-    #cmd += ' --dataset=' + datasetName
-    #
-    #print ' submitting: ' + cmd
-    #if submit:
-    #    os.system(cmd)
 
     # Get sample info, make request and generate the task
     sample = processing.Sample(datasetName,dbs,useExistingLfns,useExistingLfns,useExistingSites)

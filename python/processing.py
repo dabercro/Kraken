@@ -927,7 +927,6 @@ class TaskCleaner:
     # analyze known failures
     #-----------------------------------------------------------------------------------------------
     def logCleanup(self):
-        #
 
         print '\n ====  C l e a n e r  ===='
 
