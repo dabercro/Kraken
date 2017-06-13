@@ -245,6 +245,3 @@ class Task:
             cmd = "scp -q " + self.submitCmd + " " \
                 + self.scheduler.user + '@' +  self.scheduler.host + ':' + self.logs
             os.system(cmd)
-            #cmd = "ssh -x " + self.scheduler.user + '@' +  self.scheduler.host \
-            #    + ' \"voms-proxy-init --valid 168:00 -voms cms >& /dev/null\" '
-            #os.system(cmd)

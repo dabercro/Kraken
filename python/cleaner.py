@@ -62,6 +62,9 @@ class Cleaner:
         # C - remove all held jobs from the queue
         self.removeHeldJobs()
 
+        # D - remove entire cache on scheduler
+        self.removeCache()
+
         return
 
     #-----------------------------------------------------------------------------------------------
@@ -122,6 +125,32 @@ class Cleaner:
         return
 
     #-----------------------------------------------------------------------------------------------
+    # remove entire remote cache of this task
+    #-----------------------------------------------------------------------------------------------
+    def removeCache(self):
+
+        print ' - trying to remove task cache'
+        if len(self.task.sample.completedJobs) == len(self.task.sample.allJobs):
+            print '   job is complete, remove the potentially remaining cache.'
+
+        cmd = "rm -rf " + self.task.logs
+        print "   CMD: " + cmd
+        
+        if self.task.scheduler.isLocal():
+            (rc,out,err) = self.rex.executeLocalAction(cmd)
+        else:
+            (irc,rc,out,err) = self.rex.executeAction(cmd)
+            if DEBUG > 0 and (irc != 0 or rc != 0):
+                print ' IRC: %d'%(irc) 
+            
+        if DEBUG > 0 and (irc != 0 or rc != 0):
+            print ' RC: %d'%(rc) 
+            print ' ERR:\n%s'%(err) 
+            print ' OUT:\n%s'%(out) 
+
+        return
+
+    #-----------------------------------------------------------------------------------------------
     # remove held jobs from the queue
     #-----------------------------------------------------------------------------------------------
     def removeHeldJobs(self):
@@ -133,18 +162,21 @@ class Cleaner:
         irc = 0
         rc = 0
 
-        print ' - remove Held jobs (there are %d): %s'%(len(self.task.request.sample.heldJobs),cmd)
-        if not self.task.scheduler.isLocal():
-            (irc,rc,out,err) = self.rex.executeAction(cmd)
+        if len(self.task.request.sample.heldJobs) > 0:
+            print ' - remove held jobs (n=%d): %s'%(len(self.task.request.sample.heldJobs),cmd)
+            if not self.task.scheduler.isLocal():
+                (irc,rc,out,err) = self.rex.executeAction(cmd)
+                if DEBUG > 0 and (irc != 0 or rc != 0):
+                    print ' IRC: %d'%(irc) 
+            else:
+                (rc,out,err) = self.rex.executeLocalAction(cmd)
+                
             if DEBUG > 0 and (irc != 0 or rc != 0):
-                print ' IRC: %d'%(irc) 
+                print ' RC: %d'%(rc) 
+                print ' ERR:\n%s'%(err) 
+                print ' OUT:\n%s'%(out)
         else:
-            (rc,out,err) = self.rex.executeLocalAction(cmd)
-            
-        if DEBUG > 0 and (irc != 0 or rc != 0):
-            print ' RC: %d'%(rc) 
-            print ' ERR:\n%s'%(err) 
-            print ' OUT:\n%s'%(out) 
+            print ' - no held jobs to remove'
 
         return
 
