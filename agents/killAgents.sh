@@ -50,5 +50,6 @@ source ./setupAgents.sh
 
 killAgent reviewd reviewRequests.py
 killAgent catalogd
+killAgent cleanupd reviewRequests.py
 
 exit 0

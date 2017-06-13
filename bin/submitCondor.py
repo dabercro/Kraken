@@ -8,8 +8,12 @@
 #
 # Author: C.Paus                                                                     (June 16, 2016)
 #---------------------------------------------------------------------------------------------------
-import os,sys,getopt,re,string
-import processing
+import os,sys,getopt
+from cleaner import Cleaner
+from request import Request
+from sample import Sample
+from scheduler import Scheduler
+from task import Task
 
 t2user = os.environ['T2TOOLS_USER']
 SRMSRC='/usr/bin'
@@ -104,35 +108,35 @@ print ""
 # Read all information about the sample
 if DEBUG > 0:
     print ' DG0: Setting up sample.'
-sample = processing.Sample(dataset,dbs,useExistingLfns,useExistingLfns,useExistingSites)
+sample = Sample(dataset,dbs,useExistingLfns,useExistingLfns,useExistingSites)
 
 # Setup the scheduler we are going to use
 if DEBUG > 0:
     print ' DG0: Setting up scheduler.'
 scheduler = None
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
+    scheduler = Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
 else:
-    scheduler = processing.Scheduler('submit.mit.edu',
-                                     os.getenv('KRAKEN_REMOTE_USER','paus'),
-                                     '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
-                                     nJobsMax)
+    scheduler = Scheduler('submit.mit.edu',
+                          os.getenv('KRAKEN_REMOTE_USER','paus'),
+                          '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
+                          nJobsMax)
 
 # Generate the request
 if DEBUG > 0:
     print ' DG0: Setting up request.'
-request = processing.Request(scheduler,sample,config,version,py)
+request = Request(scheduler,sample,config,version,py)
 
 # Create the corresponding condor task
 if DEBUG > 0:
     print ' DG0: Setting up task.'
-task = processing.Task(condorId,request)
+task = Task(condorId,request)
 
 # Cleaning up only when you nwant to (careful cleanup only works as agent)
 if not noCleanup:
     # Quick analysis of ongoing failures and related logfile cleanup
-    taskCleaner = processing.TaskCleaner(task)
-    taskCleaner.logCleanup()
+    cleaner = Cleaner(task)
+    cleaner.logCleanup()
 
 # Prepare the environment
 if len(task.sample.missingJobs) > 0:

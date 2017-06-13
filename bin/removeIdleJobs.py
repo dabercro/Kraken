@@ -6,7 +6,7 @@
 # Author: C.Paus                                                                     (June 16, 2016)
 #---------------------------------------------------------------------------------------------------
 import os,sys,getopt,re,string
-import processing
+from scheduler import Scheduler
  
 #===================================================================================================
 # M A I N
@@ -39,10 +39,10 @@ for opt, arg in opts:
 scheduler = None
 user = 'cmsprod'
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu',user)
+    scheduler = Scheduler('t3serv015.mit.edu',user)
 else:
     user = 'paus'
-    scheduler = processing.Scheduler('submit.mit.edu',user,'/work/paus')
+    scheduler = Scheduler('submit.mit.edu',user,'/work/paus')
 
 # Issue the condor command
 cmd = 'condor_rm -constraint "JobStatus==1&&Owner==\\"'+user+'\\""'

@@ -4,8 +4,8 @@
 #
 # Author: C.Paus                                                                     (June 16, 2016)
 #---------------------------------------------------------------------------------------------------
-import os,sys,getopt,re,string
-import processing
+import sys,getopt
+from scheduler import Scheduler
  
 #===================================================================================================
 # M A I N
@@ -41,9 +41,9 @@ for opt, arg in opts:
 # Setup the scheduler we are going to use
 scheduler = None
 if local:
-    scheduler = processing.Scheduler('t3serv015.mit.edu','cmsprod')
+    scheduler = Scheduler('t3serv015.mit.edu','cmsprod')
 else:
-    scheduler = processing.Scheduler()
+    scheduler = Scheduler()
 
 # Issue the condor command
 scheduler.executeCondorCmd(cmd,True)

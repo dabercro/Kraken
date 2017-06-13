@@ -7,8 +7,12 @@
 #---------------------------------------------------------------------------------------------------
 import os,sys,getopt,re,string
 import MySQLdb
-import processing
 import rex
+from cleaner import Cleaner
+from request import Request
+from sample import Sample
+from scheduler import Scheduler
+from task import Task
 
 CATALOG = os.getenv('KRAKEN_CATALOG_OUTPUT')
 JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
@@ -23,8 +27,8 @@ def cleanupTask(task):
     # ----------------------------------------------------------------------------------------------
     # Get all parameters for the production
     # ----------------------------------------------------------------------------------------------
-    taskCleaner = processing.TaskCleaner(task)
-    taskCleaner.logCleanup()
+    cleaner = Cleaner(task)
+    cleaner.logCleanup()
 
     print ''
 
@@ -125,12 +129,12 @@ def setupScheduler(local,nJobsMax):
         print ' DG0: Setting up scheduler.'
     scheduler = None
     if local:
-        scheduler = processing.Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
+        scheduler = Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
     else:
-        scheduler = processing.Scheduler('submit.mit.edu',
-                                         os.getenv('KRAKEN_REMOTE_USER','paus'),
-                                         '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
-                                         nJobsMax)
+        scheduler = Scheduler('submit.mit.edu',
+                              os.getenv('KRAKEN_REMOTE_USER','paus'),
+                              '/work/%s'%(os.getenv('KRAKEN_REMOTE_USER','paus')),
+                              nJobsMax)
     return scheduler
 
 def submitTask(task):
@@ -492,9 +496,9 @@ for row in loopSamples:
     print '\n # # # #  New dataset: %s  # # # # \n'%(datasetName)
 
     # Get sample info, make request and generate the task
-    sample = processing.Sample(datasetName,dbs,useExistingLfns,useExistingLfns,useExistingSites)
-    request = processing.Request(scheduler,sample,config,version,py)
-    task = processing.Task(generateCondorId(),request)
+    sample = Sample(datasetName,dbs,useExistingLfns,useExistingLfns,useExistingSites)
+    request = Request(scheduler,sample,config,version,py)
+    task = Task(generateCondorId(),request)
 
     # Submit task
     if submit:

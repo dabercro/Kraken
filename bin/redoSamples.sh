@@ -1,12 +1,13 @@
 #!/bin/bash
+
 BASE_SE=/cms/store/user/paus
 CATALOG=/home/cmsprod/catalog/t2mit
 
 CFG="pandaf"
-VRS="003"
+VRS="004"
 
 BOOK_SRC="$CFG/$VRS"
-BOOK_TGT="$CFG/x03"
+BOOK_TGT="$CFG/x04"
 
 FILE="$1"
 if ! [ -e "$FILE" ]
@@ -21,8 +22,11 @@ fi
 makedir  $BASE_SE/$BOOK_TGT
 mkdir -p $CATALOG/$BOOK_TGT
 
-for sample in `cat "$FILE"`
+for tmp in `cat "$FILE"`
 do
+  # make sure also dataset names in CMS format are properly treated
+  sample=`echo $tmp | sed -e 's#/#+#g' -e 's#^+##'`
+
   echo "=@=@=@=@= $sample"
   echo ""
 

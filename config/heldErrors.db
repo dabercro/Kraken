@@ -21,6 +21,7 @@
                    'corruptO': "value of fObjlen is incorrect",
                    'corruptN': "value of fNbytes is incorrect",
                    'rootFatal': "Fatal Root Error",
+                   'rootBytes': "bytecount too large",
                    'sysFatal': "A fatal system signal has occurred",
                    'io': "Input/output error",
                    'cvmfs': "/cvmfs/cms.cern.ch/cmsset_default.sh: No such file or director",
