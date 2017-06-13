@@ -134,7 +134,8 @@ class Cleaner:
             print '   job is complete, remove the potentially remaining cache.'
 
         cmd = "rm -rf " + self.task.logs
-        print "   CMD: " + cmd
+        if DEBUG > 0:
+            print "   CMD: " + cmd
         
         if self.task.scheduler.isLocal():
             (rc,out,err) = self.rex.executeLocalAction(cmd)
@@ -220,7 +221,8 @@ class Cleaner:
 
         # no need to continue if there are no failures
         if not haveFailures:
-            print ' INFO - no failed jobs found.'
+            if DEBUG>0:
+                print ' INFO - no failed jobs found.'
             return
 
         # log saver script
