@@ -130,8 +130,11 @@ class Cleaner:
     def removeCache(self):
 
         print ' - trying to remove task cache'
+
         if len(self.task.sample.completedJobs) == len(self.task.sample.allJobs):
             print '   job is complete, remove the potentially remaining cache.'
+        else:
+            return
 
         cmd = "rm -rf " + self.task.logs
         if DEBUG > 0:
