@@ -396,25 +396,19 @@ ls -lhrt
 
 # define base output location
 REMOTE_SERVER="se01.cmsaf.mit.edu"
-REMOTE_BASE="srm/v2/server?SFN=/mnt/hadoop/cms/store"
+REMOTE_BASE="/cms/store"
 REMOTE_USER_DIR="/user/paus/$CONFIG/$VERSION"
 
 sample=`echo $GPACK | sed 's/\(.*\)_nev.*/\1/'`
 
 # this is somewhat overkill but works very reliably, I suppose
-#setupCmssw 7_6_3 # should work with new releases... right?
-tar fzx $CMSSW_BASE/tgz/copy.tgz
 pwd=`pwd`
 for file in `echo ${GPACK}*`
 do
   # always first show the proxy
   voms-proxy-info -all
   # now do the copy
-  ./cmscp.py --debug \
-    --middleware OSG --PNN $REMOTE_SERVER --se_name $REMOTE_SERVER \
-    --inputFileList $pwd/${file} \
-    --destination srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB} \
-    --for_lfn ${REMOTE_USER_DIR}/${TASK}/${CRAB}
+  gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}
   rcCmsCp=$?
   echo " Copying: $file"
   echo " Copy RC: $rcCmsCp"
@@ -422,15 +416,11 @@ do
   then
     # now do the backup copy
     echo "Remove file remainders: srm-rm  srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}"
-    srm-rm  srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}
+    gfal-rm gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}
     rcSrmRm=$?
     echo " Remove RC: $rcSrmRm"
     echo " Try again: cmscp.py .... srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}"
-    ./cmscp.py --debug \
-      --middleware OSG --PNN $REMOTE_SERVER --se_name $REMOTE_SERVER \
-      --inputFileList $pwd/${file} \
-      --destination srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB} \
-      --for_lfn ${REMOTE_USER_DIR}/${TASK}/${CRAB}
+    gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}
     rcCmsCp=$?
     echo " ReCopying: $file"
     echo " ReCopy RC: $rcCmsCp"
