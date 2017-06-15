@@ -321,6 +321,8 @@ nAll = 0
 nAllTotal = 0
 nDoneTotal = 0
 nMissingTotal = 0
+
+# initial filter and calculatiuon loop
 for row in results:
     process = row[0]
     setup = row[1]
@@ -337,55 +339,59 @@ for row in results:
         # Make filtered list
         filteredResults.append(row)
         (nDone,nAll) = productionStatus(config,version,datasetName,debug)
-        if first:
-            first = False
-            print '#---------------------------------------------------------------------------'
-            print '#'
-            print '#                            O V E R V I E W '
-            print '#                              %s/%s'%(config,version)
-            print '#'
-            print '# Perct   Done/ Total--Dataset Name'
-            print '#---------------------------------------------------------------------------'
-
-        percentage = 0.0
-        if nAll > 0:
-            percentage = 100.0 * float(nDone)/float(nAll)
-        if nDone != nAll:
-            print " %6.2f  %5d/ %5d  %s"%(percentage,nDone,nAll,datasetName)
-        else:
-            print " %6.2f  %5d= %5d  %s"%(percentage,nDone,nAll,datasetName)
-
         nMissing = nAll-nDone
-
         # incomplete and filtered result
         if nMissing > 0:
             incompleteResults.append(row)    
-
         nAllTotal += nAll
         nDoneTotal += nDone
         nMissingTotal += nMissing
 
+# finish up the calculations
 percentage = 0.0
 if nAllTotal > 0:
     percentage = 100.0 * float(nDoneTotal)/float(nAllTotal)
-print '#'
-print '# TOTAL:  %6.2f%% (%d/ %d) -->  %6.2f%% (%d) missing.'\
-    %(percentage,nDoneTotal,nAllTotal,100.-percentage,nMissingTotal)
-print '#'
 
-#===============================================
-# D A T A S E T   V A L I D A T I O N   L O O P
-#===============================================
-
-# Take the result from the database and look at it
+# the display loop
 for row in filteredResults:
     process = row[0]
     setup = row[1]
     tier = row[2]
-    # make up the proper mit datset name
+    dbs = row[3]
+    nFiles = int(row[4])
+    requestId = int(row[8])
+    dbNFilesDone = int(row[9])
+
+    # make up the proper mit dataset name
     datasetName = process + '+' + setup+ '+' + tier
-    if debug:
-        print ' addDataset.py --dataset=/' + process + '/' + setup+ '/' + tier
+    (nDone,nAll) = productionStatus(config,version,datasetName,debug)
+
+    percentage = 0.0
+    if nAll > 0:
+        percentage = 100.0 * float(nDone)/float(nAll)
+
+    if first:
+        first = False
+        print '#---------------------------------------------------------------------------'
+        print '#'
+        print '#                            O V E R V I E W '
+        print '#                              %s/%s'%(config,version)
+        print '#'
+        print '# Perct    Done/ Total--Dataset Name'
+        print '# ----------------------------------'
+        print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
+            %(percentage,nDoneTotal,nAllTotal,100.-percentage,nMissingTotal)
+        print '#---------------------------------------------------------------------------'
+
+    if nDone != nAll:
+        print "  %6.2f  %5d/ %5d  %s"%(percentage,nDone,nAll,datasetName)
+    else:
+        print "  %6.2f  %5d= %5d  %s"%(percentage,nDone,nAll,datasetName)
+
+print '#'
+print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
+    %(percentage,nDoneTotal,nAllTotal,100.-percentage,nMissingTotal)
+print '#'
 
 if displayOnly:
     sys.exit(0)
