@@ -21,7 +21,7 @@ class Scheduler:
     # constructor
     #-----------------------------------------------------------------------------------------------
     def __init__(self,
-                 host='submit.mit.edu',user='cmsprod',base='',
+                 host='submit.mit.edu',user='paus',base='',
                  nMyTotalMax=20000,nTotalMax=100000):
 
         self.here = socket.gethostname()
@@ -159,7 +159,7 @@ class Scheduler:
     #-----------------------------------------------------------------------------------------------
     # update on the fly
     #-----------------------------------------------------------------------------------------------
-    def update(self,host='submit.mit.edu',user='cmsprod',base='',nMyTotalMax=20000,nTotalMax=100000):
+    def update(self,host='submit.mit.edu',user='paus',base='',nMyTotalMax=20000,nTotalMax=100000):
 
         self.host = host
         self.user = user
@@ -176,4 +176,3 @@ class Scheduler:
         self.pushProxyToScheduler()
 
         return
-
