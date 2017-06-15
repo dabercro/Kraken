@@ -99,20 +99,19 @@ do
         # Full submit cycle
         #==================
 
-        stdbuf -o0 -e0 \
-          reviewRequests.py --config=$cfg --version=$vrs --py=$py --submit \
-                            $KRAKEN_REVIEW_OPTIONS                              >> $logFile 2>&1
-        echo " "                                                                >> $logFile
+        stdbuf -o0 -e0 reviewRequests.py --config=$cfg --version=$vrs --py=$py \
+                         $KRAKEN_REVIEW_OPTIONS                                   >> $logFile 2>&1
+        echo " "                                                                  >> $logFile
 
         # keep log file up to speed
-        synchronizeWeb.py                                                       >> $logFile
+        synchronizeWeb.py                                                         >> $logFile
 
       done
 
     done
 
-    echo " completed review cycle."                                             >> $logFile
-    echo " FINISH by updating log files on web."                                >> $logFile
+    echo " completed review cycle."                                               >> $logFile
+    echo " FINISH by updating log files on web."                                  >> $logFile
 
     sleep $wait
   done

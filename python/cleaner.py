@@ -62,7 +62,7 @@ class Cleaner:
         # C - remove all held jobs from the queue
         self.removeHeldJobs()
 
-        # D - remove entire cache on scheduler
+        # D - remove entire cache on scheduler (if dataset completed)
         self.removeCache()
 
         return
