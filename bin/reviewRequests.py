@@ -348,9 +348,9 @@ for row in results:
         nMissingTotal += nMissing
 
 # finish up the calculations
-percentage = 0.0
+percentageTotal = 0.0
 if nAllTotal > 0:
-    percentage = 100.0 * float(nDoneTotal)/float(nAllTotal)
+    percentageTotal = 100.0 * float(nDoneTotal)/float(nAllTotal)
 
 # the display loop
 for row in filteredResults:
@@ -380,7 +380,7 @@ for row in filteredResults:
         print '# Perct    Done/ Total--Dataset Name'
         print '# ----------------------------------'
         print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
-            %(percentage,nDoneTotal,nAllTotal,100.-percentage,nMissingTotal)
+            %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
         print '#---------------------------------------------------------------------------'
 
     if nDone != nAll:
@@ -390,7 +390,7 @@ for row in filteredResults:
 
 print '#'
 print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
-    %(percentage,nDoneTotal,nAllTotal,100.-percentage,nMissingTotal)
+    %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
 print '#'
 
 if displayOnly:
