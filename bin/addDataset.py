@@ -32,7 +32,9 @@ def addBlock(datasetId,blockName):
 def addDetails(datasetId,lfns):
 
     for lfn in lfns:
+        #print " LFN: " + lfn
         blockId = addBlock(datasetId,lfns[lfn].blockName)
+        #print " BlockId: %d"%(blockId)
         addLfn(datasetId,blockId,lfn,lfns[lfn].pathName,lfns[lfn].fileId.nEvents)
 
 def addLfn(datasetId,blockId,fileName,pathName,nEvents):

@@ -345,13 +345,14 @@ class Sample:
     #-----------------------------------------------------------------------------------------------
     def addCompletedJob(self,file):
 
-        if file not in self.allJobs.keys():
+        if   file not in self.allJobs.keys():
             print ' ERROR -- found completed job not in list of all jobs?! ->' + file + '<-'
-        if file in self.completedJobs.keys():
+        elif file in self.completedJobs.keys():
             print " ERROR -- completed job appeared twice! Should not happen. EXIT (%s)"%file
             sys.exit(1)
-        # add this job to the mix
-        self.completedJobs[file] = self.allJobs[file]
+        else:
+            # add this job to the mix
+            self.completedJobs[file] = self.allJobs[file]
 
         return
 

@@ -46,7 +46,7 @@ except getopt.GetoptError, ex:
     sys.exit(1)
 
 # debugging level
-DEBUG = 1
+DEBUG = 0
 
 # Set defaults for each command line parameter/option
 dataset = None
