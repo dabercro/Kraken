@@ -19,7 +19,7 @@ export KRAKEN_AGENTS_WWW="/home/$KRAKEN_USER/public_html/Kraken/agents"
 
 # review process
 
-export KRAKEN_REVIEW_CYCLE_HOURS=1
+export KRAKEN_REVIEW_CYCLE_MINUTES=20
 export KRAKEN_REVIEW_PYS="data mc"
 export KRAKEN_REVIEW_OLD_JOBS_AGE=7200 # In seconds
 

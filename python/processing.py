@@ -1006,7 +1006,11 @@ class TaskCleaner:
         base = self.task.scheduler.base + "/cms/data"
         iwd = base + "/%s/%s/%s"%\
             (self.task.request.config,self.task.request.version,self.task.request.sample.dataset)
-        cmd = 'condor_rm -constraint "JobStatus==5 && Iwd==\\\"%s\\\""'%(iwd)
+        if os.environ.get('KRAKEN_REVIEW_OLD_JOBS_AGE'):
+            old_time = int(time.time() - int(os.environ['KRAKEN_REVIEW_OLD_JOBS_AGE'])) * 2
+            cmd = 'condor_rm -constraint "(JobStatus==5 && Iwd==\\\"%s\\\") || QDate > %i"' % (iwd, old_time)
+        else:
+            cmd = 'condor_rm -constraint "JobStatus==5 && Iwd==\\\"%s\\\""'%(iwd)
         irc = 0
         rc = 0
 

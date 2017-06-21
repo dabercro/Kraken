@@ -57,8 +57,8 @@ do
   # ten loops over the process with one logfile (keep it small)
   for index in `echo 0 1 2 3 4 5 6 7 8 9`
   do
-    # period 3600 * nHours
-    let wait=3600*$KRAKEN_REVIEW_CYCLE_HOURS
+    # period 60 * nMinutes
+    let wait=60*$KRAKEN_REVIEW_CYCLE_MINUTES
     echo " "                                                                      >> $logFile
     echo " request review loop $index started -- $tag (cycle wait $wait sec)"     >> $logFile
     echo " "                                                                      >> $logFile
