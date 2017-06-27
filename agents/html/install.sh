@@ -37,7 +37,9 @@ cp $KRAKEN_BASE/agents/html/images/{Kraken,agent}*jpg \
 
 # global index files to log area
 echo " Generate index files"
-cp $KRAKEN_BASE/agents/html/index.php $KRAKEN_AGENTS_LOG
+cat $KRAKEN_BASE/agents/html/index.php \
+   | sed "s@XX-KRAKEN_BASE-XX@$KRAKEN_BASE@" \
+   > $KRAKEN_AGENTS_LOG/index.php
 
 # agent specific index files
 cat $KRAKEN_BASE/agents/html/index.php-Template \
