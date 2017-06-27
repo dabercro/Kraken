@@ -65,6 +65,9 @@ do
     echo "   --> "`date`                                                            >> $logFile
     echo " "                                                                        >> $logFile
 
+    # make sure the file exists
+    touch $FIBS_WORK/checkFile.list
+
     # find out how many files are still in the list
     nFilesLeft=`wc -l $FIBS_WORK/checkFile.list | cut -d' ' -f 1`
     echo " Number of files left to catalog: $nFilesLeft"                            >> $logFile
