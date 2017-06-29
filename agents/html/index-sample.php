@@ -32,7 +32,8 @@ print '<hr>';
 //}
 
 // list the log files and provide link access
-$output = shell_exec('ls -t *.err');
+// list the log files and provide link access
+$output = shell_exec('ls -lt ????????-????-????-????-????????????.???');
 $f = explode("\n",$output);
 if (sizeof($f) > 1) {
   print '<code><ul>';
@@ -41,10 +42,11 @@ if (sizeof($f) > 1) {
     $replace1 = array(".out");
     $replace2 = array("");
     if ($file != "") {
-      $err = $file;
-      $out = str_replace($search,$replace1,$file);
-      $stub = str_replace($search,$replace2,$file);
-      print '<li> '. $stub . ' <a href="' . $out . '">out</a>, ' . '<a href="' . $err . '">err</a>';
+      $g = explode(" ",$file);
+      $filename = array_pop($g);
+      $rest = implode(" ", $g); 
+      $stub = str_replace($search,$replace2,$filename);
+      print '<li> '. $rest . ' --> ' . ' <a href="' . $filename . '">'.$filename.'</a>';
     }
   }
 }
