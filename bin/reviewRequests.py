@@ -508,10 +508,11 @@ for row in loopSamples:
 
     # Submit task
     if submit:
+        cleanupTask(task)
         submitTask(task)
 
-    # Cleanup task
-    if cleanup:
+    # Cleanup task (careful all tasks being submitted get cleaned up)
+    if cleanup and task not in incompleteResults:
         cleanupTask(task)
 
 sys.exit(0)
