@@ -91,9 +91,9 @@ do
         vrs=`echo $reqset | cut -d: -f2`
         pys=`echo $reqset | cut -d: -f3`
 
-        echo "list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root"                  >> $logFile 
-        list /cms/store/user/paus/$cfg/$vrs/*/crab_*/*.root | grep root \
-             | grep -v 'ls: ' | cut -d ' ' -f 2 >>  tmp.list
+        echo "list /cms/store/user/paus/$cfg/$vrs/*/${KRAKEN_TMP_PREFIX}*/*.root"  >> $logFile 
+        list /cms/store/user/paus/$cfg/$vrs/*/${KRAKEN_TMP_PREFIX}*/*.root \
+             | grep root | grep -v 'ls: ' | cut -d ' ' -f 2 >>  tmp.list
 
       done
  

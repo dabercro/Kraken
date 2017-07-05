@@ -14,9 +14,9 @@ from sample import Sample
 from scheduler import Scheduler
 from task import Task
 
+PREFIX = os.getenv('KRAKEN_TMP_PREFIX')
 CATALOG = os.getenv('KRAKEN_CATALOG_OUTPUT')
 JOBS = os.getenv('KRAKEN_WORK') + '/jobs'
-DEBUG = 1
 
 #---------------------------------------------------------------------------------------------------
 # H E L P E R
@@ -85,7 +85,7 @@ def findPath(config,version):
 
 def generateCondorId():
     # condor id
-    cmd = "date +crab_0_%y%m%d_%H%M%S"
+    cmd = "date +" + PREFIX + "%y%m%d_%H%M%S"
     for line in os.popen(cmd).readlines():  # run command
         line = line[:-1]
         condorId = line
@@ -125,8 +125,6 @@ def productionStatus(config,version,dataset,debug=0):
 def setupScheduler(local,nJobsMax):
     # Setup the scheduler we are going to use (once for all following submissions)
 
-    if DEBUG > 0:
-        print ' DG0: Setting up scheduler.'
     scheduler = None
     if local:
         scheduler = Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)

@@ -183,7 +183,7 @@ if len(sys.argv) > 2:
 # hi, here we are!
 os.system("date")
 
-# make a list of all crab directories
+# make a list of all directories
 allDatasets = []
 if pattern == '':
     print ' Find all datasets.'

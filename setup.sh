@@ -28,6 +28,7 @@ export KRAKEN_REMOTE_USER=paus
 export KRAKEN_SE_BASE=/cms/store/user/paus
 export KRAKEN_CATALOG_INPUT=/home/cmsprod/catalog/t2mit
 export KRAKEN_CATALOG_OUTPUT=/home/cmsprod/catalog/t2mit
+export KRAKEN_TMP_PREFIX='tmp_0_'
 
 export PATH=${PATH}:${KRAKEN_BASE}/bin
 export PYTHONPATH=${PYTHONPATH}:${KRAKEN_BASE}/python

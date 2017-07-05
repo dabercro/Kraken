@@ -7,6 +7,7 @@
 import os,sys
 from rex import Rex
 
+PREFIX = os.getenv('KRAKEN_TMP_PREFIX')
 DEBUG = int(os.environ.get('T2TOOLS_DEBUG',0))
 DIR = "/cms/store/user/paus"
 
@@ -45,7 +46,7 @@ os.system("date")
 allTmpDirs = []
 print ' Find all tmp directories.'
 
-cmd = 'list ' + DIR + "/" + book + "/*/ | grep crab_0_"
+cmd = 'list ' + DIR + "/" + book + "/*/ | grep %s"%(PREFIX)
 if DEBUG>0:
     print ' CMD: ' + cmd
 
@@ -67,7 +68,7 @@ for sample in allTmpDirs:
     if DEBUG>0:
         print ' CMD: ' + cmd
     # make sure it really is just the tmp directory
-    if cmd.find('crab_0_') != -1:
+    if cmd.find(PREFIX) != -1:
         os.system(cmd)
     else:
         print ' ERROR -- it looks like a wrong directory was up for deletion.'

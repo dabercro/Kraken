@@ -52,7 +52,8 @@ class Request:
             file = (f[1].split("/")).pop()
             self.sample.addCompletedJob(file)
         # now also look at the temporary files (not yet cataloged)
-        cmd = 'list ' + path + '/crab_*/  2> /dev/null | grep _tmp.root'
+        cmd = 'list ' + path + '/' + os.getenv('KRAKEN_TMP_PREFIX') \
+            + '*/  2> /dev/null | grep _tmp.root'
         for line in os.popen(cmd).readlines():  # run command
             f    = line.split()
             file = (f[1].split("/")).pop()

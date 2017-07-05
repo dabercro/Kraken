@@ -286,15 +286,15 @@ export BASEDIR=`pwd`
 echo " Executing: $0 $* "
 
 # command line arguments
-             # -- example
-EXE="$1"     # cmsRun
-CONFIG="$2"  # pandaf
-VERSION="$3" # 002
-PY="$4"	     # data-03feb2017
-TASK="$5"    # MET+Run2016B-03Feb2017_ver2-v2+MINIAOD
-GPACK="$6"   # 6EBC0286-34EE-E611-832F-0025905B8600
-LFN="$7"     # /store/data/Run2016B/ ... /6EBC0286-34EE-E611-832F-0025905B8600.root
-CRAB="$8"    # crab_0_170302_132124                               
+                # -- example
+EXE="$1"        # cmsRun
+CONFIG="$2"     # pandaf
+VERSION="$3"    # 002
+PY="$4"	        # data-03feb2017
+TASK="$5"       # MET+Run2016B-03Feb2017_ver2-v2+MINIAOD
+GPACK="$6"      # 6EBC0286-34EE-E611-832F-0025905B8600
+LFN="$7"        # /store/data/Run2016B/ ... /6EBC0286-34EE-E611-832F-0025905B8600.root
+TMP_PREFIX="$8" # tmp_0_170302_132124                               
 
 # load all parameters relevant to this task
 echo " Initialize package"
@@ -408,19 +408,19 @@ do
   # always first show the proxy
   voms-proxy-info -all
   # now do the copy
-  gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}
+  gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${TMP_PREFIX}
   rcCmsCp=$?
   echo " Copying: $file"
   echo " Copy RC: $rcCmsCp"
   if [ "$rcCmsCp" != "0" ]
   then
     # now do the backup copy
-    echo "Remove file remainders: srm-rm  srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}"
-    gfal-rm gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}
+    echo "Remove file remainders: srm-rm  srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${TMP_PREFIX}/${file}"
+    gfal-rm gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${TMP_PREFIX}/${file}
     rcSrmRm=$?
     echo " Remove RC: $rcSrmRm"
-    echo " Try again: cmscp.py .... srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}/${file}"
-    gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${CRAB}
+    echo " Try again: cmscp.py .... srm://$REMOTE_SERVER:8443/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${TMP_PREFIX}/${file}"
+    gfal-copy file:///$pwd/${file} gsiftp://$REMOTE_SERVER:2811/${REMOTE_BASE}${REMOTE_USER_DIR}/${TASK}/${TMP_PREFIX}
     rcCmsCp=$?
     echo " ReCopying: $file"
     echo " ReCopy RC: $rcCmsCp"

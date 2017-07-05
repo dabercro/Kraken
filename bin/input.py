@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #---------------------------------------------------------------------------------------------------
-# Simple interface to command line DBS to prepare my crabTask input files.
+# Simple interface to command line DBS to prepare my processing task input files.
 #---------------------------------------------------------------------------------------------------
 import os,sys,types,string,re,getopt
 import MySQLdb

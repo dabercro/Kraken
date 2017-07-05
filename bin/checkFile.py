@@ -15,6 +15,7 @@ import os,sys,subprocess
 import MySQLdb
 import rex
 
+Prefix = os.getenv('KRAKEN_TMP_PREFIX')
 Db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
 Cursor = Db.cursor()
 
@@ -56,7 +57,7 @@ def getFinalFile(file):
 
     finalFile = file
 
-    if 'crab_' in file:
+    if Prefix in file:
         f = file.split('/')
         tmp = f[-1].replace('_tmp','') 
         finalFile = "/".join(f[:-2])
@@ -77,7 +78,7 @@ def getRequestId(file):
         return (requestId, datasetId)
         
 
-    if 'crab_' in file:
+    if Prefix in file:
         dataset = f[-3]
         version = f[-4]
         mitcfg = f[-5]
@@ -199,7 +200,7 @@ remoteX = rex.Rex('none','none')
 if nEvents == nEventsLfn and nEvents>0:
     # now move file to final location
     finalFile = getFinalFile(file)
-    if 'crab_' in file:
+    if Prefix in file:
         cmd = "t2tools.py --action mv --source " +  file + " --target " + finalFile
         print ' MOVE: ' + cmd
         (rc,out,err) = remoteX.executeLocalAction(cmd)

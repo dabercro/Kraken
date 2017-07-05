@@ -16,6 +16,7 @@ from scheduler import Scheduler
 from task import Task
 
 t2user = os.environ['T2TOOLS_USER']
+PREFIX = os.getenv('KRAKEN_TMP_PREFIX')
 SRMSRC='/usr/bin'
  
 #===================================================================================================
@@ -95,7 +96,7 @@ if dataset == None:
 # Get all parameters for the production
 # --------------------------------------------------------------------------------------------------
 # condor id
-cmd = "date +crab_0_%y%m%d_%H%M%S"
+cmd = "date +" + PREFIX + "%y%m%d_%H%M%S"
 for line in os.popen(cmd).readlines():  # run command
     line = line[:-1]
     condorId = line

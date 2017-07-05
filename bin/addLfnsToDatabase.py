@@ -232,7 +232,7 @@ for opt, arg in opts:
 # Make sure our local setup is good
 testLocalSetup(book)
 
-# Make a list of all crab directories
+# Make a list of all directories
 allDatasets = findAllDatasets(book,pattern)
 
 # Open database connection
