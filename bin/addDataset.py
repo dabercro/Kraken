@@ -11,14 +11,12 @@ import rex
 import fileIds
 
 CATALOG_INPUT = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
+blockIds = {}
 
 def addBlock(datasetId,blockName):
     # add a new block of a given datasetId to the database
 
-    #print ' Adding: %d %s'%(datasetId,blockName)
-
     sql  = "insert into Blocks(DatasetId,BlockName) values(%d,'%s')"%(datasetId,blockName)
-    #print "SQL " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
@@ -32,17 +30,16 @@ def addBlock(datasetId,blockName):
 def addDetails(datasetId,lfns):
 
     for lfn in lfns:
-        #print " LFN: " + lfn
         blockId = addBlock(datasetId,lfns[lfn].blockName)
-        #print " BlockId: %d"%(blockId)
         addLfn(datasetId,blockId,lfn,lfns[lfn].pathName,lfns[lfn].fileId.nEvents)
+    return
+
 
 def addLfn(datasetId,blockId,fileName,pathName,nEvents):
     # add an lfn to a given datasetId of a given blockId
 
     sql = "insert into Lfns(DatasetId,BlockId,FileName,PathName,NEvents) " \
         +  " values(%d,%d,'%s','%s',%d)"%(datasetId,blockId,fileName,pathName,nEvents)
-    #print "SQL " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
@@ -179,25 +176,40 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
 
     return (sizeGb, nFiles,lfns)
 
+def getBlockIds(datasetId):
+
+    if len(blockIds)<1:
+        sql = "select BlockId, BlockName from Blocks where " \
+            + "DatasetId=%d;"%(datasetId)
+
+        try:
+            # Execute the SQL command
+            cursor.execute(sql)
+            results = cursor.fetchall()
+        except:
+            print " ERROR (%s): unable to fetch data."%(sql)
+            sys.exit(0)
+
+        for row in results:
+            blockId = int(row[0])
+            blockName = row[1]
+            blockIds[blockName] = blockId
+
+    return
+
 def getBlockId(datasetId,blockName):
     # find the blockId for a given data block
 
     blockId = -1
 
-    sql = "select BlockId from Blocks where " \
-        + "DatasetId=%d and BlockName='%s';"%(datasetId,blockName)
-    try:
-        # Execute the SQL command
-        cursor.execute(sql)
-        results = cursor.fetchall()
-    except:
-        print " ERROR (%s): unable to fetch data."%(sql)
-        sys.exit(0)
+    getBlockIds(datasetId)
 
-    blockId = int(results[0][0])
-    if not blockId>0:
-        print ' ERROR -- invalid block id: %d'%(blockId)
-        sys.exit(1)
+    try:
+        blockId = blockIds[blockName]
+    except:
+        print " ERROR (%s): blockName is not known."%(sql)
+        print " -----  ?because an entire new block was added and script does not allow it?"
+        sys.exit(0)
 
     return blockId
 
@@ -262,7 +274,7 @@ def insertDataset(db,process,setup,tier,dbsInst,sizeGb,nFiles,lfns,debug=0):
 
     datasetId = getDatasetId(process+"+"+setup+"+"+tier)
     addDetails(datasetId,lfns)
-        
+
     return 0
 
 def isDatasetValid(dataset,dbsInst,debug=0):
