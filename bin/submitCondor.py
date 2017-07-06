@@ -46,9 +46,6 @@ except getopt.GetoptError, ex:
     print str(ex)
     sys.exit(1)
 
-# debugging level
-DEBUG = 0
-
 # Set defaults for each command line parameter/option
 dataset = None
 py = "cmssw"
@@ -107,13 +104,9 @@ print " o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 print ""
 
 # Read all information about the sample
-if DEBUG > 0:
-    print ' DG0: Setting up sample.'
 sample = Sample(dataset,dbs,useExistingLfns,useExistingLfns,useExistingSites)
 
 # Setup the scheduler we are going to use
-if DEBUG > 0:
-    print ' DG0: Setting up scheduler.'
 scheduler = None
 if local:
     scheduler = Scheduler('t3serv015.mit.edu',os.getenv('USER','paus'),nJobsMax)
@@ -124,13 +117,9 @@ else:
                           nJobsMax)
 
 # Generate the request
-if DEBUG > 0:
-    print ' DG0: Setting up request.'
 request = Request(scheduler,sample,config,version,py)
 
 # Create the corresponding condor task
-if DEBUG > 0:
-    print ' DG0: Setting up task.'
 task = Task(condorId,request)
 
 # Cleaning up only when you nwant to (careful cleanup only works as agent)
