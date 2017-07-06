@@ -337,12 +337,13 @@ for row in results:
         (nDone,nAll) = productionStatus(config,version,datasetName,debug)
         nMissing = nAll-nDone
 
+        # filtered list
+        filteredResults.append(row)
+
         if nMissing > 0:
             # incomplete and filtered result
-            incompleteResults.append(row)   
-        else:
-            # complete and filtered list
-            filteredResults.append(row)
+            incompleteResults.append(row)
+
         nAllTotal += nAll
         nDoneTotal += nDone
         nMissingTotal += nMissing
@@ -512,7 +513,7 @@ for row in loopSamples:
         submitTask(task)
 
     # Cleanup task (careful all tasks being submitted get cleaned up)
-    if cleanup and task not in incompleteResults:
+    if cleanup and row not in incompleteResults:
         cleanupTask(task)
 
 sys.exit(0)
