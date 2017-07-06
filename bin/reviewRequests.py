@@ -334,13 +334,15 @@ for row in results:
     datasetName = process + '+' + setup+ '+' + tier
 
     if pattern in datasetName:
-        # Make filtered list
-        filteredResults.append(row)
         (nDone,nAll) = productionStatus(config,version,datasetName,debug)
         nMissing = nAll-nDone
-        # incomplete and filtered result
+
         if nMissing > 0:
-            incompleteResults.append(row)    
+            # incomplete and filtered result
+            incompleteResults.append(row)   
+        else:
+            # complete and filtered list
+            filteredResults.append(row)
         nAllTotal += nAll
         nDoneTotal += nDone
         nMissingTotal += nMissing

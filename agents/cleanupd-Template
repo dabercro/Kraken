@@ -95,7 +95,6 @@ do
         #==========================
 
         mkdir -p $KRAKEN_AGENTS_LOG/reviewd/${cfg}/${vrs}   # not very consistent but historical
-        ##mkdir -p $KRAKEN_AGENTS_LOG/${daemon}/${cfg}/${vrs}
 
         # Full cleanup cycle
         #===================
