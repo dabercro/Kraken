@@ -34,6 +34,30 @@ def cleanupTask(task):
 
     return
 
+def displayLine(row):
+
+    process = row[0]
+    setup = row[1]
+    tier = row[2]
+    dbs = row[3]
+    nFiles = int(row[4])
+    requestId = int(row[8])
+    dbNFilesDone = int(row[9])
+
+    # make up the proper mit dataset name
+    datasetName = process + '+' + setup+ '+' + tier
+    (nDone,nAll) = productionStatus(config,version,datasetName,debug)
+
+    percentage = 0.0
+    if nAll > 0:
+        percentage = 100.0 * float(nDone)/float(nAll)
+
+    if nDone != nAll:
+        print "  %6.2f  %5d/ %5d  %s"%(percentage,nDone,nAll,datasetName)
+    else:
+        print "  %6.2f  %5d= %5d  %s"%(percentage,nDone,nAll,datasetName)
+
+
 def findDomain():
     domain = os.uname()[1]
     f = domain.split('.')
@@ -306,21 +330,20 @@ except:
     print " Error (%s): unable to fetch data."%(sql)
     sys.exit(0)
 
-#============================================
-# D I S P L A Y  A N D  S E L E C T  L O O P
-#============================================
+#==========================================
+# F I L T E R  A N D  S E L E C T  L O O P
+#==========================================
 
 # Take the result from the database and look at it
 filteredResults = []
 incompleteResults = []
-first = True
 nDone = 0
 nAll = 0
 nAllTotal = 0
 nDoneTotal = 0
 nMissingTotal = 0
 
-# initial filter and calculatiuon loop
+# initial filter and calculation loop
 for row in results:
     process = row[0]
     setup = row[1]
@@ -353,41 +376,30 @@ percentageTotal = 0.0
 if nAllTotal > 0:
     percentageTotal = 100.0 * float(nDoneTotal)/float(nAllTotal)
 
-# the display loop
+#========================
+# D I S P L A Y  L O O P
+#========================
+
+print '#---------------------------------------------------------------------------'
+print '#'
+print '#                            O V E R V I E W '
+print '#                              %s/%s'%(config,version)
+print '#'
+print '# Perct    Done/ Total--Dataset Name'
+print '# ----------------------------------'
+print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
+    %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
+print '#---------------------------------------------------------------------------'
+
+# incomplete first for debugging
+print " ---- incomplete only ----"
+for row in incompleteResults:
+    displayLine(row)
+
+# all in alphabetic order
+print " ---- all ----"
 for row in filteredResults:
-    process = row[0]
-    setup = row[1]
-    tier = row[2]
-    dbs = row[3]
-    nFiles = int(row[4])
-    requestId = int(row[8])
-    dbNFilesDone = int(row[9])
-
-    # make up the proper mit dataset name
-    datasetName = process + '+' + setup+ '+' + tier
-    (nDone,nAll) = productionStatus(config,version,datasetName,debug)
-
-    percentage = 0.0
-    if nAll > 0:
-        percentage = 100.0 * float(nDone)/float(nAll)
-
-    if first:
-        first = False
-        print '#---------------------------------------------------------------------------'
-        print '#'
-        print '#                            O V E R V I E W '
-        print '#                              %s/%s'%(config,version)
-        print '#'
-        print '# Perct    Done/ Total--Dataset Name'
-        print '# ----------------------------------'
-        print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
-            %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
-        print '#---------------------------------------------------------------------------'
-
-    if nDone != nAll:
-        print "  %6.2f  %5d/ %5d  %s"%(percentage,nDone,nAll,datasetName)
-    else:
-        print "  %6.2f  %5d= %5d  %s"%(percentage,nDone,nAll,datasetName)
+    displayLine(row)
 
 print '#'
 print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
