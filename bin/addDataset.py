@@ -29,6 +29,8 @@ def addBlock(datasetId,blockName):
 
 def addDetails(datasetId,lfns):
 
+    print "Adding detail"
+
     for lfn in lfns:
         blockId = addBlock(datasetId,lfns[lfn].blockName)
         addLfn(datasetId,blockId,lfn,lfns[lfn].pathName,lfns[lfn].fileId.nEvents)
@@ -40,9 +42,11 @@ def addLfn(datasetId,blockId,fileName,pathName,nEvents):
 
     sql = "insert into Lfns(DatasetId,BlockId,FileName,PathName,NEvents) " \
         +  " values(%d,%d,'%s','%s',%d)"%(datasetId,blockId,fileName,pathName,nEvents)
+    print "Adding lfn: " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
+        print " success."
     except:
         #print ' ERROR (%s) - could not insert new file.'%(sql)
         #print " Unexpected error:", sys.exc_info()[0]

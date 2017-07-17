@@ -4,10 +4,10 @@ BASE_SE=/cms/store/user/paus
 CATALOG=/home/cmsprod/catalog/t2mit
 
 CFG="pandaf"
-VRS="004"
+VRS="005"
 
 BOOK_SRC="$CFG/$VRS"
-BOOK_TGT="$CFG/x04"
+BOOK_TGT="$CFG/x05"
 
 FILE="$1"
 if ! [ -e "$FILE" ]

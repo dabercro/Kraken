@@ -89,6 +89,9 @@ def getRequestId(file):
 
     # decode the dataset
     f = dataset.split('+')
+    if len(f) < 3:
+        print " ERROR - dataset name not correctly formed: " + dataset
+        sys.exit(0)
     process = f[0]
     setup = f[1]
     tier = f[2]

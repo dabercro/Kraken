@@ -363,7 +363,7 @@ for row in results:
         # filtered list
         filteredResults.append(row)
 
-        if nMissing > 0:
+        if nMissing > 0 or (nAll == 0 and nDone == 0):
             # incomplete and filtered result
             incompleteResults.append(row)
 

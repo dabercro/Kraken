@@ -230,7 +230,8 @@ function setupCmssw {
   echo "============================================================"
   echo " Initialize CMSSW $THIS_CMSSW_VERSION"
   source /cvmfs/cms.cern.ch/cmsset_default.sh
-  if [ "`echo $THIS_CMSSW_VERSION | grep ^8_`" != "" ]
+  if     [ "`echo $THIS_CMSSW_VERSION | grep ^8_`" != "" ] \
+     ||  [ "`echo $THIS_CMSSW_VERSION | grep ^9_`" != "" ]
   then
     export SCRAM_ARCH=slc6_amd64_gcc530
   fi
