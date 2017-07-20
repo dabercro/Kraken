@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #===================================================================================================
 # This script checks all files in a given directory using the checkFile.py script and compares them
-# to the files entered into the database.
+# to the files entered into the database. Any inconsitencies will be resolved.
 #===================================================================================================
 import os,sys,subprocess
 import MySQLdb

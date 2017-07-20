@@ -242,7 +242,7 @@ usage += "                         --nJobsMax=<n>\n"
 usage += "                         --useExistingLfns\n"
 usage += "                         --useExistingJobs\n"
 usage += "                         --useExistingSites\n"
-usage += "                         --displayOnly\n"
+usage += "                         --displayOnly=<status> [ default: 0, 1-all, 2-incomplete only ]\n"
 usage += "                         --local\n"
 usage += "                         --submit\n"
 usage += "                         --cleanup\n"
@@ -250,9 +250,9 @@ usage += "                         --debug\n"
 usage += "                         --help\n\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['config=','version=','py=','pattern=','nJobsMax=', \
+valid = ['config=','version=','py=','pattern=','nJobsMax=','displayOnly=', \
          'help','cleanup','submit','useExistingLfns','useExistingJobs','useExistingSites','local',
-         'debug','displayOnly']
+         'debug']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
 except getopt.GetoptError, ex:
@@ -268,7 +268,7 @@ version = '000'
 py = 'data'
 pattern = ''
 nJobsMax = 20000
-displayOnly = False
+displayOnly = 0
 cleanup = False
 submit = False
 useExistingLfns = False
@@ -292,6 +292,8 @@ for opt, arg in opts:
         pattern = arg
     if opt == "--nJobsMax":
         nJobsMax = int(arg)
+    if opt == "--displayOnly":
+        displayOnly = int(arg)
     if opt == "--cleanup":
         cleanup = True
     if opt == "--submit":
@@ -304,8 +306,6 @@ for opt, arg in opts:
         useExistingSites = True
     if opt == "--debug":
         debug = True
-    if opt == "--displayOnly":
-        displayOnly = True
 
 # Access the database to determine all requests
 db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
@@ -391,22 +391,22 @@ print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
     %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
 print '#---------------------------------------------------------------------------'
 
-# incomplete first for debugging
-print " ---- incomplete only ----"
-for row in incompleteResults:
-    displayLine(row)
+# incomplete in alphabetic order
+if displayOnly == 2:
+    for row in incompleteResults:
+        displayLine(row)
 
 # all in alphabetic order
-print " ---- all ----"
-for row in filteredResults:
-    displayLine(row)
+if displayOnly == 1:
+    for row in filteredResults:
+        displayLine(row)
 
 print '#'
 print '# %6.2f  %5d/ %5d  TOTAL         -->  %6.2f%% (%d) missing.'\
     %(percentageTotal,nDoneTotal,nAllTotal,100.-percentageTotal,nMissingTotal)
 print '#'
 
-if displayOnly:
+if displayOnly != 0:
     sys.exit(0)
 
 # Basic tests first

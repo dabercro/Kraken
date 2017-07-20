@@ -75,9 +75,14 @@ line = ' '
 
 trunc = ''
 f = input.split("/")
-f.pop()
+py = f.pop()
 version = f.pop()
 config = f.pop()
+
+f = py.split("-")
+type = f[0]
+py = py.replace('status-','')
+py = py.replace('incomplete-','')
 
 # insert header
 fileOutput.write(getHeader())
@@ -101,6 +106,12 @@ with open(input,"r") as fileInput:
                 test = f.pop()
                 if test == "VERSION:":
                     version = v
+
+        if 'missing' in line:
+            if type == 'status':
+                line = line.replace('missing','<a href="incomplete-' + py + '.html">missing</a>')
+            else:
+                line = line.replace('missing','<a href="status-' + py + '.html">missing</a>')
 
         fileOutput.write(line+'\n')
     

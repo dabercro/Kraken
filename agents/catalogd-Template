@@ -141,11 +141,27 @@ do
         
         stdbuf -o0 -e0 \
           $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --py=$py \
-               --displayOnly >>  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+               --displayOnly=1 >>  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
       
         # make sure ascii files get 'dressing'
         $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \
                          --input=$KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/status-$py
+
+
+        rm -f $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+        touch $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+
+        echo "#"        >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+        echo "# "`date` >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+        echo "#"        >> $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+        
+        stdbuf -o0 -e0 \
+          $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --py=$py \
+               --displayOnly=2 >>  $KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
+      
+        # make sure ascii files get 'dressing'
+        $KRAKEN_BASE/bin/htmlDressing.py --version=$vrs \
+                         --input=$KRAKEN_AGENTS_LOG/${mydaemon}/${cfg}/${vrs}/incomplete-$py
       
         # keep log files up to speed
         synchronizeWeb.py                                                           >> $logFile

@@ -91,7 +91,7 @@ do
     
           stdbuf -o0 -e0 \
           $KRAKEN_BASE/bin/reviewRequests.py --config=$cfg --version=$vrs --cmssw=$py \
-                 --displayOnly >  $KRAKEN_AGENTS_LOG/${daemon}/status-$py
+                 --displayOnly=1 >  $KRAKEN_AGENTS_LOG/${daemon}/status-$py
     
           # make sure ascii files get 'dressing'
           $KRAKEN_BASE/bin/htmlDressing.py --input=$KRAKEN_AGENTS_LOG/${daemon}/status-$py \
