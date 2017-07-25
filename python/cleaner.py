@@ -66,6 +66,9 @@ class Cleaner:
         # D - remove entire cache on scheduler (if dataset completed)
         self.removeCache()
 
+        # E - other leftover directory stubs
+        self.removeDirectoryStubs()
+
         return
 
     #-----------------------------------------------------------------------------------------------
@@ -149,6 +152,40 @@ class Cleaner:
                 print ' IRC: %d'%(irc) 
             
         if DEBUG > 0 and (irc != 0 or rc != 0):
+            print ' RC: %d'%(rc) 
+            print ' ERR:\n%s'%(err) 
+            print ' OUT:\n%s'%(out) 
+
+        return
+
+    #-----------------------------------------------------------------------------------------------
+    # remove entire remote cache of this task
+    #-----------------------------------------------------------------------------------------------
+    def removeDirectoryStubs(self):
+
+        print ' - trying to remove remaining directory stubs in storage'
+
+        if len(self.task.sample.completedJobs) == len(self.task.sample.allJobs):
+            print '   job is complete, remove the potentially remaining cache.'
+        else:
+            return
+
+        cfg = self.task.request.config
+        vers = self.task.request.version
+        dset = self.task.request.sample.dataset
+
+        prefix = os.getenv('KRAKEN_TMP_PREFIX')
+        base = os.getenv('KRAKEN_SE_BASE')
+
+        directory = '%s/%s/%s/%s/%s*'%(base,cfg,vers,dset,prefix)
+
+        cmd = " removedir " + directory
+        if DEBUG > 0:
+            print "   CMD: " + cmd
+
+        (rc,out,err) = self.rex.executeLocalAction(cmd)
+
+        if DEBUG > 0 and rc != 0:
             print ' RC: %d'%(rc) 
             print ' ERR:\n%s'%(err) 
             print ' OUT:\n%s'%(out) 

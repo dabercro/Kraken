@@ -12,6 +12,7 @@ import fileIds
 
 CATALOG_INPUT = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
 blockIds = {}
+lfns = {}
 
 def addBlock(datasetId,blockName):
     # add a new block of a given datasetId to the database
@@ -20,18 +21,21 @@ def addBlock(datasetId,blockName):
     try:
         # Execute the SQL command
         cursor.execute(sql)
+        db.commit()
+        #print ' ADDED BLOCK TO DB. %s'%(sql)
     except:
         print ' ERROR (%s) - could not insert new block.'%(sql)
         print " Unexpected error:", sys.exc_info()[0]
         pass
 
-    return getBlockId(datasetId,blockName)
+    bId = getBlockId(datasetId,blockName)
+
+    return bId
 
 def addDetails(datasetId,lfns):
 
-    print "Adding detail"
-
     for lfn in lfns:
+        #print " LFN -- " + lfn
         blockId = addBlock(datasetId,lfns[lfn].blockName)
         addLfn(datasetId,blockId,lfn,lfns[lfn].pathName,lfns[lfn].fileId.nEvents)
     return
@@ -42,11 +46,11 @@ def addLfn(datasetId,blockId,fileName,pathName,nEvents):
 
     sql = "insert into Lfns(DatasetId,BlockId,FileName,PathName,NEvents) " \
         +  " values(%d,%d,'%s','%s',%d)"%(datasetId,blockId,fileName,pathName,nEvents)
-    print "Adding lfn: " + sql
+    #print "Adding lfn: " + sql
     try:
         # Execute the SQL command
         cursor.execute(sql)
-        print " success."
+        #print " success."
     except:
         #print ' ERROR (%s) - could not insert new file.'%(sql)
         #print " Unexpected error:", sys.exc_info()[0]
@@ -93,7 +97,6 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
 
         sizeGb = 10 # does not matter
         nFiles = 0
-        lfns = {}
 
         cmd = 'cat %s/%s/%s/%s/Filesets'%(CATALOG_INPUT,conf,vers,dset)
         myRex = rex.Rex()
@@ -147,7 +150,6 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
     units = 'GB'
     nFiles = 0
     totalSize = 0
-    lfns = {}
     blocks = []
     for entry in data:
         valid = int(entry["is_file_valid"])
@@ -182,38 +184,41 @@ def findDatasetProperties(dataset,dbsInst,debug=0):
 
 def getBlockIds(datasetId):
 
-    if len(blockIds)<1:
-        sql = "select BlockId, BlockName from Blocks where " \
-            + "DatasetId=%d;"%(datasetId)
+    sql = "select BlockId, BlockName from Blocks where " \
+        + "DatasetId=%d;"%(datasetId)
 
-        try:
-            # Execute the SQL command
-            cursor.execute(sql)
-            results = cursor.fetchall()
-        except:
-            print " ERROR (%s): unable to fetch data."%(sql)
-            sys.exit(0)
+    try:
+        # Execute the SQL command
+        cursor.execute(sql)
+        results = cursor.fetchall()
+    except:
+        print " ERROR (%s): unable to fetch data."%(sql)
+        sys.exit(0)
 
-        for row in results:
-            blockId = int(row[0])
-            blockName = row[1]
-            blockIds[blockName] = blockId
+    for row in results:
+        blockId = int(row[0])
+        blockName = row[1]
+        blockIds[blockName] = blockId
 
-    return
+    return blockIds
 
 def getBlockId(datasetId,blockName):
     # find the blockId for a given data block
 
     blockId = -1
 
-    getBlockIds(datasetId)
-
     try:
         blockId = blockIds[blockName]
+        return blockId
     except:
-        print " ERROR (%s): blockName is not known."%(sql)
-        print " -----  ?because an entire new block was added and script does not allow it?"
-        sys.exit(0)
+        pass
+        #print " ERROR (%s): blockName is not known."%(blockName)
+        #print " -----  ?because an entire new block was added and script does not allow it?"
+        #print " -----  number of blockIds: %d"%(len(blockIds))
+        #sys.exit(0)
+
+    blockIds = getBlockIds(datasetId)
+    blockId = blockIds[blockName]
 
     return blockId
 
@@ -277,6 +282,7 @@ def insertDataset(db,process,setup,tier,dbsInst,sizeGb,nFiles,lfns,debug=0):
         sys.exit(1)
 
     datasetId = getDatasetId(process+"+"+setup+"+"+tier)
+    blockIds = getBlockIds(datasetId);
     addDetails(datasetId,lfns)
 
     return 0
