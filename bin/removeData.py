@@ -8,6 +8,8 @@
 import sys,os,subprocess,getopt,time
 import MySQLdb
 
+BASE = os.getenv('KRAKEN_SE_BASE')
+
 def db():
     # Get our access to the database
 
@@ -42,8 +44,6 @@ def findFiles(requestId,fileName,cursor,debug):
     for row in results:
         print ' FileName: %s  NEvents: %d'%(row[0],int(row[1]))
         files.append(row[0])
-
-    print ''
 
     return files
 
@@ -102,15 +102,56 @@ def getRequestId(datasetId,config,version,py,cursor,debug):
 
     return requestId
 
-def removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,version):
+def remove(dataset,config,version,dbs,py,exe):
+    # remove the full dataset and database info
+
+    # make sure to get dataset convention right
+    if dataset[0] != '/':
+        dataset = '/' + dataset.replace('+','/')
+
+    # Decompose dataset into the three pieces (process, setup, tier)
+    f = dataset.split('/')
+    process = f[1]
+    setup   = f[2]
+    tier    = f[3]
+    
+    # Find the dataset id and request id
+    datasetId = getDatasetId(process,setup,tier,cursor,debug)
+    requestId = getRequestId(datasetId,config,version,py,cursor,debug)
+    print ' Ids: dataset=%d  request=%d'%(datasetId,requestId)
+    
+    # Is this a complete dataset?
+    if fileName == '':
+        print ' Deletion of a complete dataset requested.'
+    
+    # Show all files to remove
+    fileList = findFiles(requestId,fileName,cursor,debug)
+    
+    if exe == True:
+    
+        # Remove the files and all records of them
+        if fileName == '':
+            removeDataOnDisk(process,setup,tier,datasetId,requestId,config,version)
+        else:
+            removeDataInDb(fileList,process,setup,tier,datasetId,requestId,config,version)
+    
+        # re-generate the catalog after the deletion
+        
+        cmd = 'generateCatalogs.py %s/%s %s'%(config,version,dataset)
+        print ' ctg: %s'%(cmd)
+        os.system(cmd)
+        
+    else:
+        print ' To execute please add --exec option\n'
+    
+def removeDataInDb(fileList,process,setup,tier,datasetId,requestId,config,version):
     # Delete thoroughly the given list of files from the disks (T2/3 and the database)
 
-    base = '/cms/store/user/paus'
     dataset = process + '+' + setup + '+' + tier
 
     for file in fileList:
 
-        fullFile = '%s/%s/%s/%s/%s.root'%(base,config,version,dataset,file)
+        fullFile = '%s/%s/%s/%s/%s.root'%(BASE,config,version,dataset,file)
 
         # delete from T2
         cmd = 't2tools.py --action=rm --source=%s'%(fullFile)
@@ -131,14 +172,13 @@ def removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,ver
         except:
             print " Error (%s): unable to delete data."%(sql)
 
-def removeDataset(process,setup,tier,datasetId,requestId,config,version):
+def removeDataOnDisk(process,setup,tier,datasetId,requestId,config,version):
     # Delete the given dataset from the disks (T2/3 and the database)
 
-    base = '/cms/store/user/paus'
     catalog = '/home/cmsprod/catalog/t2mit'
     dataset = process + '+' + setup + '+' + tier
 
-    fullFile = '%s/%s/%s/%s'%(base,config,version,dataset)
+    fullFile = '%s/%s/%s/%s'%(BASE,config,version,dataset)
 
     # delete from T2
     cmd = 'removedir %s'%(fullFile)
@@ -189,7 +229,7 @@ def testLocalSetup(dataset,config,version,dbs,py,delete,debug=0):
 #===================================================================================================
 # Define string to explain usage of the script
 usage  = "\n"
-usage += " Usage: removeData.py  --dataset=<name>\n"
+usage += " Usage: removeData.py  --pattern=<name>\n"
 usage += "                       --config=<name>\n"
 usage += "                       --version=<name>\n"
 usage += "                       --py=<name>\n"
@@ -199,7 +239,7 @@ usage += "                     [ --exec (False) ]\n"
 usage += "                     [ --help ]\n\n"
 
 # Define the valid options which can be specified and check out the command line
-valid = ['fileName=','dataset=','config=','version=','py=','debug=','exec','help']
+valid = ['fileName=','pattern=','config=','version=','py=','debug=','exec','help']
 try:
     opts, args = getopt.getopt(sys.argv[1:], "", valid)
 except getopt.GetoptError, ex:
@@ -215,7 +255,7 @@ debug = 0
 exe = False
 delete = 0
 fileName = ''
-dataset = ''
+pattern = ''
 config = ''
 version = ''
 dbs = 'prod/global'
@@ -228,10 +268,8 @@ for opt, arg in opts:
         sys.exit(0)
     if opt == "--fileName":
         fileName = arg
-    if opt == "--dataset":
-        dataset = arg
-        if dataset[0] != '/':
-            dataset = '/' + dataset.replace('+','/')
+    if opt == "--pattern":
+        pattern = arg
     if opt == "--config":
         config = arg
     if opt == "--version":
@@ -244,44 +282,26 @@ for opt, arg in opts:
         debug = int(arg)
 
 # make sure the request makes sense
-testLocalSetup(dataset,config,version,dbs,py,delete,debug)
+testLocalSetup(pattern,config,version,dbs,py,delete,debug)
 
 # get access to the database
 (db,cursor) = db()
 
-# Decompose dataset into the three pieces (process, setup, tier)
-f = dataset.split('/')
-process = f[1]
-setup   = f[2]
-tier    = f[3]
+datasets = []
+cmd = 'list ' + BASE + '/' + config + '/' + version + ' 2> /dev/null'
+print ' Listing: ' + cmd
+for line in os.popen(cmd).readlines():  # run command
+    dataset = line[:-1].split('/')[-1]
+    if debug>1:
+        print ' Sample(%s): '%(pattern) + dataset
+    if pattern in dataset:
+        datasets.append(dataset)
 
-# Find the dataset id and request id
-datasetId = getDatasetId(process,setup,tier,cursor,debug)
-requestId = getRequestId(datasetId,config,version,py,cursor,debug)
-print '\n Ids: dataset=%d  request=%d\n'%(datasetId,requestId)
+for dataset in datasets:
+    if debug>-1:
+        print ' -o-o-o-o- Deleting -o-o-o-o-  ' + dataset
 
-# Is this a complete dataset?
-if fileName == '':
-    print ' Deletion of a complete dataset requested.'
-
-# Show all files to remove
-fileList = findFiles(requestId,fileName,cursor,debug)
-
-if exe == True:
-
-    # Remove the files and all records of them
-    if fileName == '':
-        removeDataset(process,setup,tier,datasetId,requestId,config,version)
-    else:
-        removeFileEntries(fileList,process,setup,tier,datasetId,requestId,config,version)
-
-    # re-generate the catalog after the deletion
-    
-    cmd = 'generateCatalogs.py %s/%s %s'%(config,version,dataset)
-    print ' ctg: %s'%(cmd)
-    os.system(cmd)
-    
-else:
-    print ' To execute please add --exec option'
+    # remove the specific dataset
+    remove(dataset,config,version,dbs,py,exe)
 
 db.close()

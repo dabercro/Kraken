@@ -181,10 +181,9 @@ print " INFO - checkFile.py %s"%(file)
 nEvents = numberOfEventsInEntry(entry)
 
 delete = False
-
-## if 'zombie' in out:
-##     delete = True
-##     print '\n o=o=o=o File corrupt, schedule deletion. o=o=o=o \n'
+if "Object is in 'zombie' state" in out:
+    delete = True
+    print '\n o=o=o=o File corrupt, schedule deletion. o=o=o=o \n'
 
 print ' CATALOG: %d -- %s'%(nEvents,file)
 
