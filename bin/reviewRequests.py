@@ -194,6 +194,7 @@ def testEnvironment(config,version,py):
     # Does the local environment exist?
     dir = './' + config + '/' + version
     if not os.path.exists(dir):
+        os.system('hostname')
         os.system('pwd')
         cmd = "\n Local work directory does not exist: %s\n" % dir
         raise RuntimeError, cmd

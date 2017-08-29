@@ -125,7 +125,7 @@ for dataset in oldDatasetsList:
         if nFilesNew > 0.9 * nFilesOld:
             print ' Deleting obsolete data: (%3d) %s -- %s (%d/%d)' \
                 %(i,oldVersion,dataset,nFilesNew,nFilesOld)
-            cmd = 'removeData.py --exec --config=%s --version=%s --dataset=%s' \
+            cmd = 'removeData.py --exec --config=%s --version=%s --pattern=%s' \
                 %(config,oldVersion,dataset)
             print ' rmr: ' + cmd
             if exe:
