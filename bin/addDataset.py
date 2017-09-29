@@ -11,6 +11,8 @@ import rex
 import fileIds
 
 CATALOG_INPUT = os.environ.get('KRAKEN_CATALOG_INPUT','/home/cmsprod/catalog/t2mit')
+WORK_DIR = os.environ.get('KRAKEN_WORK','/home/cmsprod/cms/jobs')
+
 blockIds = {}
 lfns = {}
 
@@ -57,6 +59,16 @@ def addLfn(datasetId,blockId,fileName,pathName,nEvents):
         pass
 
     return
+
+def clearLocalCache(datasetId):
+
+    cmd = 'rm -f %s/????/%s.????'%(WORK_DIR,datasetId)
+    print ' Clearing cache: %s'%(cmd)
+
+    myRex = rex.Rex()
+    (rc,out,err) = myRex.executeLocalAction(cmd)
+
+    return rc
 
 def convertSizeToGb(sizeTxt):
 
@@ -413,7 +425,7 @@ def testLocalSetup(dataset,dbsInst,debug=0):
 
     return (dataset,dbsInst)
 
-def updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,debug=0):
+def updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,changed,debug=0):
 
     # Prepare SQL query to UPDATE existing record from the database.
     sql = "update Datasets set DatasetSizeGb=%f, DatasetNFiles=%d where "%(sizeGb,nFiles) + \
@@ -433,7 +445,13 @@ def updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,debug=0):
         sys.exit(1)
 
     datasetId = getDatasetId(process+"+"+setup+"+"+tier)
+
+    # make sure to add all relevant details to our database
     addDetails(datasetId,lfns)
+
+    # make sure to clean the local cache files
+    if changed:
+        clearLocalCache(datasetId)
 
     return 0
 
@@ -517,7 +535,7 @@ if sizeGb < 0:
 
 # Dataset is valid now see what remains to be done
 if len(results) == 1:
-    print ' Dataset exists in database. Will update properties now.\n'
+    print ' Dataset exists in database. Will try to update properties.\n'
     for row in results:
         process = row[1]
         setup = row[2]
@@ -526,11 +544,13 @@ if len(results) == 1:
         dbSizeGb = float(row[5])
         dbNFiles = int(row[6])
     # check whether information correct and adjust if needed
-    if True or dbSizeGb != sizeGb or dbNFiles != nFiles:
+    changed = ((dbSizeGb-sizeGb)>0.0001 or dbNFiles != nFiles)
+    if changed:
         print " Update!  Size: %.3f -> %.3f  nFiles: %d -> %d"%(dbSizeGb,sizeGb,dbNFiles,nFiles)
+        print " Update!  Size: %f -> %f  nFiles: %d -> %d"%(dbSizeGb,sizeGb,dbNFiles,nFiles)
         rc = 0
         if exe:
-            rc = updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,debug)
+            rc = updateDataset(db,process,setup,tier,sizeGb,nFiles,lfns,changed,debug)
         else:
             print ' not updating dataset: use --exec option'
 
