@@ -33,7 +33,8 @@ class Scheduler:
     #-----------------------------------------------------------------------------------------------
     def executeCondorCmd(self,cmd='condor_q',output=False):
 
-        print ' execute condor command: %s'%(cmd)
+        if output:
+            print ' execute condor command: %s'%(cmd)
 
         myRx = rex.Rex(self.host,self.user);
         irc = 0
@@ -54,14 +55,14 @@ class Scheduler:
             if err!='':
                 print '\n ERR:\n%s'%(err) 
 
-        return
+        return (rc,out,err)
 
     #-----------------------------------------------------------------------------------------------
     # find number of all jobs on this scheduler
     #-----------------------------------------------------------------------------------------------
     def findNumberOfTotalJobs(self):
 
-        cmd = 'condor_q | grep running| cut -d\' \' -f1  2> /dev/null'
+        cmd = 'condor_q -all | grep running| cut -d\' \' -f1  2> /dev/null'
         if not self.isLocal():
             cmd = 'ssh -x ' + self.user + '@' + self.host + ' \"' + cmd + '\"'
 
@@ -153,8 +154,8 @@ class Scheduler:
         print ' User: ' + self.user
         print ' Base: ' + self.base
         print ' ===== '
-        print ' MMax: %d'%self.nMyTotalMax
-        print ' TMax: %d'%self.nTotalMax
+        print ' My  : %6d  (MMax: %d)'%(self.nMyTotal,self.nMyTotalMax)
+        print ' Tot : %6d  (TMax: %d)'%(self.nTotal,self.nTotalMax)
 
     #-----------------------------------------------------------------------------------------------
     # update on the fly
@@ -172,7 +173,15 @@ class Scheduler:
             self.base = base
         self.ruid = self.findRemoteUid(host,user)
         (self.nTotal,self.nMyTotal) = self.findNumberOfTotalJobs()
+        
 
         self.pushProxyToScheduler()
 
+        return
+
+    #-----------------------------------------------------------------------------------------------
+    # update number of running jobs only
+    #-----------------------------------------------------------------------------------------------
+    def updateNJobs(self):
+        (self.nTotal,self.nMyTotal) = self.findNumberOfTotalJobs()
         return

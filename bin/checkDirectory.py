@@ -7,7 +7,7 @@ import os,sys,subprocess
 import MySQLdb
 import rex
 
-usage = "\n   usage:  checkDirectory.py  <directory> \n"
+usage = "   usage:  checkDirectory.py  <directory> \n"
 
 Db = MySQLdb.connect(read_default_file="/etc/my.cnf",read_default_group="mysql",db="Bambu")
 Cursor = Db.cursor()
@@ -104,8 +104,8 @@ def removeDbEntry(requestId,fileId):
 #  M A I N
 #===================================================================================================
 # make sure command line is complete
-if len(sys.argv) < 1:
-    print " ERROR -- " + usage
+if len(sys.argv) < 2:
+    print "\n ERROR -- " + usage
     sys.exit(1)
 
 # command line variables

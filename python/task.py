@@ -94,6 +94,9 @@ class Task:
                 + ' \"cd ' + self.logs + '; ' + cmd + '\"'
         os.system(cmd)
 
+        # make sure to keep track of the updated number of jobs in the system
+        self.scheduler.updateNJobs()
+
     #-----------------------------------------------------------------------------------------------
     # create the required local and remote directories
     #-----------------------------------------------------------------------------------------------

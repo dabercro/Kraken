@@ -6,6 +6,7 @@
 # v1.0                                                                                  Apr 28, 2017
 #---------------------------------------------------------------------------------------------------
 import sys,os,subprocess,getopt,time
+from scheduler import Scheduler
 import MySQLdb
 
 BASE = os.getenv('KRAKEN_SE_BASE')
@@ -42,7 +43,8 @@ def findFiles(requestId,fileName,cursor,debug):
 
     # found the request Id
     for row in results:
-        print ' FileName: %s  NEvents: %d'%(row[0],int(row[1]))
+        if debug>0:
+            print ' FileName: %s  NEvents: %d'%(row[0],int(row[1]))
         files.append(row[0])
 
     return files
@@ -115,6 +117,20 @@ def remove(dataset,config,version,dbs,py,exe):
     setup   = f[2]
     tier    = f[3]
     
+    # Find all running jobs
+    cmd = 'condor_q -format "%d" ClusterId -format " %s\n" Args| cut -d " " -f 1,6 |sort -u'
+    scheduler = Scheduler()
+    (rc,out,err) = scheduler.executeCondorCmd(cmd,False)
+    ds = process+'+'+setup+'+'+tier
+    clusterIds = ""
+    for line in out.split('\n'):
+        if ds in line:
+            clusterIds = clusterIds + " " + line.split(' ')[0]
+    if clusterIds != "":
+        print " Running jobs: " + clusterIds
+    else:
+        print " No running jobs found."
+
     # Find the dataset id and request id
     datasetId = getDatasetId(process,setup,tier,cursor,debug)
     requestId = getRequestId(datasetId,config,version,py,cursor,debug)
@@ -129,6 +145,9 @@ def remove(dataset,config,version,dbs,py,exe):
     
     if exe == True:
     
+        # Remove all running jobs
+        scheduler.executeCondorCmd('condor_rm ' + clusterIds,True)
+
         # Remove the files and all records of them
         if fileName == '':
             removeDataOnDisk(process,setup,tier,datasetId,requestId,config,version)
@@ -175,10 +194,13 @@ def removeDataInDb(fileList,process,setup,tier,datasetId,requestId,config,versio
 def removeDataOnDisk(process,setup,tier,datasetId,requestId,config,version):
     # Delete the given dataset from the disks (T2/3 and the database)
 
+
     catalog = '/home/cmsprod/catalog/t2mit'
     dataset = process + '+' + setup + '+' + tier
 
     fullFile = '%s/%s/%s/%s'%(BASE,config,version,dataset)
+
+    logs = '/local/cmsprod/Kraken/agents/reviewd/%s/%s/%s'%(config,version,dataset)
 
     # delete from T2
     cmd = 'removedir %s'%(fullFile)
@@ -201,6 +223,11 @@ def removeDataOnDisk(process,setup,tier,datasetId,requestId,config,version):
 
     cmd = 'rm -rf %s/%s/%s/%s'%(catalog,config,version,dataset)
     print ' ctg: %s'%(cmd)
+    os.system(cmd)
+
+    # delete all logs
+    cmd = 'rm -rf %s'%(logs)
+    print ' logs: %s'%(cmd)
     os.system(cmd)
 
 def testLocalSetup(dataset,config,version,dbs,py,delete,debug=0):
